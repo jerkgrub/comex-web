@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'Titillium Web';
+    src: url('../../../../../public/TitilliumWeb-Regular.ttf') format('truetype');
+  }
+  
+  body {
+    font-family: 'Titillium Web', sans-serif; 
+  }
+  
+  .services-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .services-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+  }
+  
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .service-card {
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    text-align: center;
+  }
+  
+  .service-title {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .service-description {
+    font-size: 1rem;
+  }

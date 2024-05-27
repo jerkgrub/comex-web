@@ -1,0 +1,33 @@
+.footer {
+  padding: 2rem 1rem;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.social-media {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.social-media__link {
+  color: #959595; /* Changed color to #959595 */
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fff; /* Changed background color to white */
+  padding: 0.5rem 1rem;
+  border-radius: 50%; /* Changed to make the buttons circular */
+}
+
+.social-media__link:hover {
+  color: #959595;
+  background-color: #f2f2f2; /* Darkens slightly when hovered over */
+}
