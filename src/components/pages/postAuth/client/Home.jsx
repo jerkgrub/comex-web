@@ -16,7 +16,7 @@ export const Home = () => {
           <div className="bgself-center">
           <Users className="m-4 w-14 h-14"/>
           <button 
-              className="bg-nucolor3 p-3" 
+              className="btn bg-nucolor3 p-3" 
               onClick={() => window.open('/studform', '_blank', 'height=600,width=800')}
             >
               Click here

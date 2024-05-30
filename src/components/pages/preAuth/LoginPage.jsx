@@ -109,7 +109,7 @@ const LoginPage = () => {
 
         {/* email input */}
         <p className="labelz">E-mail</p>
-        <div className='input'>
+        <div className='input bg-gray-200'>
           <img src={email_icon} alt='' />
           <input type='text'
           onChange={(e)=>{setEmail(e.target.value)}}/>
@@ -117,7 +117,7 @@ const LoginPage = () => {
 
         {/* password input */}
         <p className="labelz">Password</p>
-        <div className='input'>
+        <div className='input bg-gray-200'>
           <img src={password_icon} alt='' />
           <input type={showPassword ? 'text' : 'password'}
           onChange={(e)=>{setPassword(e.target.value)}}/>
