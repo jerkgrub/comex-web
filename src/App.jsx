@@ -14,6 +14,8 @@ import Events from './components/pages/postAuth/admin/Events';
 import Header from './components/pages/postAuth/client/Navbar/Header';
 import CommunityEngagementForm from './components/pages/postAuth/client/Forms/CommunityEngagementForm';
 import StudentEngagementForm from './components/pages/postAuth/client/Forms/StudentEngagementForm';
+import RegisterPage from './components/pages/preAuth/Register';
+import Cnavbar from './components/pages/postAuth/client/Navbar/Cnavbar';
 
 function AdminLayout() {
   const { user } = useContext(UserContext);
@@ -40,6 +42,7 @@ function App() {
         <Routes>
           {/* pre Authentication */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* for Admin */}
           <Route path="/admin/*" element={<AdminLayout />}>
@@ -51,7 +54,7 @@ function App() {
           {/* for Client */}
           
           <Route path="/client/*">
-            <Route path="home" element={<><Header /><Home /></>}/>
+            <Route path="home" element={<><Cnavbar /><Home /></>}/>
             <Route path="about" element={<><Header /><About /></>}/>
             <Route path="events" element={<><Header /><Events /></>}/>
             <Route path="nstp" element={<><Header /><About /></>}/>

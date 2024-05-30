@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "./Navbar/Header";
 import { Users } from "lucide-react";
 
 export const Home = () => {
