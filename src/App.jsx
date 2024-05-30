@@ -46,7 +46,6 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="events" element={<Events />} />
             <Route path="nstp" element={<About />} />
-            // Add other admin routes here
           </Route>
 
           {/* for Client */}
@@ -56,7 +55,6 @@ function App() {
             <Route path="about" element={<><Header /><About /></>}/>
             <Route path="events" element={<><Header /><Events /></>}/>
             <Route path="nstp" element={<><Header /><About /></>}/>
-            // Add other client routes here
           </Route>
 
           {/* forms */}

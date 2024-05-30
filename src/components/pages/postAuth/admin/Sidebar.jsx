@@ -47,7 +47,7 @@ export default function Sidebar({ children }) {
 
   return (
     <aside className="h-screen flex">
-      <nav className="h-full flex flex-col bg-gradient-to-tr from-dark2 to-dark3 border-r border-gray-700 shadow-sm">
+      <nav className="h-full flex flex-col bg-gradient-to-tr from-nucolor1 to-nucolor1 border-r-4 border-nucolor3 shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
             src="https://i.imgur.com/FKLQLuv.png"
@@ -58,7 +58,7 @@ export default function Sidebar({ children }) {
           />
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className="p-1.5 rounded-lg text-gray-300 bg-gray-700 hover:bg-gray-600 transition duration-200"
+            className="p-1.5 rounded-lg text-gray-300 bg-nucolor6 hover:bg-nucolor7 transition duration-200"
           >
             {expanded ? <ChevronsLeft/> : <ChevronsRight />}
           </button>
@@ -68,7 +68,7 @@ export default function Sidebar({ children }) {
           <ul className="flex-1 px-3">{children}</ul>
         </SidebarContext.Provider>
 
-        <div className="border-t border-gray-700 flex p-3">
+        <div className="border-t border-nucolor6 flex p-3">
           <img
             src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
             alt=""
@@ -88,7 +88,7 @@ export default function Sidebar({ children }) {
             <button
             onClick={handleLogout}
             >
-              <div className="p-1.5 rounded-lg text-gray-300 bg-gray-700 hover:bg-gray-600 hover:text-red-700 transition duration-200">
+              <div className="p-1.5 rounded-lg text-gray-300 bg-nucolor6 hover:bg-nucolor7 hover:text-red-700 transition duration-200">
                 <LogOut size={20} />
               </div>
             </button>
@@ -114,8 +114,8 @@ export function SidebarItem({ icon, text, to }) {
         transition-colors group
         ${
           active
-            ? "bg-gradient-to-tr from-dark1 to-dark1 text-white"
-            : "hover:bg-dark22 text-gray-400 transition duration-200"
+            ? "bg-gradient-to-tr from-nucolor4 to-nucolor4 text-white"
+            : "hover:bg-nucolor6 text-gray-400 transition duration-200"
         }
     `}
     >
