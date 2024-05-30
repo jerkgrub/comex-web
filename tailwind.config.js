@@ -8,6 +8,8 @@ export default {
     extend: {
       colors: {
         'blue': '#426f8c',
+        'white2': '#e8e8e8',
+        'white3': '#828282',
         'lightyellow': '#f5e293',
         'yellow': '#d8b638',
         'weakred': '#79251c',
