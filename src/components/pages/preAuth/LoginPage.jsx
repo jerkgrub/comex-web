@@ -29,7 +29,12 @@ const LoginPage = () => {
     setShowPassword(!showPassword);
   };
 
+  const register_btn = () => {
+    navigate('/register');
+  };
+
   const login_btn = () => {
+    event.preventDefault();
     Swal.fire({
       title: 'Logging in...',
       timer: 1000,
@@ -84,57 +89,95 @@ const LoginPage = () => {
   };
 
   return (
-    <div className='bg'>
-    <div className='glue'>
-
-      <div className='logo-container'>
-        <div className="flex items-center"> 
-        <div><img src={logo} alt="Logo" className="logo"/></div>
-        <p className="title">
-            COMEX CONNECT
-          </p>
-        </div>
+<div className="
+flex 
+min-h-full 
+flex-1 
+flex-col 
+justify-center 
+px-6 
+py-12 
+lg:px-8
+bg-gradient-bg
+bg-cover 
+bg-no-repeat
+">
+  <div className="sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="bg-white my-4 py-8 px-4 drop-shadow-md shadow sm:rounded-lg sm:px-10">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className=""></div>
+        {/* <img
+          className="mx-auto h-48 w-auto"
+          src="https://i.imgur.com/R3I5T0V.png"
+          alt="Your Company"
+        /> */}
+        <h2 className="mt-3 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900">
+          Sign In
+        </h2>
       </div>
 
-      <div className='container w-max px-8'>
+      <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form className="space-y-6" method="POST">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              Email address
+            </label>
+            <div className="mt-2">
+            <label className="input input-bordered flex items-center gap-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
+                <input 
+                type="text" 
+                className="grow " 
+                placeholder="" 
+                onChange={(e)=>{setEmail(e.target.value)}}
+                />
+              </label>
+            </div>
+          </div>
 
-      {/* header shiz */}
-      <div className='header'>
-        <div className='text'>Sign In</div>
-        <div className='underline'></div>
+          <div>
+            <div className="flex items-center justify-between">
+              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                Password
+              </label>
+              <div className="text-sm">
+                <a href="#" className="text-sm  font-semibold text-nucolor7 hover:text-blue">
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            <div className="mt-2">
+              <label className="input input-bordered flex items-center gap-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clipRule="evenodd" /></svg>
+                <input 
+                type="password" 
+                className="grow"
+                onChange={(e)=>{setPassword(e.target.value)}}
+                />
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <button
+              onClick={login_btn}
+              className="btn flex w-full font-bold justify-center rounded-md bg-nucolor3 px-3 py-1.5 text-lg font-semibold leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
+            >
+              Sign In
+            </button>
+          </div>
+        </form>
+
+        <p className="mt-10 text-center text-bs text-gray-500">
+          No account yet?{' '}
+          <a onClick={register_btn} className="font-semibold leading-6 text-nucolor7 hover:text-blue">
+            Register
+          </a>
+        </p>
       </div>
-
-      {/* inputs */}
-      <div className='inputs'>
-
-        {/* email input */}
-        <p className="labelz">E-mail</p>
-        <div className='input bg-gray-200'>
-          <img src={email_icon} alt='' />
-          <input type='text'
-          onChange={(e)=>{setEmail(e.target.value)}}/>
-        </div>
-
-        {/* password input */}
-        <p className="labelz">Password</p>
-        <div className='input bg-gray-200'>
-          <img src={password_icon} alt='' />
-          <input type={showPassword ? 'text' : 'password'}
-          onChange={(e)=>{setPassword(e.target.value)}}/>
-          {showPassword ? <FiEye onClick={toggleShowPassword} /> : <FiEyeOff onClick={toggleShowPassword} />}
-        </div>
-
-      </div>
-
-      <div className='submit-container'>
-        <div className='submit' onClick={login_btn}>
-          SIGN IN
-        </div>
-      </div>
-
-    </div>  
     </div>
-    </div>
+  </div>
+</div>
   );
 }
 

@@ -5,8 +5,7 @@ import LoginPage from './components/pages/preAuth/LoginPage';
 import { BookCopy, ContactRound, Gauge, LayoutDashboard, Shield, SquareCheckBig, Ticket } from 'lucide-react';
 import { Outlet } from 'react-router-dom';
 // choifs
-// kiffy
-
+// kiffyw
 import { UserContext } from './components/UserContext';
 import { useContext, useState } from 'react';
 import Dashboard from './components/pages/postAuth/admin/Dashboard';
@@ -18,6 +17,9 @@ import RegisterPage from './components/pages/preAuth/Register';
 import Cnavbar from './components/pages/postAuth/client/Navbar/Cnavbar';
 import ComexForms from './components/pages/postAuth/admin/ComexForms';
 import Accounts from './components/pages/postAuth/admin/Accounts';
+import Dnavbar from './components/pages/postAuth/client/Navbar/Dnavbar';
+import { Footer } from './components/Footer';
+import HeroPage from './components/pages/preAuth/HeroPage';
 
 // sidebar
 function AdminLayout() {
@@ -37,7 +39,6 @@ function AdminLayout() {
   );
 }
 
-
 function App() {
   const [user, setUser] = useState(null);
 
@@ -46,8 +47,9 @@ function App() {
       <Router>
         <Routes>
           {/* pre Authentication */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<><Dnavbar/><HeroPage /><Footer/></>} />
+          <Route path="/login" element={<><Dnavbar/><LoginPage /><Footer/></>} />
+          <Route path="/register" element={<><Dnavbar/><RegisterPage /><Footer/></>} />
 
           {/* for Admin */}
           <Route path="/admin/*" element={<AdminLayout />}>
@@ -60,10 +62,10 @@ function App() {
           {/* for Client */}
           
           <Route path="/client/*">
-            <Route path="home" element={<><Cnavbar /><Home /></>}/>
-            <Route path="comexforms" element={<><Header /><ComexForms /></>}/>
-            <Route path="events" element={<><Header /><Events /></>}/>
-            <Route path="nstp" element={<><Header /><About /></>}/>
+            <Route path="home" element={<><Cnavbar /><Home /><Footer/></>}/>
+            <Route path="comexforms" element={<><Header /><Footer/><ComexForms /></>}/>
+            <Route path="events" element={<><Header /><Events /><Footer/></>}/>
+            <Route path="nstp" element={<><Header /><About /><Footer/></>}/>
           </Route>
 
           {/* forms */}

@@ -7,6 +7,7 @@ import { UserContext } from "../../../../UserContext";
 // add items here
 const menuItems = [
   { name: 'Home', link: '/client/home' },
+  // { name: 'Events', link: '/client/home' },
   { 
     name: 'About Us', 
     subItems: [
@@ -14,24 +15,9 @@ const menuItems = [
       { name: 'Adopted Barangays', link: '#' },
     ]
   },
-  { 
-    name: 'Tracker', 
-    subItems: [
-      { name: 'Administrators', link: '#' },
-      { name: 'Adopted Barangays', link: '#' },
-    ]
-  },
-  { name: 'Events', link: '/client/home' },
-  { 
-    name: 'NSTP', 
-    subItems: [
-      { name: 'Community Immersion', link: '#' },
-      { name: 'NU MoA NSTP', link: '#' },
-    ]
-  },
 ];
 
-const Cnavbar = () => {
+const Dnavbar = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false); // New state for dropdown
@@ -39,37 +25,9 @@ const Cnavbar = () => {
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        Swal.fire({
-          title: 'Are you sure you want to log out?',
-          showDenyButton: true,
-          confirmButtonText: 'Yes',
-          denyButtonText: 'No',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: 'Logging out...',
-              timer: 1000,
-              timerProgressBar: true,
-              didOpen: () => {
-                Swal.showLoading()
-              }
-            }).then(() => {
-              console.log("Logged out");
-              setUser(null);
-              navigate('/login').then(() => {
-                // Display a success message
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Logged out.',
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-              });
-            });
-          }
-        });
-      };
+    const sign_btn = () => {
+      navigate('/login');
+    };
 
     return(
         <>
@@ -98,9 +56,9 @@ const Cnavbar = () => {
             <img
             className="w-44"
             src="https://i.imgur.com/FKLQLuv.png"
-            />
+          />
           </div>
-          {/* <a className="btn btn-ghost text-xl">COMEX CONNECT</a> */}
+          {/* <a className="btn btn-ghost text-xl">COMsX CONNECT</a> */}
         </div>
 
         <div className="navbar-center hidden lg:flex">
@@ -129,23 +87,7 @@ const Cnavbar = () => {
 
         <div className="navbar-end bg-nucolor1">
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer">Welcome, {user?.email}</div>
-            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-black">
-            <li>
-              <a href="/profile" className="btn btn-ghost flex justify-start items-center block px-2 py-1 hover:bg-gray-200">
-                
-                <CircleUserRound className="w-4 text-nucolor5"/>
-                Profile
-                </a>
-            </li>
-            <li>
-              <a onClick={handleLogout} className="btn btn-ghost flex justify-start items-center block px-2 py-1 hover:bg-gray-200">
-                
-                <LogOut className="w-4 text-nucolor5"/>
-                Sign Out
-                  </a>
-                </li>
-              </ul>
+            <div onClick={sign_btn} role="button" className="text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer">Sign In</div>
           </div>
         </div>
 
@@ -154,4 +96,4 @@ const Cnavbar = () => {
     )
 }
 
-export default Cnavbar;
+export default Dnavbar;

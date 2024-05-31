@@ -44,9 +44,15 @@
 }
 
 .bg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background: linear-gradient(rgba(24, 29, 63, 0.8), rgba(65, 62, 205, 0.8)), url('https://i.ytimg.com/vi/H-SEbyzIMYo/maxresdefault.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    width: 100%;
+    min-height: 100vh;
 }
 
 .container{
