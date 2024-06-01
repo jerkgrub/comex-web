@@ -12,7 +12,7 @@ const HeroPage = () => {
         <section className="text-gray-600 body-font bg-gradient-bg2 dark:bg-slate-900">
     <div className="mx-auto flex md:px-24 md:py-10 md:flex-row flex-col items-center">
         <div className="lg:flex-grow mt-5 md:mt-0 md:w-1.5/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-            <h1 className="text-3xl font-extrabold leading-9 tracking-tight -mb-5 text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-7xl md:leading-normal">
+            <h1 className="text-3xl  font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 sm:mb-0  md:text-7xl md:leading-normal">
                 Unlock your
             </h1>
             <h1 className="text-3xl font-extrabold leading-9 tracking-tight mb-3 text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-7xl md:leading-normal">

@@ -68,7 +68,7 @@ const Dnavbar = () => {
 
             {menuItems.map((item, index) => (
             <div key={index} className="dropdown">
-              <div tabIndex={0} role="button" className="btn btn-ghost text-base" onClick={() => setOpenDropdownIndex(openDropdownIndex === index ? null : index)}>
+              <div tabIndex={0} role="button" className="btn btn-ghost text-base font-normal" onClick={() => setOpenDropdownIndex(openDropdownIndex === index ? null : index)}>
                 {item.name}
                 {item.subItems && (openDropdownIndex === index ? <ChevronDown className="w-4 text-white3" /> : <ChevronDown className="w-4 text-white3" />)}
               </div>
@@ -87,7 +87,7 @@ const Dnavbar = () => {
 
         <div className="navbar-end bg-nucolor1">
           <div className="dropdown dropdown-end">
-            <div onClick={sign_btn} role="button" className="text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer">Sign In</div>
+            <div onClick={sign_btn} role="button" className="font-normal text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer">Sign In</div>
           </div>
         </div>
 

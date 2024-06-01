@@ -1,13 +1,3 @@
-@font-face {
-    font-family: "TitilliumWeb-Regular";
-    src: url('../../../../public/TitilliumWeb-Regular.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: "theboldfont";
-    src: url('../../../../public/theboldfont.ttf') format('truetype');
-}
-
 .logo-container {
     display: flex;
     

@@ -110,7 +110,7 @@ const Cnavbar = () => {
 
             {menuItems.map((item, index) => (
             <div key={index} className="dropdown">
-              <div tabIndex={0} role="button" className="btn btn-ghost text-base" onClick={() => setOpenDropdownIndex(openDropdownIndex === index ? null : index)}>
+              <div tabIndex={0} role="button" className="btn btn-ghost font-normal text-base" onClick={() => setOpenDropdownIndex(openDropdownIndex === index ? null : index)}>
                 {item.name}
                 {item.subItems && (openDropdownIndex === index ? <ChevronDown className="w-4 text-white3" /> : <ChevronDown className="w-4 text-white3" />)}
               </div>
@@ -129,7 +129,7 @@ const Cnavbar = () => {
 
         <div className="navbar-end bg-nucolor1">
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer">Welcome, {user?.email}</div>
+            <div tabIndex={0} role="button" className="font-normal text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer">Welcome, {user?.email}</div>
             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-black">
             <li>
               <a href="/profile" className="btn btn-ghost flex justify-start items-center block px-2 py-1 hover:bg-gray-200">
