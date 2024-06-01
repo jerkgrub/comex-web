@@ -11,9 +11,30 @@
   
   @font-face {
     font-family: 'titillium';
+    src: url('../public/fonts/titillium/TitilliumWeb-SemiBold.ttf') format('truetype');
+    font-weight: 600; /* Bold */
+    font-style: semibold;
+  }
+
+  @font-face {
+    font-family: 'titillium';
     src: url('../public/fonts/titillium/TitilliumWeb-Bold.ttf') format('truetype');
     font-weight: 700; /* Bold */
     font-style: bold;
+  }
+
+  @font-face {
+    font-family: 'titillium';
+    src: url('../public/fonts/titillium/TitilliumWeb-Black.ttf') format('truetype');
+    font-weight: 900; /* Bold */
+    font-style: black;
+  }
+
+  @font-face {
+    font-family: 'titillium';
+    src: url('../public/fonts/titillium/TitilliumWeb-Light.ttf') format('truetype');
+    font-weight: 300; /* Bold */
+    font-style: light;
   }
 
 @layer base {

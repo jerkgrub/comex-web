@@ -6,13 +6,13 @@ import { UserContext } from "../../../../UserContext";
 
 // add items here
 const menuItems = [
-  { name: 'Home', link: '/client/home' },
+  { name: 'Home', link: '/ ' },
   // { name: 'Events', link: '/client/home' },
   { 
     name: 'About Us', 
     subItems: [
-      { name: 'Administrators', link: '#' },
-      { name: 'Adopted Barangays', link: '#' },
+      { name: 'Administrators', link: '/administrators' },
+      { name: 'Adopted Barangays', link: '/adopted-barangays' },
     ]
   },
 ];
@@ -25,6 +25,12 @@ const Dnavbar = () => {
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
     const navigate = useNavigate();
 
+    // for navbar options
+    const item_btn = (link) => {
+      navigate(link);
+    }
+
+    // for sign in
     const sign_btn = () => {
       navigate('/login');
     };
@@ -40,11 +46,11 @@ const Dnavbar = () => {
             <ul tabIndex={0} className="text-black menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               {menuItems.map(item => (
                 <li key={item.name}>
-                  <a>{item.name}</a>
+                  <Link to={item.link}>{item.name}</Link>
                   {item.subItems && (
                     <ul className="p-2">
                       {item.subItems.map(subItem => (
-                        <li key={subItem.name}><a>{subItem.name}</a></li>
+                        <li key={subItem.name}><Link to={subItem.link}>{subItem.name}</Link></li>
                       ))}
                     </ul>
                   )}
@@ -67,21 +73,20 @@ const Dnavbar = () => {
             {/* put map here */}
 
             {menuItems.map((item, index) => (
-            <div key={index} className="dropdown">
-              <div tabIndex={0} role="button" className="btn btn-ghost text-base font-normal" onClick={() => setOpenDropdownIndex(openDropdownIndex === index ? null : index)}>
-                {item.name}
-                {item.subItems && (openDropdownIndex === index ? <ChevronDown className="w-4 text-white3" /> : <ChevronDown className="w-4 text-white3" />)}
+              <div key={index} className="dropdown">
+                <div tabIndex={0} role="button" className="btn btn-ghost text-base font-normal" onClick={() => item.subItems ? setOpenDropdownIndex(openDropdownIndex === index ? null : index) : item_btn(item.link)}>
+                  <Link to={item.link}>{item.name}</Link>
+                  {item.subItems && (openDropdownIndex === index ? <ChevronDown className="w-4 text-white3" /> : <ChevronDown className="w-4 text-white3" />)}
+                </div>
+                {item.subItems && openDropdownIndex === index && (
+                  <ul tabIndex={0} className="text-black dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    {item.subItems.map((subItem, subIndex) => (
+                      <li key={subIndex}><Link to={subItem.link}>{subItem.name}</Link></li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              {item.subItems && openDropdownIndex === index && (
-                <ul tabIndex={0} className="text-black dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                  {item.subItems.map((subItem, subIndex) => (
-                    <li key={subIndex}><a>{subItem.name}</a></li>
-                  ))}
-                </ul>
-              )}
-            </div>
-))}
-
+            ))}
           </ul>
         </div>
 

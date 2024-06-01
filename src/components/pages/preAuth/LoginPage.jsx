@@ -111,7 +111,7 @@ bg-no-repeat
           src="https://i.imgur.com/R3I5T0V.png"
           alt="Your Company"
         /> */}
-        <h2 className="mt-3 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 className="mt-0 text-center text-3xl font-semibold leading-9 tracking-tight text-gray-900">
           Sign In
         </h2>
       </div>
@@ -161,14 +161,14 @@ bg-no-repeat
           <div>
             <button
               onClick={login_btn}
-              className="btn flex w-full font-bold justify-center rounded-md bg-nucolor3 px-3 py-1.5 text-lg font-semibold leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
+              className="btn flex w-full font-semibold justify-center rounded-md bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
             >
               Sign In
             </button>
           </div>
         </form>
 
-        <p className="mt-10 text-center text-bs text-gray-500">
+        <p className="mt-7 text-center text-bs text-gray-500">
           No account yet?{' '}
           <a onClick={register_btn} className="font-semibold leading-6 text-nucolor7 hover:text-blue">
             Register
