@@ -36,6 +36,9 @@ export default {
         "nucolor5" : "#29337d",
         "nucolor6" : "#424c9b",
         "nucolor7" : "#525db3",
+      },
+      screens: {
+        // 'sm': '1263px',
       }
     }
   },

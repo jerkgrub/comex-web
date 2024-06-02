@@ -1,6 +1,6 @@
-import { ChevronDown, ChevronUp, CircleUserRound, LogOut } from "lucide-react";
+import { ChevronDown, CircleUserRound, LogOut } from "lucide-react";
 import { useContext, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2";
 import { UserContext } from "../../../../UserContext";
 
