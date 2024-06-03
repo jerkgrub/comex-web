@@ -180,7 +180,7 @@ bg-no-repeat
                   />
                 </div>
                 <label class="block text-sm">
-                  <p className="mb-2">Register as</p>
+                  <p className="mb-2">Department</p>
                   <select className="font-sans select select-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500">
                     <option disabled selected>
                       What department are you?
