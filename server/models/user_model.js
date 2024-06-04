@@ -26,26 +26,23 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  u_sex: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  u_studnum: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  u_course: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   u_mnum: {
     type: String,
     required: true,
     unique: true,
   },
+  u_dep: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  u_studid: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+
+
   password: {
     type: String,
     required: true,
