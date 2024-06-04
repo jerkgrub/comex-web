@@ -70,7 +70,8 @@ const Dnavbar = () => {
               showConfirmButton: false,
               timer: 1500,
             });
-            setUser({ email: email }); //set here
+            setUser({ 
+              email: email, }); //set here
             navigate("/admin/dashboard");
           } else if (
             response.data.message === "Successfully logged in as student"
