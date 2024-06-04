@@ -56,8 +56,9 @@ const Cnavbar = () => {
               }
             }).then(() => {
               console.log("Logged out");
-              setUser(null);
-              navigate('/login').then(() => {
+              localStorage.removeItem('token');
+              localStorage.removeItem('userFirstName');
+              navigate('/').then(() => {
                 // Display a success message
                 Swal.fire({
                   icon: 'success',
@@ -129,7 +130,7 @@ const Cnavbar = () => {
 
         <div className="navbar-end bg-nucolor1">
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="font-normal text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer">Welcome, {user?.email}</div>
+            <div tabIndex={0} role="button" className="font-normal text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer">Welcome, {localStorage.getItem('userFirstName')}</div>
             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-black">
             <li>
               <a href="/profile" className="btn btn-ghost flex justify-start items-center block px-2 py-1 hover:bg-gray-200">

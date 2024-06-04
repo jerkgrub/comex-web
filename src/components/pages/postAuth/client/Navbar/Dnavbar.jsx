@@ -61,6 +61,11 @@ const Dnavbar = () => {
           usertype: usertype.toLowerCase(),
         })
         .then((response) => {
+          // Store the JWT in local storage
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('userFirstName', response.data.user.u_fname);
+          console.log("token recieved");
+  
           if (response.data.message === "Successfully logged in as admin") {
             Swal.fire({
               target: document.getElementById("my_modal_1"),
@@ -77,7 +82,7 @@ const Dnavbar = () => {
             response.data.message === "Successfully logged in as student"
           ) {
             Swal.fire({
-      scrollbarPadding: false,
+              scrollbarPadding: false,
               icon: "success",
               title: "Logged in as student!",
               showConfirmButton: false,
@@ -88,7 +93,7 @@ const Dnavbar = () => {
           } else {
             Swal.fire({
               target: document.getElementById("my_modal_1"),
-      scrollbarPadding: false,
+              scrollbarPadding: false,
               icon: "error",
               title: "Invalid login attempt",
               showConfirmButton: false,
@@ -99,7 +104,7 @@ const Dnavbar = () => {
         .catch((error) => {
           Swal.fire({
             target: document.getElementById("my_modal_1"),
-      scrollbarPadding: false,
+            scrollbarPadding: false,
             icon: "error",
             title: "Something went wrong",
             text: error.message,

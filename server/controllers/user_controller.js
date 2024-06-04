@@ -1,6 +1,7 @@
 const User = require("../models/user_model");
 const bcrypt = require("bcryptjs");
 
+
 // CREATE
 const newAcc = (req, res) => {
   User.create(req.body)
@@ -67,12 +68,13 @@ const login = (req, res) => {
           user.password
         );
         if (correctPassword) {
+          const token = user.generateAuthToken();
           if (user.usertype === "admin") {
-            res.json({ message: "Successfully logged in as admin" });
+            res.json({ message: "Successfully logged in as admin", token: token, user: { u_fname: user.u_fname } });
           } else if (user.usertype === "student") {
-            res.json({ message: "Successfully logged in as student" });
+            res.json({ message: "Successfully logged in as student", token: token, user: { u_fname: user.u_fname } });
           } else {
-            res.json({ message: "Role not recognized" });
+            res.json({ message: "Role not recognized", token: token, user: { u_fname: user.u_fname } });
           }
         } else {
           res.json({ message: "invalid login attempt" });

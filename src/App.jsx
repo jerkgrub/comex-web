@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Sidebar, { SidebarItem } from './components/pages/postAuth/admin/Sidebar';
 import { About, Home } from './components/pages/postAuth/client';
 import LoginPage from './components/pages/preAuth/LoginPage';
@@ -20,6 +20,22 @@ import Accounts from './components/pages/postAuth/admin/Accounts';
 import Dnavbar from './components/pages/postAuth/client/Navbar/Dnavbar';
 import { Footer } from './components/Footer';
 import HeroPage from './components/pages/preAuth/HeroPage';
+import postAuthRedirect from './components/postAuthRedirect';
+
+
+
+// protected hero page
+function HeroPageWithNavbarAndFooter() {
+  return (
+    <>
+      <Dnavbar/>
+      <HeroPage />
+      <Footer/>
+    </>
+  );
+}
+
+const ProtectedHeroPage = postAuthRedirect(HeroPageWithNavbarAndFooter);
 
 // sidebar
 function AdminLayout() {
@@ -47,26 +63,26 @@ function App() {
       <Router>
         <Routes>
           {/* pre Authentication */}
-          <Route path="/" element={<><Dnavbar/><HeroPage /><Footer/></>} />
+          <Route path="/" element={<ProtectedHeroPage/>} />
           <Route path="/login" element={<><Dnavbar/><LoginPage /><Footer/></>} />
           <Route path="/register" element={<><Dnavbar/><RegisterPage /><Footer/></>} />
 
           {/* for Admin */}
-          <Route path="/admin/*" element={<AdminLayout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="events" element={<Events />} />
-            <Route path="comexforms" element={<ComexForms />} />
-            <Route path="accounts" element={<Accounts />} />
-          </Route>
+            <Route path="/admin/*" element={<AdminLayout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="events" element={<Events />} />
+              <Route path="comexforms" element={<ComexForms />} />
+              <Route path="accounts" element={<Accounts />} />
+            </Route>
 
-          {/* for Client */}
-          
-          <Route path="/client/*">
-            <Route path="home" element={<><Cnavbar /><Home /><Footer/></>}/>
-            <Route path="comexforms" element={<><Header /><Footer/><ComexForms /></>}/>
-            <Route path="events" element={<><Header /><Events /><Footer/></>}/>
-            <Route path="nstp" element={<><Header /><About /><Footer/></>}/>
-          </Route>
+            {/* for Client */}
+            
+            <Route path="/client/*">
+              <Route path="home" element={<><Cnavbar /><Home /><Footer/></>}/>
+              <Route path="comexforms" element={<><Header /><Footer/><ComexForms /></>}/>
+              <Route path="events" element={<><Header /><Events /><Footer/></>}/>
+              <Route path="nstp" element={<><Header /><About /><Footer/></>}/>
+            </Route>
 
           {/* forms */}
           <Route path="/comform" element={<CommunityEngagementForm />} />

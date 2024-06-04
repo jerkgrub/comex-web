@@ -5,7 +5,7 @@ const HeroPage = () => {
     const navigate = useNavigate();
 
     const start_btn = () =>{
-        navigate('/login');
+        // navigate('/login');
     };
 
     return (

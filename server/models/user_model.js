@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
+
 const UserSchema = new mongoose.Schema({
   usertype: {
     type: String,
@@ -64,6 +66,15 @@ UserSchema.pre("save", function (next) {
   this.usertype = this.usertype.toLowerCase();
   next();
 });
+
+UserSchema.methods.generateAuthToken = function() {
+  const token = jwt.sign(
+    { _id: this._id, usertype: this.usertype },
+    'COMEX2024',
+    { expiresIn: '1h' }  // Token expires in 1 hour
+  );
+  return token;
+}
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;
