@@ -73,13 +73,12 @@ const Dnavbar = () => {
             setUser({ email: email }); //set here
             navigate("/admin/dashboard");
           } else if (
-            response.data.message === "Successfully logged in as client"
+            response.data.message === "Successfully logged in as student"
           ) {
             Swal.fire({
-              target: document.getElementById("my_modal_1"),
       scrollbarPadding: false,
               icon: "success",
-              title: "Logged in as client!",
+              title: "Logged in as student!",
               showConfirmButton: false,
               timer: 1500,
             });
@@ -138,7 +137,7 @@ const Dnavbar = () => {
               {menuItems.map((item) => (
                 <li key={item.name}>
                   <Link to={item.link}>{item.name}</Link>
-                  {item.subItems && (
+                  {item.subItems && ( 
                     <ul className="p-2">
                       {item.subItems.map((subItem) => (
                         <li key={subItem.name}>
