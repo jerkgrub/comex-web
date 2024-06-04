@@ -1,49 +1,68 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const UserSchema = new mongoose.Schema({
-
-  fname: {
+  usertype: {
     type: String,
+    enum: ["student", "admin", "faculty"], //different types
     required: true,
-    unique: true
   },
-  lname: {
+  u_fname: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
-  mnumber: {
+  u_mname: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
-  email: {
+  u_lname: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+  },
+  u_email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  u_sex: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  u_studnum: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  u_course: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  u_mnum: {
+    type: String,
+    required: true,
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
-  usertype: {
-    type: String,
-    enum: ['client', 'admin', ],
-    required: true
-  }
 });
 
-UserSchema.pre('save', function(next) {
-  if (this.isModified('password')) {
+UserSchema.pre("save", function (next) {
+  if (this.isModified("password")) {
     this.password = bcrypt.hashSync(this.password, 10);
   }
   next();
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre("save", function (next) {
   this.usertype = this.usertype.toLowerCase();
   next();
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
 module.exports = User;
