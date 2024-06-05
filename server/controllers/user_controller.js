@@ -39,9 +39,10 @@ const findOneUser = (req, res) => {
     });
 };
 
+
 // DELETE
 const deleteUser = (req, res) => {
-  User.findByIdAndRemove(req.params.id)
+  User.findOneAndDelete({ _id: req.params.id })
       .then((deletedUser) => {
           if (deletedUser) {
               res.json({ message: 'User successfully deleted', deletedUser })
@@ -51,6 +52,18 @@ const deleteUser = (req, res) => {
       })
       .catch((err) => {
           res.status(500).json({ message: 'Something went wrong', error: err })
+      });
+}
+
+// UPDATE
+const updateUser = (req, res) => {
+  Note.findOneAndUpdate({n_title:req.params.ntitlex},req.body, 
+      { new: true, runValidators: true })
+      .then((updatedNote) => {
+          res.json({ updatedNote: updatedNote,status:"successfully Updated the Note" })
+      })
+      .catch((err) => {
+          res.json({ message: 'Something went wrong', error: err })
       });
 }
 
@@ -93,6 +106,8 @@ module.exports = {
 
   findAllUser, //read
   findOneUser, //read
+
+  updateUser, //update
   
   deleteUser, //delete
 

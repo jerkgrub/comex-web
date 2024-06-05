@@ -7,5 +7,6 @@ router.post('/api/acc/new', userController.newAcc);
 router.post('/api/login', userController.login);
 router.get('/api/acc/all', userController.findAllUser);
 router.get('/api/acc/:id', userController.findOneUser);
+router.delete('/api/acc/delete/:id', userController.deleteUser); //DELETE
 
 module.exports = router;
