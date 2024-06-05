@@ -28,7 +28,6 @@ const NoteSchema = new mongoose.Schema({
         type: String
     },
 
-
     // column 1
     c1r1: {
     type: String

@@ -2,7 +2,7 @@ const User = require("../models/user_model");
 const bcrypt = require("bcryptjs");
 
 
-// CREATE
+// 1. Create
 const newAcc = (req, res) => {
   User.create(req.body)
     .then((newAcc) => {
@@ -13,7 +13,7 @@ const newAcc = (req, res) => {
     });
 };
 
-// GET ALL
+// 2. Read
 const findAllUser = (req, res) => {
   User.find()
     .then((allDaUser) => {
@@ -23,8 +23,7 @@ const findAllUser = (req, res) => {
       res.json({ message: "Something went wrong", error: err });
     });
 };
-
-// Find by ID
+// FIND BY ID
 const findOneUser = (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
@@ -39,8 +38,23 @@ const findOneUser = (req, res) => {
     });
 };
 
+// 3. Update
+const updateUser = (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params.id }, 
+    req.body, 
+    { new: true, runValidators: true }
+  )
+  .then((updatedUser) => {
+    res.json({ updatedUser: updatedUser, status: "successfully Updated the User" });
+  })
+  .catch((err) => {
+    res.json({ message: 'Something went wrong', error: err });
+  });
+}
 
-// DELETE
+
+// 4. Delete
 const deleteUser = (req, res) => {
   User.findOneAndDelete({ _id: req.params.id })
       .then((deletedUser) => {
@@ -52,18 +66,6 @@ const deleteUser = (req, res) => {
       })
       .catch((err) => {
           res.status(500).json({ message: 'Something went wrong', error: err })
-      });
-}
-
-// UPDATE
-const updateUser = (req, res) => {
-  Note.findOneAndUpdate({n_title:req.params.ntitlex},req.body, 
-      { new: true, runValidators: true })
-      .then((updatedNote) => {
-          res.json({ updatedNote: updatedNote,status:"successfully Updated the Note" })
-      })
-      .catch((err) => {
-          res.json({ message: 'Something went wrong', error: err })
       });
 }
 

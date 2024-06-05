@@ -34,12 +34,71 @@ const Dnavbar = () => {
   const [usertype, setUsertype] = useState("Client");
 
   // register data
+  const [r_usertype, setRusertype] = useState("");
+  const [r_fname, setRfname] = useState("");
+  const [r_mname, setRmname] = useState("");
+  const [r_lname, setRlname] = useState("");
+  const [r_mnum, setRmnum] = useState("");
+  const [r_dep, setRdep] = useState("");
+  const [r_studnum, setRstudnum] = useState("")
+  const [r_datehired, setRdatehired] = useState("");
+  const [r_email, setRemail] = useState("");
+  const [r_password, setRpassword] = useState("");
 
+  const addUser = () => {
+    event.preventDefault();
+    const newAcc = {
+      usertype: r_usertype,
+      u_fname: r_fname,
+      u_mname: r_mname,
+      u_lname: r_lname,
+      u_mnum: r_mnum,
+      u_dep: r_dep,
+      u_studnum: r_studnum,
+      u_datehired: r_datehired,
+      email: r_email,
+      password: r_password,
+    };
+  
+    axios
+  .post('http://localhost:8000/api/acc/new', newAcc)
+  .then(response => {
+    console.log(response.data);
+    if (response.data.error) {
+      Swal.fire({
+        title: 'Error!',
+        text: response.data.error,
+        icon: 'error',
+        target: document.getElementById('my_modal_2')
+      })
+    } else {
+      Swal.fire({
+        title: 'Success!',
+        text: 'Account created successfully',
+        icon: 'success',
+      })
+      document.getElementById('my_modal_2').close();
+    }
+  })
+  .catch(error => {
+    console.error('There was an error!', error);
+    Swal.fire({
+      title: 'Error!',
+      text: 'There was an error creating the account.',
+      icon: 'error',
+      target: document.getElementById('my_modal_2')
+    })
+  });
+  }
+
+  
 
   // for navbar options
   const item_btn = (link) => {
     navigate(link);
   };
+
+  // 
 
 
   const login_btn = (event) => {
@@ -366,14 +425,14 @@ const Dnavbar = () => {
                   <div class="grid sm:grid-cols-2 gap-y-5 gap-x-5">
                     <label class="block text-sm">
                       <p className="mb-2">Register As</p>
-                      <select className="font-sans select select-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500">
+                      <select defaultValue={'What are you?'} onChange={(e)=>{setRusertype(e.target.value)}} className="font-sans select select-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500">
                         <option disabled selected>
                           What are you?
                         </option>
-                        <option>Student</option>
-                        <option>Teacher</option>
-                        <option>ASP (Admin Support Personnel)</option>
-                        <option>NTP (Non Teaching Personnel)</option>
+                        <option value={"student"}>Student</option>
+                        <option value={"teacher"}>Teacher</option>
+                        <option value={"asp"}>ASP (Admin Support Personnel)</option>
+                        <option value={"ntp"}>NTP (Non Teaching Personnel)</option>
                       </select>
                     </label>
   
@@ -382,16 +441,18 @@ const Dnavbar = () => {
                       <input
                         name="lname"
                         type="text"
-                        class="input input-bordered  w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
+                        onChange={(e)=>{setRmname(e.target.value)}}
+                        className="input input-bordered  w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
                         placeholder="Enter last name"
                       />
                     </div>
 
                     <div>
-                      <label class="text-sm mb-2 block">First Name</label>
+                      <label className="text-sm mb-2 block">First Name</label>
                       <input
                         name="name"
                         type="text"
+                        onChange={(e)=>{setRfname(e.target.value)}}
                         class="input input-bordered  w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
                         placeholder="Enter name"
                       />
@@ -402,6 +463,7 @@ const Dnavbar = () => {
                       <input
                         name="lname"
                         type="text"
+                        onChange={(e)=>{setRlname(e.target.value)}}
                         class="input input-bordered  w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
                         placeholder="Enter last name"
                       />
@@ -412,6 +474,7 @@ const Dnavbar = () => {
                       <input
                         name="email"
                         type="text"
+                        onChange={(e)=>{setRemail(e.target.value)}}
                         class="input input-bordered  w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
                         placeholder="Enter email"
                       />
@@ -421,13 +484,14 @@ const Dnavbar = () => {
                       <input
                         name="number"
                         type="number"
+                        onChange={(e)=>{setRmnum(e.target.value)}}
                         class="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
                         placeholder="Enter mobile number"
                       />
                     </div>
                     <label class="block text-sm">
                       <p className="mb-2">Department</p>
-                      <select className="font-sans select select-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500">
+                      <select onChange={(e)=>{setRdep(e.target.value)}} className="font-sans select select-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500">
                         <option disabled selected>
                           Choose Department
                         </option>
@@ -462,23 +526,25 @@ const Dnavbar = () => {
                     <div>
                       <label class="text-sm mb-2 block">Student Number</label>
                         <input
-                          name="number"
-                          type="number"
+                          name="studnum"
+                          type="string"
+                          onChange={(e)=>{setRstudnum(e.target.value)}}
                           class="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
                           placeholder="Enter student number"
                         />
                     </div>
 
                     {/* date hired */}
-                    {/* <div>
+                    <div>
                       <label class="text-sm mb-2 block">Date Hired</label>
                       <input
                         name="dateHired"
                         type="date"
+                        onChange={(e)=>{setRdatehired(e.target.value)}}
                         class="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
                         placeholder="Enter date hired"
                       />
-                    </div> */}
+                    </div>
 
                     {/* password */}
                     <div>
@@ -486,6 +552,7 @@ const Dnavbar = () => {
                       <input
                         name="password"
                         type="password"
+                        onChange={(e)=>{setRpassword(e.target.value)}}
                         class="input input-bordered  w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
                         placeholder="Enter password"
                       />
@@ -516,7 +583,7 @@ const Dnavbar = () => {
 
                   <div class="mt-4">
                     <button
-                      onClick={login_btn}
+                      onClick={addUser}
                       className="btn flex w-full font-semibold justify-center rounded-md bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
                     >
                       Register
