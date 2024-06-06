@@ -1,24 +1,32 @@
 import axios from "axios";
-import { CirclePlus, PencilIcon, Save, Trash2 } from "lucide-react";
+import {
+  BookUser,
+  CirclePlus,
+  PencilIcon,
+  Plus,
+  Save,
+  Trash2,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [attendees, setAttendees] = useState([]);
   const [newEvent, setNewEvent] = useState({
-    event_title: '',
-    event_organizer: '',
-    event_description: '',
-    event_image: '',
-    event_date: '',
-    event_time: ''
+    event_title: "",
+    event_organizer: "",
+    event_description: "",
+    event_image: "",
+    event_date: "",
+    event_time: "",
   });
   const [errors, setErrors] = useState({});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     fetch("http://localhost:8000/api/event/all")
       .then((response) => response.json())
@@ -42,8 +50,10 @@ const Events = () => {
     fetch(`http://localhost:8000/api/event/${eventId}`)
       .then((response) => response.json())
       .then((data) => {
-        const formattedDate = new Date(data.Event.event_date).toISOString().split('T')[0];
-        setSelectedEvent({...data.Event, event_date: formattedDate});
+        const formattedDate = new Date(data.Event.event_date)
+          .toISOString()
+          .split("T")[0];
+        setSelectedEvent({ ...data.Event, event_date: formattedDate });
         document.getElementById("modal_edit").showModal();
       })
       .catch((error) => {
@@ -63,9 +73,7 @@ const Events = () => {
         document.getElementById("modal_edit").close();
         setEvents((prevEvents) =>
           prevEvents.map((event) =>
-            event._id === selectedEvent._id
-              ? response.data.updatedEvent
-              : event
+            event._id === selectedEvent._id ? response.data.updatedEvent : event
           )
         );
         setSelectedEvent(null);
@@ -95,17 +103,17 @@ const Events = () => {
     e.preventDefault();
     if (validateForm()) {
       axios
-        .post('http://localhost:8000/api/event/new', newEvent)
+        .post("http://localhost:8000/api/event/new", newEvent)
         .then((response) => {
           console.log(response.data);
           setEvents([...events, response.data.newEvent]);
           setNewEvent({
-            event_title: '',
-            event_organizer: '',
-            event_description: '',
-            event_image: '',
-            event_date: '',
-            event_time: ''
+            event_title: "",
+            event_organizer: "",
+            event_description: "",
+            event_image: "",
+            event_date: "",
+            event_time: "",
           });
           setErrors({});
           document.getElementById("modal_create").close();
@@ -118,21 +126,65 @@ const Events = () => {
 
   const validateForm = () => {
     let formErrors = {};
-    if (!newEvent.event_title) formErrors.event_title = "Event title is required";
-    if (!newEvent.event_organizer) formErrors.event_organizer = "Event organizer is required";
-    if (!newEvent.event_description) formErrors.event_description = "Event description is required";
-    if (!newEvent.event_image) formErrors.event_image = "Event image is required";
+    if (!newEvent.event_title)
+      formErrors.event_title = "Event title is required";
+    if (!newEvent.event_organizer)
+      formErrors.event_organizer = "Event organizer is required";
+    if (!newEvent.event_description)
+      formErrors.event_description = "Event description is required";
+    if (!newEvent.event_image)
+      formErrors.event_image = "Event image is required";
     if (!newEvent.event_date) formErrors.event_date = "Event date is required";
     if (!newEvent.event_time) formErrors.event_time = "Event time is required";
-    
+
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
   };
 
   const formatDate = (dateString) => {
-    const options = { month: 'long', day: 'numeric', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+    const options = { month: "long", day: "numeric", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
   };
+
+  const handleViewAttendeesClick = (eventId) => {
+    setSelectedEvent((prevEvent) => ({ ...prevEvent, _id: eventId })); // Set the selectedEvent ID
+    fetch(`http://localhost:8000/api/event/get/attendee/${eventId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setAttendees(data.attendees || []); // Change to match backend response
+        document.getElementById("modal_attendees").showModal();
+      })
+      .catch((error) => {
+        console.error("Error fetching attendees data:", error);
+      });
+  };
+
+  const handleDeleteAttendee = (eventId, email) => {
+    Swal.fire({
+      target: document.getElementById("modal_attendees"),
+      title: 'Are you sure?',
+      text: 'Do you really want to remove this attendee?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:8000/api/event/attendee/${eventId}/${email}`)
+          .then((response) => {
+            setAttendees((prevAttendees) =>
+              prevAttendees.filter((attendee) => attendee.at_email !== email)
+            );
+          })
+          .catch((error) => {
+            console.error('Error deleting attendee:', error);
+            Swal.fire('Error!', 'There was an error deleting the attendee.', 'error');
+          });
+      }
+    });
+  };
+  
 
   return (
     <>
@@ -142,20 +194,22 @@ const Events = () => {
 
           <div className="form-control ">
             <div className="input-group flex gap-3">
-                {/* search */}
+              {/* search */}
               <input
-                  type="text"
-                  placeholder="Search…"
-                  className="input input-bordered mb-7 w-full hover:shadow-inner shadow-sm"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                type="text"
+                placeholder="Search…"
+                className="input input-bordered mb-7 w-full hover:shadow-inner shadow-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               {/* create event button */}
               <div
-                  onClick={() => document.getElementById("modal_create").showModal()}
-                  className="btn mb-7 w-max hover:shadow-inner shadow-sm bg-nucolor3 shadow-md hover:bg-nucolor2 hover:shadow-md"
+                onClick={() =>
+                  document.getElementById("modal_create").showModal()
+                }
+                className="btn mb-7 w-max hover:shadow-inner shadow-sm bg-nucolor3 shadow-md hover:bg-nucolor2 hover:shadow-md"
               >
-                <CirclePlus className="w-5"/>
+                <CirclePlus className="w-5" />
                 Create Event
               </div>
             </div>
@@ -170,6 +224,7 @@ const Events = () => {
                     <th>Event Title</th>
                     <th>Event Organizer</th>
                     <th>Event Date</th>
+                    <th>Attendees</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -183,18 +238,27 @@ const Events = () => {
                         <td>{formatDate(event.event_date)}</td>
                         <td>
                           <button
+                            onClick={() => handleViewAttendeesClick(event._id)}
+                            className="btn hover:shadow-inner bg-white hover:bg-gray-100"
+                          >
+                            <BookUser className="w-4" />
+                            View Attendees
+                          </button>
+                        </td>
+                        <td>
+                          <button
                             onClick={() => handleEditClick(event._id)}
                             className="btn hover:shadow-inner bg-white hover:bg-gray-100"
                           >
+                            <PencilIcon className="w-4" />
                             Edit Event
-                            <PencilIcon className="w-4"/>
                           </button>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5">No events found</td>
+                      <td colSpan="6">No events found</td>
                     </tr>
                   )}
                 </tbody>
@@ -212,284 +276,300 @@ const Events = () => {
             </form>
 
             <div className="max-w-4xl mx-auto text-[#333] p-3">
-              <div className="text-center mb-8">
-                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                  <div className=""></div>
-                  <h2 className="-mt-4 text-center text-3xl font-semibold leading-9 tracking-tight text-gray-900">
-                    Edit Event
-                  </h2>
-                </div>
+              <div className="text-4xl font-semibold text-center mb-7">
+                Edit Event
               </div>
-              {selectedEvent && (
-                <form onSubmit={updateEvent}>
-                  <div className="grid sm:grid-cols-2 gap-y-5 gap-x-5">
-                    <div>
-                      <label className="text-sm mb-2 block">Event Title</label>
-                      <input
-                        name="title"
-                        type="text"
-                        value={selectedEvent.event_title}
-                        onChange={(e) =>
-                          setSelectedEvent({
-                            ...selectedEvent,
-                            event_title: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter event title"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-sm mb-2 block">Event Organizer</label>
-                      <input
-                        name="organizer"
-                        type="text"
-                        value={selectedEvent.event_organizer}
-                        onChange={(e) =>
-                          setSelectedEvent({
-                            ...selectedEvent,
-                            event_organizer: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter event organizer"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-sm mb-2 block">Event Description</label>
-                      <input
-                        name="description"
-                        type="text"
-                        value={selectedEvent.event_description}
-                        onChange={(e) =>
-                          setSelectedEvent({
-                            ...selectedEvent,
-                            event_description: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter event description"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-sm mb-2 block">Event Image</label>
-                      <input
-                        name="image"
-                        type="text"
-                        value={selectedEvent.event_image}
-                        onChange={(e) =>
-                          setSelectedEvent({
-                            ...selectedEvent,
-                            event_image: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter event image URL"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-sm mb-2 block">Event Date</label>
-                      <input
-                        name="date"
-                        type="date"
-                        value={selectedEvent.event_date}
-                        onChange={(e) =>
-                          setSelectedEvent({
-                            ...selectedEvent,
-                            event_date: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter event date"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-sm mb-2 block">Event Time</label>
-                      <input
-                        name="time"
-                        type="time"
-                        value={selectedEvent.event_time}
-                        onChange={(e) =>
-                          setSelectedEvent({
-                            ...selectedEvent,
-                            event_time: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter event time"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mt-7 flex flex-row">
-                    <button
-                      type="submit"
-                      className="btn flex w-max font-semibold justify-end rounded-md hover:shadow-inner bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
-                    >
-                      Save Edits
-                      <Save className="w-5"/>
-                    </button>
-
-                    <button
-                      onClick={deleteEvent}
-                      className=" ml-auto btn flex w-max font-semibold justify-center rounded-md bg-red-700 hover:bg-red-400 px-3 py-1.5 text-lg leading-6 text-gray-100 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
-                    >
-                      Delete Event
-                      <Trash2 className="w-5"/>
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
-        </dialog>
-
-        <dialog id="modal_create" className="modal transition-none text-black">
-          <div className="modal-box">
-            <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                ✕
-              </button>
-            </form>
-
-            <div className="max-w-4xl mx-auto text-[#333] p-3">
-              <div className="text-center mb-8">
-                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                  <div className=""></div>
-                  <h2 className="-mt-4 text-center text-3xl font-semibold leading-9 tracking-tight text-gray-900">
-                    Create Event
-                  </h2>
-                </div>
-              </div>
-              <form onSubmit={handleCreateEvent}>
-                <div className="grid sm:grid-cols-2 gap-y-5 gap-x-5">
-                  <div>
-                    <label className="text-sm mb-2 block">Event Title</label>
-                    <input
-                      name="title"
-                      type="text"
-                      value={newEvent.event_title}
-                      onChange={(e) =>
-                        setNewEvent({
-                          ...newEvent,
-                          event_title: e.target.value,
-                        })
-                      }
-                      className={`input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500 ${errors.event_title ? 'border-red-500' : ''}`}
-                      placeholder="Enter event title"
-                    />
-                    {errors.event_title && <p className="text-red-500 text-xs mt-1">{errors.event_title}</p>}
-                  </div>
-
-                  <div>
-                    <label className="text-sm mb-2 block">Event Organizer</label>
-                    <input
-                      name="organizer"
-                      type="text"
-                      value={newEvent.event_organizer}
-                      onChange={(e) =>
-                        setNewEvent({
-                          ...newEvent,
-                          event_organizer: e.target.value,
-                        })
-                      }
-                      className={`input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500 ${errors.event_organizer ? 'border-red-500' : ''}`}
-                      placeholder="Enter event organizer"
-                    />
-                    {errors.event_organizer && <p className="text-red-500 text-xs mt-1">{errors.event_organizer}</p>}
-                  </div>
-
-                  <div>
-                    <label className="text-sm mb-2 block">Event Description</label>
-                    <input
-                      name="description"
-                      type="text"
-                      value={newEvent.event_description}
-                      onChange={(e) =>
-                        setNewEvent({
-                          ...newEvent,
-                          event_description: e.target.value,
-                        })
-                      }
-                      className={`input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500 ${errors.event_description ? 'border-red-500' : ''}`}
-                      placeholder="Enter event description"
-                    />
-                    {errors.event_description && <p className="text-red-500 text-xs mt-1">{errors.event_description}</p>}
-                  </div>
-
-                  <div>
-                    <label className="text-sm mb-2 block">Event Image</label>
-                    <input
-                      name="image"
-                      type="text"
-                      value={newEvent.event_image}
-                      onChange={(e) =>
-                        setNewEvent({
-                          ...newEvent,
-                          event_image: e.target.value,
-                        })
-                      }
-                      className={`input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500 ${errors.event_image ? 'border-red-500' : ''}`}
-                      placeholder="Enter event image URL"
-                    />
-                    {errors.event_image && <p className="text-red-500 text-xs mt-1">{errors.event_image}</p>}
-                  </div>
-
-                  <div>
-                    <label className="text-sm mb-2 block">Event Date</label>
-                    <input
-                      name="date"
-                      type="date"
-                      value={newEvent.event_date}
-                      onChange={(e) =>
-                        setNewEvent({
-                          ...newEvent,
-                          event_date: e.target.value,
-                        })
-                      }
-                      className={`input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500 ${errors.event_date ? 'border-red-500' : ''}`}
-                      placeholder="Enter event date"
-                    />
-                    {errors.event_date && <p className="text-red-500 text-xs mt-1">{errors.event_date}</p>}
-                  </div>
-
-                  <div>
-                    <label className="text-sm mb-2 block">Event Time</label>
-                    <input
-                      name="time"
-                      type="time"
-                      value={newEvent.event_time}
-                      onChange={(e) =>
-                        setNewEvent({
-                          ...newEvent,
-                          event_time: e.target.value,
-                        })
-                      }
-                      className={`input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500 ${errors.event_time ? 'border-red-500' : ''}`}
-                      placeholder="Enter event time"
-                    />
-                    {errors.event_time && <p className="text-red-500 text-xs mt-1">{errors.event_time}</p>}
-                  </div>
+              <form className="space-y-4">
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Event Title</label>
+                  <input
+                    className="input w-full p-2 border border-gray-300 "
+                    type="text"
+                    name="event_title"
+                    value={selectedEvent?.event_title || ""}
+                    onChange={(e) =>
+                      setSelectedEvent({
+                        ...selectedEvent,
+                        event_title: e.target.value,
+                      })
+                    }
+                  />
                 </div>
 
-                <div className="mt-7 flex flex-row">
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Organizer</label>
+                  <input
+                    className="input  w-full p-2 border border-gray-300 "
+                    type="text"
+                    name="event_organizer"
+                    value={selectedEvent?.event_organizer || ""}
+                    onChange={(e) =>
+                      setSelectedEvent({
+                        ...selectedEvent,
+                        event_organizer: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Description</label>
+                  <textarea
+                    className="textarea text-base w-full p-2 border border-gray-300 "
+                    name="event_description"
+                    value={selectedEvent?.event_description || ""}
+                    onChange={(e) =>
+                      setSelectedEvent({
+                        ...selectedEvent,
+                        event_description: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold ">Image URL</label>
+                  <input
+                    className="input w-full p-2 border border-gray-300 "
+                    type="text"
+                    name="event_image"
+                    value={selectedEvent?.event_image || ""}
+                    onChange={(e) =>
+                      setSelectedEvent({
+                        ...selectedEvent,
+                        event_image: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Event Date</label>
+                  <input
+                    className="w-full p-2 border border-gray-300 "
+                    type="date"
+                    name="event_date"
+                    value={selectedEvent?.event_date || ""}
+                    onChange={(e) =>
+                      setSelectedEvent({
+                        ...selectedEvent,
+                        event_date: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Event Time</label>
+                  <input
+                    className="w-full p-2 border border-gray-300 "
+                    type="time"
+                    name="event_time"
+                    value={selectedEvent?.event_time || ""}
+                    onChange={(e) =>
+                      setSelectedEvent({
+                        ...selectedEvent,
+                        event_time: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex justify-end space-x-2">
                   <button
-                    type="submit"
-                    className="btn flex w-max font-semibold justify-end rounded-md hover:shadow-inner bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
+                    className="btn text-black hover:text-gray-300 bg-nucolor3 hover:bg-nucolor2 hover:bg-blue-800"
+                    onClick={updateEvent}
                   >
-                    Create Event
-                    <Save className="w-5"/>
+                    <Save className="w-4" />
+                    Save Changes
+                  </button>
+                  <button
+                    className="btn bg-red-700 hover:bg-red-300 text-white"
+                    onClick={deleteEvent}
+                  >
+                    <Trash2 className="w-4" />
+                    Delete Event
                   </button>
                 </div>
               </form>
             </div>
           </div>
         </dialog>
+
+        <dialog id="modal_create" className="modal transition-none text-black">
+  <div className="modal-box">
+    <form method="dialog">
+      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" onClick={() => document.getElementById("modal_create").close()}>
+        ✕
+      </button>
+    </form>
+
+    <div className="max-w-4xl mx-auto text-[#333] p-3">
+      <div className="text-4xl font-semibold text-center mb-7">
+        Create Event
+      </div>
+      <form className="space-y-4" onSubmit={handleCreateEvent}>
+        <div className="flex flex-col space-y-1">
+          <label className="text-sm font-semibold">Event Title</label>
+          <input
+            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_title ? 'border-red-500' : ''}`}
+            type="text"
+            name="event_title"
+            value={newEvent.event_title}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, event_title: e.target.value })
+            }
+            placeholder="Enter event title"
+          />
+          {errors.event_title && (
+            <p className="text-red-500 text-xs mt-1">{errors.event_title}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col space-y-1">
+          <label className="text-sm font-semibold">Organizer</label>
+          <input
+            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_organizer ? 'border-red-500' : ''}`}
+            type="text"
+            name="event_organizer"
+            value={newEvent.event_organizer}
+            onChange={(e) =>
+              setNewEvent({
+                ...newEvent,
+                event_organizer: e.target.value,
+              })
+            }
+            placeholder="Enter organizer name"
+          />
+          {errors.event_organizer && (
+            <p className="text-red-500 text-xs mt-1">{errors.event_organizer}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col space-y-1">
+          <label className="text-sm font-semibold">Description</label>
+          <textarea
+            className={`textarea w-full p-2 border border-gray-300 rounded-md ${errors.event_description ? 'border-red-500' : ''}`}
+            name="event_description"
+            value={newEvent.event_description}
+            onChange={(e) =>
+              setNewEvent({
+                ...newEvent,
+                event_description: e.target.value,
+              })
+            }
+            placeholder="Enter event description"
+          />
+          {errors.event_description && (
+            <p className="text-red-500 text-xs mt-1">{errors.event_description}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col space-y-1">
+          <label className="text-sm font-semibold">Image URL</label>
+          <input
+            
+            type="text"
+            name="event_image"
+            value={newEvent.event_image}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, event_image: e.target.value })
+            }
+            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_image ? 'border-red-500' : ''}`}
+            placeholder="Enter image URL"
+          />
+          {errors.event_image && (
+            <p className="text-red-500 text-xs mt-1">{errors.event_image}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col space-y-1">
+          <label className="text-sm font-semibold">Event Date</label>
+          <input
+            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_date ? 'border-red-500' : ''}`}
+            type="date"
+            name="event_date"
+            value={newEvent.event_date}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, event_date: e.target.value })
+            }
+            placeholder="Enter event date"
+          />
+          {errors.event_date && (
+            <p className="text-red-500 text-xs mt-1">{errors.event_date}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col space-y-1">
+          <label className="text-sm font-semibold">Event Time</label>
+          <input
+            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_time ? 'border-red-500' : ''}`}
+            type="time"
+            name="event_time"
+            value={newEvent.event_time}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, event_time: e.target.value })
+            }
+            placeholder="Enter event time"
+          />
+          {errors.event_time && (
+            <p className="text-red-500 text-xs mt-1">{errors.event_time}</p>
+          )}
+        </div>
+
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="btn bg-nucolor3 hover:bg-nucolor2 text-black hover:text-gray-500 hover:shadow-md"
+          >
+            Create Event
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+
+        <dialog id="modal_attendees" className="modal transition-none text-black">
+  <div className="modal-box">
+    <form method="dialog">
+      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+        ✕
+      </button>
+    </form>
+
+    <div className="max-w-4xl mx-auto text-[#333] p-3">
+      <div className="text-4xl font-bold text-center mb-7">Total Attendees: {attendees.length}</div>
+      {attendees.length > 0 ? (
+        <ul className="space-y-3">
+          {attendees.map((attendee) => (
+            <li
+              key={attendee._id}
+              className="hover:shadow-inner shadow-md flex justify-between items-center p-2 border border-gray-300 "
+            >
+              <div>
+                <div className="font-semibold">{attendee.at_fname}</div>
+                <div className="text-sm">{attendee.at_email}</div>
+              </div>
+              <button
+                className="btn btn-sm bg-red-600 hover:bg-red-700 text-white"
+                onClick={() =>
+                  handleDeleteAttendee(selectedEvent._id, attendee.at_email)
+                }
+              >
+                <Trash2 className="w-4" />
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="text-center text-gray-500">No attendees yet.</div>
+      )}
+    </div>
+  </div>
+</dialog>
       </div>
     </>
   );

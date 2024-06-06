@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 const Accounts = () => {
   const [accounts, setAccounts] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     fetch("http://localhost:8000/api/acc/all")
       .then((response) => response.json())
@@ -26,7 +26,8 @@ const Accounts = () => {
   }, []);
 
   const filteredAccounts = accounts.filter((account) => {
-    const fullName = `${account.u_fname} ${account.u_mname} ${account.u_lname}`.toLowerCase();
+    const fullName =
+      `${account.u_fname} ${account.u_mname} ${account.u_lname}`.toLowerCase();
     return fullName.includes(searchTerm.toLowerCase());
   });
 
@@ -85,17 +86,20 @@ const Accounts = () => {
   return (
     <>
       <div className="bg-white flex p-12 justify-start w-full h-full">
-        <div className="bg-white w-full">
+        <div className="bg-white w-full" >
           <div className="text-4xl text-blue mb-3 font-bold">Manage Users</div>
 
           <div className="form-control ">
-            <div className="input-group">
+            <div className="input-group flex">
+              {/* <div className="card shadow-lg h-full">
+                Total COMEX CONNECT Users:
+              </div> */}
               <input
-                  type="text"
-                  placeholder="Search…"
-                  className="input input-bordered mb-7 w-full hover:shadow-inner shadow-sm"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                type="text"
+                placeholder="Search…"
+                className="input input-bordered mb-7 w-full hover:shadow-inner shadow-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
@@ -115,7 +119,10 @@ const Accounts = () => {
                 <tbody>
                   {filteredAccounts.length > 0 ? (
                     filteredAccounts.map((account, index) => (
-                      <tr className="hover:shadow-inner hover" key={account._id}>
+                      <tr
+                        className="hover:shadow-inner hover"
+                        key={account._id}
+                      >
                         <th>{index + 1}</th>
                         <td>
                           {account.u_fname} {account.u_mname} {account.u_lname}
@@ -127,8 +134,8 @@ const Accounts = () => {
                             onClick={() => handleEditClick(account._id)}
                             className="btn  hover:shadow-inner bg-white hover:bg-gray-100"
                           >
+                            <PencilIcon className="w-4" />
                             Edit User
-                            <PencilIcon className="w-4"/>
                           </button>
                         </td>
                       </tr>
@@ -179,8 +186,12 @@ const Accounts = () => {
                         <option disabled>What are you?</option>
                         <option value="student">Student</option>
                         <option value="teacher">Teacher</option>
-                        <option value="asp">ASP (Admin Support Personnel)</option>
-                        <option value="ntp">NTP (Non Teaching Personnel)</option>
+                        <option value="asp">
+                          ASP (Admin Support Personnel)
+                        </option>
+                        <option value="ntp">
+                          NTP (Non Teaching Personnel)
+                        </option>
                       </select>
                     </label>
 
@@ -236,7 +247,9 @@ const Accounts = () => {
                     </div>
 
                     <div>
-                      <label className="text-sm mb-2 block">Email Address</label>
+                      <label className="text-sm mb-2 block">
+                        Email Address
+                      </label>
                       <input
                         name="email"
                         type="text"
@@ -252,7 +265,9 @@ const Accounts = () => {
                       />
                     </div>
                     <div>
-                      <label className="text-sm mb-2 block">Mobile Number</label>
+                      <label className="text-sm mb-2 block">
+                        Mobile Number
+                      </label>
                       <input
                         name="number"
                         type="number"
@@ -305,7 +320,9 @@ const Accounts = () => {
                     </label>
 
                     <div>
-                      <label className="text-sm mb-2 block">Student Number</label>
+                      <label className="text-sm mb-2 block">
+                        Student Number
+                      </label>
                       <input
                         name="studentNum"
                         type="text"
@@ -321,8 +338,11 @@ const Accounts = () => {
                       />
                     </div>
 
-                    <div>
-                      <label className="text-sm mb-2 block">Date Hired</label>
+                    
+                  </div>
+
+                  <div>
+                      <label className="mt-3 text-sm mb-2 block">Date Hired</label>
                       <input
                         name="dateHired"
                         type="date"
@@ -337,23 +357,22 @@ const Accounts = () => {
                         placeholder="Enter date hired"
                       />
                     </div>
-                  </div>
 
-                  <div className="mt-7 flex flex-row">
+                  <div className="mt-7 flex flex-row ">
                     <button
                       type="submit"
-                      className="btn flex w-max font-semibold justify-end rounded-md hover:shadow-inner bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
+                      className="ml-auto mr-2 btn flex w-max text-sm justify-end rounded-md hover:shadow-inner bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
                     >
+                      <Save className="w-5" />
                       Save Edits
-                      <Save className="w-5"/>
                     </button>
 
                     <button
                       onClick={deleteUser}
-                      className=" ml-auto btn flex w-max font-semibold justify-center rounded-md bg-red-700 hover:bg-red-400 px-3 py-1.5 text-lg leading-6 text-gray-100 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
+                      className=" btn flex w-max text-sm justify-center rounded-md bg-red-700 hover:bg-red-400 px-3 py-1.5 text-lg leading-6 text-gray-100 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
                     >
+                      <Trash2 className="w-5" />
                       Delete User
-                      <Trash2 className="w-5"/>
                     </button>
                   </div>
                 </form>
