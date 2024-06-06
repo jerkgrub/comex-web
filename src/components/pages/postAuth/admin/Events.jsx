@@ -549,7 +549,7 @@ const Events = () => {
               className="hover:shadow-inner shadow-md flex justify-between items-center p-2 border border-gray-300 "
             >
               <div>
-                <div className="font-semibold">{attendee.at_fname}</div>
+                <div className="font-semibold">{attendee.at_fname} {attendee.at_lname}</div>
                 <div className="text-sm">{attendee.at_email}</div>
               </div>
               <button
