@@ -14,6 +14,15 @@ const EventSchema = new mongoose.Schema({
     event_image: {
         type: String
     },
+    event_organizer: {
+        type: String
+    },
+    event_date: {
+        type: Date
+    },
+    event_time: {
+        type: String
+    },
     
 });
 

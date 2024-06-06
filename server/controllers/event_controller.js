@@ -40,6 +40,21 @@ const findOneEvent = (req, res) => {
     });
 };
 
+// 3. Update
+const updateEvent = (req, res) => {
+  Event.findOneAndUpdate(
+    { _id: req.params.id }, 
+    req.body, 
+    { new: true, runValidators: true }
+  )
+  .then((updatedEvent) => {
+    res.json({ updatedEvent: updatedEvent, status: "successfully Updated the Event" });
+  })
+  .catch((err) => {
+    res.json({ message: 'Something went wrong', error: err });
+  });
+}
+
 // 4. Delete
 const deleteEvent = (req, res) => {
   Event.findOneAndDelete({ _id: req.params.id })
@@ -59,5 +74,6 @@ module.exports = {
   newEvent,
   findAllEvent,
   findOneEvent,
+  updateEvent,
   deleteEvent,
 };

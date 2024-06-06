@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'right-thick': '5px 0 5px -3px rgba(0, 0, 0, 0.1), 5px 0 20px -5px rgba(0, 0, 0, 0.1)',
+      },
       backgroundImage: theme => ({
         'gradient-bg': "linear-gradient(rgba(24, 29, 63, 0.8), rgba(65, 62, 205, 0.8)), url('https://i.ytimg.com/vi/H-SEbyzIMYo/maxresdefault.jpg')",
         'gradient-bg2': "linear-gradient(to right, #5fa2ff4d, #ffc47163)" ,

@@ -102,77 +102,79 @@ const Dnavbar = () => {
 
 
   const login_btn = (event) => {
-    event.preventDefault();
-    Swal.fire({
-      target: document.getElementById("my_modal_1"),
-      scrollbarPadding: false,
-      title: "Logging in...",
-      timer: 1000,
-      timerProgressBar: true,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    }).then((result) => {
-      axios
-        .post("http://localhost:8000/api/login", {
+  event.preventDefault();
+  Swal.fire({
+    target: document.getElementById("my_modal_1"),
+    scrollbarPadding: false,
+    title: "Logging in...",
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  }).then((result) => {
+    axios
+      .post("http://localhost:8000/api/login", {
+        email: email,
+        password: password,
+        usertype: usertype.toLowerCase(),
+      })
+      .then((response) => {
+        // Store the JWT in local storage
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userFirstName', response.data.user.u_fname);
+        console.log("token received");
+
+        const userData = {
           email: email,
-          password: password,
+          token: response.data.token,
           usertype: usertype.toLowerCase(),
-        })
-        .then((response) => {
-          // Store the JWT in local storage
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('userFirstName', response.data.user.u_fname);
-          console.log("token recieved");
-  
-          if (response.data.message === "Successfully logged in as admin") {
-            Swal.fire({
-              target: document.getElementById("my_modal_1"),
-              scrollbarPadding: false,
-              icon: "success",
-              title: "Logged in as admin!",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            setUser({ 
-              email: email, }); //set here
-            navigate("/admin/dashboard");
-          } else if (
-            response.data.message === "Successfully logged in as student"
-          ) {
-            Swal.fire({
-              scrollbarPadding: false,
-              icon: "success",
-              title: "Logged in as student!",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            setUser({ email: email }); //set here
-            navigate("/client/home");
-          } else {
-            Swal.fire({
-              target: document.getElementById("my_modal_1"),
-              scrollbarPadding: false,
-              icon: "error",
-              title: "Invalid login attempt",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-        })
-        .catch((error) => {
+        };
+        setUser(userData); // Update user context
+
+        if (response.data.message === "Successfully logged in as admin") {
+          Swal.fire({
+            scrollbarPadding: false,
+            icon: "success",
+            title: "Logged in as admin!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate("/admin/dashboard");
+        } else if (response.data.message === "Successfully logged in as student") {
+          Swal.fire({
+            scrollbarPadding: false,
+            icon: "success",
+            title: "Logged in as student!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate("/client/home");
+        } else {
           Swal.fire({
             target: document.getElementById("my_modal_1"),
             scrollbarPadding: false,
             icon: "error",
-            title: "Something went wrong",
-            text: error.message,
+            title: "Invalid login attempt",
             showConfirmButton: false,
             timer: 1500,
           });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          target: document.getElementById("my_modal_1"),
+          scrollbarPadding: false,
+          icon: "error",
+          title: "Something went wrong",
+          text: error.message,
+          showConfirmButton: false,
+          timer: 1500,
         });
-    });
-  };
+      });
+  });
+};
+
 
   return (
     <>

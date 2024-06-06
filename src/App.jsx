@@ -23,11 +23,14 @@ import postAuthRedirect from './components/postAuthRedirect';
 // Protected Route Component
 function ProtectedRoute({ children }) {
   const { user } = useContext(UserContext);
-  if (!user) {
+  const token = localStorage.getItem('token');
+  
+  if (!user || !token) {
     return <Navigate to="/" replace />;
   }
   return children;
 }
+
 
 // Protected Hero Page
 function HeroPageWithNavbarAndFooter() {
@@ -44,17 +47,19 @@ const ProtectedHeroPage = postAuthRedirect(HeroPageWithNavbarAndFooter);
 
 // Admin Layout
 function AdminLayout() {
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <div className="flex">
       <Sidebar>
         <SidebarItem to="/admin/dashboard" icon={<Gauge size={20} />} text={"Dashboard"} active />
-        <SidebarItem to="/admin/events" icon={<Ticket size={20} />} text={"Manage Events"} />
-        <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text={"Manage NSTP"} />
-        <SidebarItem to="/admin/accounts" icon={<ContactRound size={20} />} text={"Manage Users"} />
         <SidebarItem to="/admin/comextracker" icon={<SquareCheckBig size={20} />} text={"COMEX Tracker"} />
         <SidebarItem to="/admin/comexforms" icon={<BookCopy size={20} />} text={"COMEX Forms"} />
+        <SidebarItem to="/admin/accounts" icon={<ContactRound size={20} />} text={"Manage Users"} />
+        <SidebarItem to="/admin/events" icon={<Ticket size={20} />} text={"Manage Events"} />
+        <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text={"Manage NSTP"} />
       </Sidebar>
-      <div className="flex-grow p-4">
+      <div className={`flex-grow transition-all duration-200 ${expanded ? 'ml-64' : 'ml-16'} p-4`}>
         <Outlet />
       </div>
     </div>

@@ -12,6 +12,7 @@ router.get('/api/event/all', eventController.findAllEvent);
 router.get('/api/event/:id', eventController.findOneEvent);
 
 // 3. Update
+router.put('/api/event/update/:id', eventController.updateEvent);
 
 // 4. Delete
 router.delete('/api/event/delete/:id', eventController.deleteEvent); //DELETE
