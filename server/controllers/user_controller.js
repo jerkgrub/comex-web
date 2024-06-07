@@ -85,11 +85,11 @@ const login = (req, res) => {
         if (correctPassword) {
           const token = user.generateAuthToken();
           if (user.usertype === "admin") {
-            res.json({ message: "Successfully logged in as admin", token: token, user: { u_fname: user.u_fname } });
+            res.json({ message: "Successfully logged in as admin", token: token, user: { u_fname: user.u_fname, u_lname: user.u_lname, email: user.email } });
           } else if (user.usertype === "student") {
-            res.json({ message: "Successfully logged in as student", token: token, user: { u_fname: user.u_fname } });
+            res.json({ message: "Successfully logged in as student", token: token, user: { u_fname: user.u_fname, u_lname: user.u_lname, email: user.email } });
           } else {
-            res.json({ message: "Role not recognized", token: token, user: { u_fname: user.u_fname } });
+            res.json({ message: "Role not recognized", token: token, user: { u_fname: user.u_fname, u_lname: user.u_lname, email: user.email } });
           }
         } else {
           res.json({ message: "invalid login attempt" });
@@ -100,6 +100,7 @@ const login = (req, res) => {
       res.json({ message: "Something went wrong", error: err });
     });
 };
+
 
 module.exports = {
   // CRUD

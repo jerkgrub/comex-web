@@ -101,7 +101,7 @@ function App() {
 
           {/* Protected Routes for Client */}
           <Route path="/client/*" element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
-            <Route path="home" element={<><Cnavbar /><Home /><Footer /></>} />
+            <Route path="home" element={<><Cnavbar/><Home /><Footer /></>} />
             <Route path="comexforms" element={<><Header /><ComexForms /><Footer /></>} />
             <Route path="events" element={<><Header /><Events /><Footer /></>} />
             <Route path="nstp" element={<><Header /><About /><Footer /></>} />

@@ -153,8 +153,11 @@ const Dnavbar = () => {
       })
       .then((response) => {
         // Store the JWT in local storage
+        console.log(response.data.u_lname)
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userFirstName', response.data.user.u_fname);
+        localStorage.setItem('userLastName', response.data.user.u_lname);
+        localStorage.setItem('userEmail', response.data.user.email);
         console.log("token received");
 
         const userData = {

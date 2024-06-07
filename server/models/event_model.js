@@ -4,7 +4,6 @@ const AttendeeSchema = new mongoose.Schema({
   at_email: {
     type: String,
     required: true,
-    unique: true,
   },
   at_fname: {
     type: String,
@@ -16,7 +15,6 @@ const AttendeeSchema = new mongoose.Schema({
   },
   at_mnum: {
     type: String,
-    required: true,
   },
 });
 
