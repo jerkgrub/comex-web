@@ -19,6 +19,7 @@ import Dnavbar from './components/pages/postAuth/client/Navbar/Dnavbar';
 import { Footer } from './components/Footer';
 import HeroPage from './components/pages/preAuth/HeroPage';
 import postAuthRedirect from './components/postAuthRedirect';
+import Profile from './components/pages/postAuth/client/Profile';
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -102,6 +103,7 @@ function App() {
           {/* Protected Routes for Client */}
           <Route path="/client/*" element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
             <Route path="home" element={<><Cnavbar/><Home /><Footer /></>} />
+            <Route path="profile" element={<><Cnavbar/><Profile /><Footer /></>} />
             <Route path="comexforms" element={<><Header /><ComexForms /><Footer /></>} />
             <Route path="events" element={<><Header /><Events /><Footer /></>} />
             <Route path="nstp" element={<><Header /><About /><Footer /></>} />

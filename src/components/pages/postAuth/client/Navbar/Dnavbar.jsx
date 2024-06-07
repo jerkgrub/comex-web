@@ -158,6 +158,8 @@ const Dnavbar = () => {
         localStorage.setItem('userFirstName', response.data.user.u_fname);
         localStorage.setItem('userLastName', response.data.user.u_lname);
         localStorage.setItem('userEmail', response.data.user.email);
+        localStorage.setItem('userMnum', response.data.user.u_mnum);
+        localStorage.setItem('userDep', response.data.user.u_dep);
         console.log("token received");
 
         const userData = {

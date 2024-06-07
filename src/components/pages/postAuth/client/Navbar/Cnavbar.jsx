@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserContext } from "../../../../UserContext";
 
-// add items here
+// Add items here
 const menuItems = [
   { name: 'Home', link: '/client/home' },
   {
@@ -21,14 +21,14 @@ const menuItems = [
   //     { name: 'Adopted Barangays', link: '#' },
   //   ]
   // },
-  { name: 'Events',
+  {
+    name: 'Events',
     subItems: [
-      
       { name: 'NSTP', link: '#' },
       { name: 'Community Immersion', link: '#' },
     ]
-   },
-   { name: 'Highlights', link: '/client/home' },
+  },
+  { name: 'Highlights', link: '/client/home' },
 ];
 
 const Cnavbar = () => {
@@ -37,6 +37,10 @@ const Cnavbar = () => {
   const { user, setUser } = useContext(UserContext); // Added setUser here
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const navigate = useNavigate();
+
+  const handleProfile = () => {
+    navigate('/client/profile');
+  }
 
   const handleLogout = () => {
     Swal.fire({
@@ -71,6 +75,12 @@ const Cnavbar = () => {
     });
   };
 
+  const handleNavigation = (link) => {
+    if (link !== '#') {
+      navigate(link);
+    }
+  };
+
   return (
     <>
       <div className="navbar bg-nucolor1 text-white2 border-b-4 border-nucolor3 drop-shadow-md z-20 relative">
@@ -84,11 +94,11 @@ const Cnavbar = () => {
             <ul tabIndex={0} className="text-black menu menu-sm dropdown-content mt-3 z-20 p-2 shadow bg-base-100 rounded-box w-52">
               {menuItems.map(item => (
                 <li key={item.name}>
-                  <a>{item.name}</a>
+                  <a onClick={() => handleNavigation(item.link)}>{item.name}</a>
                   {item.subItems && (
                     <ul className="p-2">
                       {item.subItems.map(subItem => (
-                        <li key={subItem.name}><a>{subItem.name}</a></li>
+                        <li key={subItem.name}><a onClick={() => handleNavigation(subItem.link)}>{subItem.name}</a></li>
                       ))}
                     </ul>
                   )}
@@ -109,7 +119,13 @@ const Cnavbar = () => {
                   tabIndex={0}
                   role="button"
                   className="btn btn-ghost font-normal text-base"
-                  onClick={() => setOpenDropdownIndex(openDropdownIndex === index ? null : index)}
+                  onClick={() => {
+                    if (item.subItems) {
+                      setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+                    } else {
+                      handleNavigation(item.link);
+                    }
+                  }}
                 >
                   {item.name}
                   {item.subItems && (
@@ -122,7 +138,7 @@ const Cnavbar = () => {
                     className="text-black dropdown-content z-20 menu p-2 shadow bg-base-100 rounded-box w-52"
                   >
                     {item.subItems.map((subItem, subIndex) => (
-                      <li key={subIndex}><a>{subItem.name}</a></li>
+                      <li key={subIndex}><a onClick={() => handleNavigation(subItem.link)}>{subItem.name}</a></li>
                     ))}
                   </ul>
                 )}
@@ -146,7 +162,7 @@ const Cnavbar = () => {
             >
               <li>
                 <a
-                  href="/profile"
+                  onClick={handleProfile}
                   className="btn btn-ghost flex justify-start items-center block px-2 py-1 hover:bg-gray-200"
                 >
                   <CircleUserRound className="w-4 text-nucolor5" />

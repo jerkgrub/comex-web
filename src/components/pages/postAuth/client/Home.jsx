@@ -10,7 +10,25 @@ export const Home = () => {
     axios
       .get("http://localhost:8000/api/event/all")
       .then((response) => {
-        setEvents(response.data.Events);
+        const formattedEvents = response.data.Events.map(event => {
+          const date = new Date(event.event_date);
+          const formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          const formattedTime = new Date(`1970-01-01T${event.event_time}Z`).toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+          });
+          return {
+            ...event,
+            event_date: formattedDate,
+            event_time: formattedTime
+          };
+        });
+        setEvents(formattedEvents);
       })
       .catch((error) => {
         console.error("There was an error fetching the events!", error);
@@ -83,7 +101,7 @@ export const Home = () => {
   return (
     <div className="px-3 py-6 xl:px-32 xl:py-12 bg-white flex flex-col gap-20">
       <div className="h-56 sm:h-64 xl:h-[600px]  2xl:h-[600px] relative z-10">
-      <Carousel className="shadow-lg z-0">
+        <Carousel className="shadow-lg z-0">
           <img
             src="https://media.assettype.com/tribune%2F2024-04%2F3dfc4787-bf5e-46ed-ae8e-bbbfa9af00bf%2Ffp22king2.jpg?w=1200&auto=format%2Ccompress&fit=max"
             alt="..."
@@ -105,7 +123,6 @@ export const Home = () => {
             alt="..."
           />
         </Carousel>
-
       </div>
 
       <div className="bg- flex flex-col">
@@ -129,6 +146,8 @@ export const Home = () => {
                 <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {event.event_title}
                 </h5>
+                <h1 className="">{`${event.event_date} - ${event.event_time}`}</h1>
+                <h3 className="text-base font-semibold">{event.event_organizer}</h3>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
                   {event.event_description}
                 </p>
