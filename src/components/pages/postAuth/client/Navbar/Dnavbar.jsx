@@ -24,10 +24,15 @@ const Dnavbar = () => {
   const { user, setUser } = useContext(UserContext); // Added setUser here
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const navigate = useNavigate();
+  const [isChecked, setIsChecked] = useState(false);
+
+  // terms and service checkbox
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
 
   // for password visibility
   const [showPassword, setShowPassword] = useState(false);
-
   // login data
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -621,6 +626,8 @@ const Dnavbar = () => {
         </div>
 
         <div className="form-control mt-4">
+        <div className="flex justify-center items-center">
+          <input type="checkbox" className="checkbox mr-2" onChange={handleCheckboxChange}/>
           <label className="label cursor-pointer justify-start gap-3">
             <span className="label-text">
               By clicking Register, you are agreeing to COMEX CONNECT's{" "}
@@ -631,12 +638,17 @@ const Dnavbar = () => {
             </span>
           </label>
         </div>
+        </div>
+          
 
         <div className="mt-4">
-          <button
-            onClick={addUser}
-            className="btn flex w-full font-semibold justify-center rounded-md bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
-          >
+        <button
+        onClick={addUser}
+        className={`btn flex w-full font-semibold justify-center rounded-md bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm ${
+          isChecked ? 'hover:bg-lightyellow hover:text-white3' : ''
+        }`}
+        disabled={!isChecked}
+      >
             Register
           </button>
         </div>

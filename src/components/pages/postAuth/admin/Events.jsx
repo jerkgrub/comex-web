@@ -162,29 +162,34 @@ const Events = () => {
   const handleDeleteAttendee = (eventId, email) => {
     Swal.fire({
       target: document.getElementById("modal_attendees"),
-      title: 'Are you sure?',
-      text: 'Do you really want to remove this attendee?',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Do you really want to remove this attendee?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:8000/api/event/attendee/${eventId}/${email}`)
+          .delete(
+            `http://localhost:8000/api/event/attendee/${eventId}/${email}`
+          )
           .then((response) => {
             setAttendees((prevAttendees) =>
               prevAttendees.filter((attendee) => attendee.at_email !== email)
             );
           })
           .catch((error) => {
-            console.error('Error deleting attendee:', error);
-            Swal.fire('Error!', 'There was an error deleting the attendee.', 'error');
+            console.error("Error deleting attendee:", error);
+            Swal.fire(
+              "Error!",
+              "There was an error deleting the attendee.",
+              "error"
+            );
           });
       }
     });
   };
-  
 
   return (
     <>
@@ -192,8 +197,64 @@ const Events = () => {
         <div className="bg-white w-full">
           <div className="text-4xl text-blue mb-3 font-bold">Manage Events</div>
 
-          <div className="form-control ">
-            <div className="input-group flex gap-3">
+          <div className="form-control">
+            <div className="flex input-group gap-3 justify-center items-">
+              {/* filter 1 */}
+              <div className="dropdown">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn"
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  All
+                </div>
+
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
+                >
+                  <li>
+                    <a>College of Gayness</a>
+                  </li>
+                  <li>
+                    <a>Item 2</a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* usertype filter */}
+              <div className="dropdown">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn"
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  Usertype: All 
+                </div>
+
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
+                >
+                  <li>
+                    <a>Student</a>
+                  </li>
+                  <li>
+                    <a>Faculty</a>
+                  </li>
+                </ul>
+              </div>
+
               {/* search */}
               <input
                 type="text"
@@ -397,179 +458,217 @@ const Events = () => {
         </dialog>
 
         <dialog id="modal_create" className="modal transition-none text-black">
-  <div className="modal-box">
-    <form method="dialog">
-      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" onClick={() => document.getElementById("modal_create").close()}>
-        ✕
-      </button>
-    </form>
-
-    <div className="max-w-4xl mx-auto text-[#333] p-3">
-      <div className="text-4xl font-semibold text-center mb-7">
-        Create Event
-      </div>
-      <form className="space-y-4" onSubmit={handleCreateEvent}>
-        <div className="flex flex-col space-y-1">
-          <label className="text-sm font-semibold">Event Title</label>
-          <input
-            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_title ? 'border-red-500' : ''}`}
-            type="text"
-            name="event_title"
-            value={newEvent.event_title}
-            onChange={(e) =>
-              setNewEvent({ ...newEvent, event_title: e.target.value })
-            }
-            placeholder="Enter event title"
-          />
-          {errors.event_title && (
-            <p className="text-red-500 text-xs mt-1">{errors.event_title}</p>
-          )}
-        </div>
-
-        <div className="flex flex-col space-y-1">
-          <label className="text-sm font-semibold">Organizer</label>
-          <input
-            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_organizer ? 'border-red-500' : ''}`}
-            type="text"
-            name="event_organizer"
-            value={newEvent.event_organizer}
-            onChange={(e) =>
-              setNewEvent({
-                ...newEvent,
-                event_organizer: e.target.value,
-              })
-            }
-            placeholder="Enter organizer name"
-          />
-          {errors.event_organizer && (
-            <p className="text-red-500 text-xs mt-1">{errors.event_organizer}</p>
-          )}
-        </div>
-
-        <div className="flex flex-col space-y-1">
-          <label className="text-sm font-semibold">Description</label>
-          <textarea
-            className={`textarea w-full p-2 border border-gray-300 rounded-md ${errors.event_description ? 'border-red-500' : ''}`}
-            name="event_description"
-            value={newEvent.event_description}
-            onChange={(e) =>
-              setNewEvent({
-                ...newEvent,
-                event_description: e.target.value,
-              })
-            }
-            placeholder="Enter event description"
-          />
-          {errors.event_description && (
-            <p className="text-red-500 text-xs mt-1">{errors.event_description}</p>
-          )}
-        </div>
-
-        <div className="flex flex-col space-y-1">
-          <label className="text-sm font-semibold">Image URL</label>
-          <input
-            
-            type="text"
-            name="event_image"
-            value={newEvent.event_image}
-            onChange={(e) =>
-              setNewEvent({ ...newEvent, event_image: e.target.value })
-            }
-            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_image ? 'border-red-500' : ''}`}
-            placeholder="Enter image URL"
-          />
-          {errors.event_image && (
-            <p className="text-red-500 text-xs mt-1">{errors.event_image}</p>
-          )}
-        </div>
-
-        <div className="flex flex-col space-y-1">
-          <label className="text-sm font-semibold">Event Date</label>
-          <input
-            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_date ? 'border-red-500' : ''}`}
-            type="date"
-            name="event_date"
-            value={newEvent.event_date}
-            onChange={(e) =>
-              setNewEvent({ ...newEvent, event_date: e.target.value })
-            }
-            placeholder="Enter event date"
-          />
-          {errors.event_date && (
-            <p className="text-red-500 text-xs mt-1">{errors.event_date}</p>
-          )}
-        </div>
-
-        <div className="flex flex-col space-y-1">
-          <label className="text-sm font-semibold">Event Time</label>
-          <input
-            className={`input w-full p-2 border border-gray-300 rounded-md ${errors.event_time ? 'border-red-500' : ''}`}
-            type="time"
-            name="event_time"
-            value={newEvent.event_time}
-            onChange={(e) =>
-              setNewEvent({ ...newEvent, event_time: e.target.value })
-            }
-            placeholder="Enter event time"
-          />
-          {errors.event_time && (
-            <p className="text-red-500 text-xs mt-1">{errors.event_time}</p>
-          )}
-        </div>
-
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="btn bg-nucolor3 hover:bg-nucolor2 text-black hover:text-gray-500 hover:shadow-md"
-          >
-            Create Event
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</dialog>
-
-
-        <dialog id="modal_attendees" className="modal transition-none text-black">
-  <div className="modal-box">
-    <form method="dialog">
-      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-        ✕
-      </button>
-    </form>
-
-    <div className="max-w-4xl mx-auto text-[#333] p-3">
-      <div className="text-4xl font-bold text-center mb-7">Total Attendees: {attendees.length}</div>
-      {attendees.length > 0 ? (
-        <ul className="space-y-3">
-          {attendees.map((attendee) => (
-            <li
-              key={attendee._id}
-              className="hover:shadow-inner shadow-md flex justify-between items-center p-2 border border-gray-300 "
-            >
-              <div>
-                <div className="font-semibold">{attendee.at_fname} {attendee.at_lname}</div>
-                <div className="text-sm">{attendee.at_email}</div>
-              </div>
+          <div className="modal-box">
+            <form method="dialog">
               <button
-                className="btn btn-sm bg-red-600 hover:bg-red-700 text-white"
-                onClick={() =>
-                  handleDeleteAttendee(selectedEvent._id, attendee.at_email)
-                }
+                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                type="button"
+                onClick={() => document.getElementById("modal_create").close()}
               >
-                <Trash2 className="w-4" />
-                Remove
+                ✕
               </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div className="text-center text-gray-500">No attendees yet.</div>
-      )}
-    </div>
-  </div>
-</dialog>
+            </form>
+
+            <div className="max-w-4xl mx-auto text-[#333] p-3">
+              <div className="text-4xl font-semibold text-center mb-7">
+                Create Event
+              </div>
+              <form className="space-y-4" onSubmit={handleCreateEvent}>
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Event Title</label>
+                  <input
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_title ? "border-red-500" : ""
+                    }`}
+                    type="text"
+                    name="event_title"
+                    value={newEvent.event_title}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, event_title: e.target.value })
+                    }
+                    placeholder="Enter event title"
+                  />
+                  {errors.event_title && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_title}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Organizer</label>
+                  <input
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_organizer ? "border-red-500" : ""
+                    }`}
+                    type="text"
+                    name="event_organizer"
+                    value={newEvent.event_organizer}
+                    onChange={(e) =>
+                      setNewEvent({
+                        ...newEvent,
+                        event_organizer: e.target.value,
+                      })
+                    }
+                    placeholder="Enter organizer name"
+                  />
+                  {errors.event_organizer && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_organizer}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Description</label>
+                  <textarea
+                    className={`textarea w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_description ? "border-red-500" : ""
+                    }`}
+                    name="event_description"
+                    value={newEvent.event_description}
+                    onChange={(e) =>
+                      setNewEvent({
+                        ...newEvent,
+                        event_description: e.target.value,
+                      })
+                    }
+                    placeholder="Enter event description"
+                  />
+                  {errors.event_description && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_description}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Image URL</label>
+                  <input
+                    type="text"
+                    name="event_image"
+                    value={newEvent.event_image}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, event_image: e.target.value })
+                    }
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_image ? "border-red-500" : ""
+                    }`}
+                    placeholder="Enter image URL"
+                  />
+                  {errors.event_image && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_image}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Event Date</label>
+                  <input
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_date ? "border-red-500" : ""
+                    }`}
+                    type="date"
+                    name="event_date"
+                    value={newEvent.event_date}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, event_date: e.target.value })
+                    }
+                    placeholder="Enter event date"
+                  />
+                  {errors.event_date && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_date}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">Event Time</label>
+                  <input
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_time ? "border-red-500" : ""
+                    }`}
+                    type="time"
+                    name="event_time"
+                    value={newEvent.event_time}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, event_time: e.target.value })
+                    }
+                    placeholder="Enter event time"
+                  />
+                  {errors.event_time && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_time}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="btn bg-nucolor3 hover:bg-nucolor2 text-black hover:text-gray-500 hover:shadow-md"
+                  >
+                    Create Event
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </dialog>
+
+        <dialog
+          id="modal_attendees"
+          className="modal transition-none text-black"
+        >
+          <div className="modal-box">
+            <form method="dialog">
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
+            </form>
+
+            <div className="max-w-4xl mx-auto text-[#333] p-3">
+              <div className="text-4xl font-bold text-center mb-7">
+                Total Attendees: {attendees.length}
+              </div>
+              {attendees.length > 0 ? (
+                <ul className="space-y-3">
+                  {attendees.map((attendee) => (
+                    <li
+                      key={attendee._id}
+                      className="hover:shadow-inner shadow-md flex justify-between items-center p-2 border border-gray-300 "
+                    >
+                      <div>
+                        <div className="font-semibold">
+                          {attendee.at_fname} {attendee.at_lname}
+                        </div>
+                        <div className="text-sm">{attendee.at_email}</div>
+                      </div>
+                      <button
+                        className="btn btn-sm bg-red-600 hover:bg-red-700 text-white"
+                        onClick={() =>
+                          handleDeleteAttendee(
+                            selectedEvent._id,
+                            attendee.at_email
+                          )
+                        }
+                      >
+                        <Trash2 className="w-4" />
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="text-center text-gray-500">
+                  No attendees yet.
+                </div>
+              )}
+            </div>
+          </div>
+        </dialog>
       </div>
     </>
   );
