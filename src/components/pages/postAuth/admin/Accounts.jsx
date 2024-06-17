@@ -90,10 +90,67 @@ const Accounts = () => {
           <div className="text-4xl text-blue mb-3 font-bold">Manage Users</div>
 
           <div className="form-control ">
-            <div className="input-group flex">
+            <div className="flex input-group gap-3 justify-center items-">
               {/* <div className="card shadow-lg h-full">
                 Total COMEX CONNECT Users:
               </div> */}
+
+              {/* filter 1 */}
+              <div className="dropdown">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn"
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  All
+                </div>
+
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
+                >
+                  <li>
+                    <a>College of Gayness</a>
+                  </li>
+                  <li>
+                    <a>Item 2</a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* usertype filter */}
+              <div className="dropdown">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn"
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  Usertype: All 
+                </div>
+
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
+                >
+                  <li>
+                    <a>Student</a>
+                  </li>
+                  <li>
+                    <a>Faculty</a>
+                  </li>
+                </ul>
+              </div>
+
               <input
                 type="text"
                 placeholder="Search…"
@@ -112,6 +169,7 @@ const Accounts = () => {
                     <th></th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Department</th>
                     <th>User Type</th>
                     <th>Action</th>
                   </tr>
@@ -128,6 +186,7 @@ const Accounts = () => {
                           {account.u_fname} {account.u_mname} {account.u_lname}
                         </td>
                         <td>{account.email}</td>
+                        <td>{account.u_dep}</td>
                         <td>{account.usertype}</td>
                         <td>
                           <button
