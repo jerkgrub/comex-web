@@ -1,10 +1,12 @@
 import axios from "axios";
 import {
   BookUser,
+  CalendarDays,
   CirclePlus,
   PencilIcon,
   Plus,
   Save,
+  SquareLibrary,
   Trash2,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -21,6 +23,7 @@ const Events = () => {
     event_image: "",
     event_date: "",
     event_time: "",
+    event_dep: "",
   });
   const [errors, setErrors] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,10 +44,6 @@ const Events = () => {
         console.error("Error fetching events:", error);
       });
   }, []);
-
-  const filteredEvents = events.filter((event) => {
-    return event.event_title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
 
   const handleEditClick = (eventId) => {
     fetch(`http://localhost:8000/api/event/${eventId}`)
@@ -100,6 +99,7 @@ const Events = () => {
   };
 
   const handleCreateEvent = (e) => {
+    console.log("choif");
     e.preventDefault();
     if (validateForm()) {
       axios
@@ -114,6 +114,7 @@ const Events = () => {
             event_image: "",
             event_date: "",
             event_time: "",
+            event_dep: "",
           });
           setErrors({});
           document.getElementById("modal_create").close();
@@ -191,6 +192,18 @@ const Events = () => {
     });
   };
 
+  const [selectedDepartment, setSelectedDepartment] =
+    useState("All Departments");
+
+  const filteredEvents = events.filter((event) => {
+    return (
+      event &&
+      event.event_title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedDepartment === "All Departments" ||
+        event.event_dep === selectedDepartment)
+    );
+  });
+
   return (
     <>
       <div className="bg-white flex p-12 justify-start w-full h-full">
@@ -211,47 +224,97 @@ const Events = () => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  All
+                  <div className="flex flex-row gap-2">
+                    <SquareLibrary className="w-4 h-4" />
+                    {selectedDepartment}
+                  </div>
                 </div>
-
                 <ul
                   tabIndex={0}
                   className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
                 >
                   <li>
-                    <a>College of Gayness</a>
+                    <a onClick={() => setSelectedDepartment("All Departments")}>
+                      All Departments
+                    </a>
                   </li>
                   <li>
-                    <a>Item 2</a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* usertype filter */}
-              <div className="dropdown">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn"
-                  style={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  Usertype: All 
-                </div>
-
-                <ul
-                  tabIndex={0}
-                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
-                >
-                  <li>
-                    <a>Student</a>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("College of Dentistry")
+                      }
+                    >
+                      College of Dentistry
+                    </a>
                   </li>
                   <li>
-                    <a>Faculty</a>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Optometry")
+                      }
+                    >
+                      School of Optometry
+                    </a>
                   </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Health Sciences")
+                      }
+                    >
+                      School of Health Sciences
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment(
+                          "School of Accountancy and Management"
+                        )
+                      }
+                    >
+                      School of Accountancy and Management
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment(
+                          "School of Information Technology"
+                        )
+                      }
+                    >
+                      School of Information Technology
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Arts and Sciences")
+                      }
+                    >
+                      School of Arts and Sciences
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Architecture")
+                      }
+                    >
+                      School of Architecture
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("Senior High School Department")
+                      }
+                    >
+                      Senior High School Department
+                    </a>
+                  </li>
+                  {/* Add other department options as needed */}
                 </ul>
               </div>
 
@@ -263,6 +326,12 @@ const Events = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
+              {/* add total users here */}
+              <div className="btn no-animation">
+                <CalendarDays className="w-4 h-4" />
+                Total Events: {filteredEvents.length}
+              </div>
+
               {/* create event button */}
               <div
                 onClick={() =>
@@ -283,9 +352,10 @@ const Events = () => {
                   <tr>
                     <th></th>
                     <th>Event Title</th>
-                    <th>Event Organizer</th>
-                    <th>Event Date</th>
-                    <th>Attendees</th>
+                    <th>Organizer</th>
+                    <th>Department</th>
+                    <th>Date</th>
+                    <th>Respondents</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -296,6 +366,7 @@ const Events = () => {
                         <th>{index + 1}</th>
                         <td>{event.event_title}</td>
                         <td>{event.event_organizer}</td>
+                        <td>{event.event_dep}</td>
                         <td>{formatDate(event.event_date)}</td>
                         <td>
                           <button
@@ -303,7 +374,7 @@ const Events = () => {
                             className="btn hover:shadow-inner bg-white hover:bg-gray-100"
                           >
                             <BookUser className="w-4" />
-                            View Attendees
+                            View Respondents
                           </button>
                         </td>
                         <td>
@@ -371,6 +442,58 @@ const Events = () => {
                       })
                     }
                   />
+                </div>
+
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">
+                    Event Department
+                  </label>
+                  <select
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_dep ? "border-red-500" : ""
+                    }`}
+                    name="event_dep"
+                    value={selectedEvent?.event_dep || ""}
+                    onChange={(e) =>
+                      setSelectedEvent({
+                        ...selectedEvent,
+                        event_dep: e.target.value,
+                      })
+                    }
+                  >
+                    <option disabled selected={!selectedEvent?.event_dep}>
+                      Choose Department
+                    </option>
+                    <option value="College of Dentistry">
+                      College of Dentistry
+                    </option>
+                    <option value="School of Optometry">
+                      School of Optometry
+                    </option>
+                    <option value="School of Health Sciences">
+                      School of Health Sciences
+                    </option>
+                    <option value="School of Accountancy and Management">
+                      School of Accountancy and Management
+                    </option>
+                    <option value="School of Information Technology">
+                      School of Information Technology
+                    </option>
+                    <option value="School of Arts and Sciences">
+                      School of Arts and Sciences
+                    </option>
+                    <option value="School of Architecture">
+                      School of Architecture
+                    </option>
+                    <option value="Senior High School Department">
+                      Senior High School Department
+                    </option>
+                  </select>
+                  {errors.event_dep && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_dep}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col space-y-1">
@@ -520,6 +643,58 @@ const Events = () => {
                 </div>
 
                 <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">
+                    Event Department
+                  </label>
+                  <select
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_dep ? "border-red-500" : ""
+                    }`}
+                    name="event_dep"
+                    value={newEvent.event_dep}
+                    onChange={(e) =>
+                      setNewEvent({
+                        ...newEvent,
+                        event_dep: e.target.value,
+                      })
+                    }
+                  >
+                    <option disabled selected>
+                      Choose Department
+                    </option>
+                    <option value="College of Dentistry">
+                      College of Dentistry
+                    </option>
+                    <option value="School of Optometry">
+                      School of Optometry
+                    </option>
+                    <option value="School of Health Sciences">
+                      School of Health Sciences
+                    </option>
+                    <option value="School of Accountancy and Management">
+                      School of Accountancy and Management
+                    </option>
+                    <option value="School of Information Technology">
+                      School of Information Technology
+                    </option>
+                    <option value="School of Arts and Sciences">
+                      School of Arts and Sciences
+                    </option>
+                    <option value="School of Architecture">
+                      School of Architecture
+                    </option>
+                    <option value="Senior High School Department">
+                      Senior High School Department
+                    </option>
+                  </select>
+                  {errors.event_organizer && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_dep}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col space-y-1">
                   <label className="text-sm font-semibold">Description</label>
                   <textarea
                     className={`textarea w-full p-2 border border-gray-300 rounded-md ${
@@ -609,6 +784,7 @@ const Events = () => {
                   <button
                     type="submit"
                     className="btn bg-nucolor3 hover:bg-nucolor2 text-black hover:text-gray-500 hover:shadow-md"
+                    onClick={handleCreateEvent}
                   >
                     Create Event
                   </button>
@@ -631,7 +807,7 @@ const Events = () => {
 
             <div className="max-w-4xl mx-auto text-[#333] p-3">
               <div className="text-4xl font-bold text-center mb-7">
-                Total Attendees: {attendees.length}
+                Total Respondents: {attendees.length}
               </div>
               {attendees.length > 0 ? (
                 <ul className="space-y-3">

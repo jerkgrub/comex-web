@@ -475,7 +475,7 @@ const Dnavbar = () => {
                 What are you?
               </option>
               <option value={"student"}>Student</option>
-              <option value={"teacher"}>Teacher</option>
+              <option value={"faculty"}>Faculty</option>
               <option value={"asp"}>ASP (Admin Support Personnel)</option>
               <option value={"ntp"}>NTP (Non Teaching Personnel)</option>
             </select>

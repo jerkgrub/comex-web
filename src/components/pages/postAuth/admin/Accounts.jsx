@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PencilIcon, Save, Trash2 } from "lucide-react";
+import { Blinds, PencilIcon, Save, Sigma, SquareLibrary, Trash2, Users } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,9 @@ const Accounts = () => {
   const [accounts, setAccounts] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDepartment, setSelectedDepartment] =
+    useState("All Departments");
+  const [selectedUsertype, setSelectedUsertype] = useState("All Usertypes");
 
   const navigate = useNavigate();
 
@@ -28,7 +31,14 @@ const Accounts = () => {
   const filteredAccounts = accounts.filter((account) => {
     const fullName =
       `${account.u_fname} ${account.u_mname} ${account.u_lname}`.toLowerCase();
-    return fullName.includes(searchTerm.toLowerCase());
+    const matchesSearchTerm = fullName.includes(searchTerm.toLowerCase());
+    const matchesDepartment =
+      selectedDepartment === "All Departments" ||
+      account.u_dep === selectedDepartment;
+    const matchesUsertype =
+      selectedUsertype === "All Usertypes" ||
+      account.usertype === selectedUsertype;
+    return matchesSearchTerm && matchesDepartment && matchesUsertype;
   });
 
   const handleEditClick = (accountId) => {
@@ -86,16 +96,12 @@ const Accounts = () => {
   return (
     <>
       <div className="bg-white flex p-12 justify-start w-full h-full">
-        <div className="bg-white w-full" >
+        <div className="bg-white w-full">
           <div className="text-4xl text-blue mb-3 font-bold">Manage Users</div>
 
-          <div className="form-control ">
+          <div className="form-control">
             <div className="flex input-group gap-3 justify-center items-">
-              {/* <div className="card shadow-lg h-full">
-                Total COMEX CONNECT Users:
-              </div> */}
-
-              {/* filter 1 */}
+              {/* department filter */}
               <div className="dropdown">
                 <div
                   tabIndex={0}
@@ -107,18 +113,95 @@ const Accounts = () => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  All
+                  <div className="flex flex-row gap-2">
+                  <SquareLibrary className="w-4 h-4"/>
+                  {selectedDepartment}
+                  </div>
                 </div>
-
                 <ul
                   tabIndex={0}
                   className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
                 >
                   <li>
-                    <a>College of Gayness</a>
+                    <a onClick={() => setSelectedDepartment("All Departments")}>
+                      All Departments
+                    </a>
                   </li>
                   <li>
-                    <a>Item 2</a>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("College of Dentistry")
+                      }
+                    >
+                      College of Dentistry
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Optometry")
+                      }
+                    >
+                      School of Optometry
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Health Sciences")
+                      }
+                    >
+                      School of Health Sciences
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment(
+                          "School of Accountancy and Management"
+                        )
+                      }
+                    >
+                      School of Accountancy and Management
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment(
+                          "School of Information Technology"
+                        )
+                      }
+                    >
+                      School of Information Technology
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Arts and Sciences")
+                      }
+                    >
+                      School of Arts and Sciences
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Architecture")
+                      }
+                    >
+                      School of Architecture
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("Senior High School Department")
+                      }
+                    >
+                      Senior High School Department
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -135,18 +218,35 @@ const Accounts = () => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  Usertype: All 
+                  <div className="flex flex-row gap-2">
+                  <Blinds className="w-4 h-4"/>
+                  {selectedUsertype}
+                  </div>
                 </div>
-
                 <ul
                   tabIndex={0}
                   className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
                 >
                   <li>
-                    <a>Student</a>
+                    <a onClick={() => setSelectedUsertype("All Usertypes")}>
+                      All Usertypes
+                    </a>
                   </li>
                   <li>
-                    <a>Faculty</a>
+                    <a onClick={() => setSelectedUsertype("student")}>
+                      Student
+                    </a>
+                  </li>
+                  <li>
+                    <a onClick={() => setSelectedUsertype("faculty")}>
+                      Faculty
+                    </a>
+                  </li>
+                  <li>
+                    <a onClick={() => setSelectedUsertype("asp")}>ASP</a>
+                  </li>
+                  <li>
+                    <a onClick={() => setSelectedUsertype("ntp")}>NTP</a>
                   </li>
                 </ul>
               </div>
@@ -158,6 +258,12 @@ const Accounts = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
+
+              {/* add total users here */}
+              <div className="btn no-animation">
+                <Users className="w-4 h-4"/>
+                Total Users: {filteredAccounts.length}
+              </div>
             </div>
           </div>
 
@@ -201,7 +307,7 @@ const Accounts = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5">No accounts found</td>
+                      <td colSpan="6">No accounts found</td>
                     </tr>
                   )}
                 </tbody>
@@ -228,53 +334,18 @@ const Accounts = () => {
                 </div>
               </div>
               {selectedUser && (
-                <form onSubmit={updateUser}>
-                  <div className="grid sm:grid-cols-2 gap-y-5 gap-x-5">
-                    <label className="block text-sm">
-                      <p className="mb-2">User Type</p>
-                      <select
-                        defaultValue={selectedUser.usertype}
-                        onChange={(e) =>
-                          setSelectedUser({
-                            ...selectedUser,
-                            usertype: e.target.value,
-                          })
-                        }
-                        className="font-sans select select-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                      >
-                        <option disabled>What are you?</option>
-                        <option value="student">Student</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="asp">
-                          ASP (Admin Support Personnel)
-                        </option>
-                        <option value="ntp">
-                          NTP (Non Teaching Personnel)
-                        </option>
-                      </select>
+                <form onSubmit={updateUser} className="space-y-2">
+                  <div>
+                    <label
+                      htmlFor="u_fname"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      First Name
                     </label>
-
-                    <div>
-                      <label className="text-sm mb-2 block">Middle Name</label>
+                    <div className="mt-2">
                       <input
-                        name="lname"
-                        type="text"
-                        value={selectedUser.u_mname}
-                        onChange={(e) =>
-                          setSelectedUser({
-                            ...selectedUser,
-                            u_mname: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter middle name"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-sm mb-2 block">First Name</label>
-                      <input
-                        name="name"
+                        id="u_fname"
+                        name="u_fname"
                         type="text"
                         value={selectedUser.u_fname}
                         onChange={(e) =>
@@ -283,15 +354,48 @@ const Accounts = () => {
                             u_fname: e.target.value,
                           })
                         }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter first name"
+                        required
+                        className="input input-bordered w-full"
                       />
                     </div>
+                  </div>
 
-                    <div>
-                      <label className="text-sm mb-2 block">Last Name</label>
+                  <div>
+                    <label
+                      htmlFor="u_mname"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Middle Name
+                    </label>
+                    <div className="mt-2">
                       <input
-                        name="lname"
+                        id="u_mname"
+                        name="u_mname"
+                        type="text"
+                        value={selectedUser.u_mname}
+                        onChange={(e) =>
+                          setSelectedUser({
+                            ...selectedUser,
+                            u_mname: e.target.value,
+                          })
+                        }
+                        required
+                        className="input input-bordered w-full"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="u_lname"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Last Name
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="u_lname"
+                        name="u_lname"
                         type="text"
                         value={selectedUser.u_lname}
                         onChange={(e) =>
@@ -300,18 +404,24 @@ const Accounts = () => {
                             u_lname: e.target.value,
                           })
                         }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter last name"
+                        required
+                        className="input input-bordered w-full"
                       />
                     </div>
+                  </div>
 
-                    <div>
-                      <label className="text-sm mb-2 block">
-                        Email Address
-                      </label>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Email
+                    </label>
+                    <div className="mt-2">
                       <input
+                        id="email"
                         name="email"
-                        type="text"
+                        type="email"
                         value={selectedUser.email}
                         onChange={(e) =>
                           setSelectedUser({
@@ -319,31 +429,24 @@ const Accounts = () => {
                             email: e.target.value,
                           })
                         }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter email"
+                        required
+                        className="input input-bordered w-full"
                       />
                     </div>
-                    <div>
-                      <label className="text-sm mb-2 block">
-                        Mobile Number
-                      </label>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="u_dep"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Department
+                    </label>
+                    <div className="mt-2">
                       <input
-                        name="number"
-                        type="number"
-                        value={selectedUser.u_mnum}
-                        onChange={(e) =>
-                          setSelectedUser({
-                            ...selectedUser,
-                            u_mnum: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter mobile number"
-                      />
-                    </div>
-                    <label className="block text-sm">
-                      <p className="mb-2">Department</p>
-                      <select
+                        id="u_dep"
+                        name="u_dep"
+                        type="text"
                         value={selectedUser.u_dep}
                         onChange={(e) =>
                           setSelectedUser({
@@ -351,88 +454,52 @@ const Accounts = () => {
                             u_dep: e.target.value,
                           })
                         }
-                        className="font-sans select select-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                      >
-                        <option disabled>Choose Department</option>
-                        <option value="College of Dentistry">
-                          College of Dentistry
-                        </option>
-                        <option value="School of Optometry">
-                          School of Optometry
-                        </option>
-                        <option value="School of Health Sciences">
-                          School of Health Sciences
-                        </option>
-                        <option value="School of Accountancy and Management">
-                          School of Accountancy and Management
-                        </option>
-                        <option value="School of Information Technology">
-                          School of Information Technology
-                        </option>
-                        <option value="School of Engineering">
-                          School of Engineering
-                        </option>
-                        <option value="College of Arts and Sciences">
-                          College of Arts and Sciences
-                        </option>
-                      </select>
-                    </label>
-
-                    <div>
-                      <label className="text-sm mb-2 block">
-                        Student Number
-                      </label>
-                      <input
-                        name="studentNum"
-                        type="text"
-                        value={selectedUser.u_studnum}
-                        onChange={(e) =>
-                          setSelectedUser({
-                            ...selectedUser,
-                            u_studnum: e.target.value,
-                          })
-                        }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter student number"
+                        required
+                        className="input input-bordered w-full"
                       />
                     </div>
-
-                    
                   </div>
 
                   <div>
-                      <label className="mt-3 text-sm mb-2 block">Date Hired</label>
+                    <label
+                      htmlFor="usertype"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      User Type
+                    </label>
+                    <div className="mt-2">
                       <input
-                        name="dateHired"
-                        type="date"
-                        value={selectedUser.u_datehired}
+                        id="usertype"
+                        name="usertype"
+                        type="text"
+                        value={selectedUser.usertype}
                         onChange={(e) =>
                           setSelectedUser({
                             ...selectedUser,
-                            u_datehired: e.target.value,
+                            usertype: e.target.value,
                           })
                         }
-                        className="input input-bordered w-full text-sm px-4 py-3.5 rounded-md outline-blue-500"
-                        placeholder="Enter date hired"
+                        required
+                        className="input input-bordered w-full"
                       />
                     </div>
-
+                  </div>
                   <div className="mt-7 flex flex-row ">
-                    <button
-                      type="submit"
-                      className="ml-auto mr-2 btn flex w-max text-sm justify-end rounded-md hover:shadow-inner bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
-                    >
-                      <Save className="w-5" />
-                      Save Edits
-                    </button>
+                <button
+                  type="submit"
+                  className="ml-auto mr-2 btn flex w-max text-sm justify-end rounded-md hover:shadow-inner bg-nucolor3 px-3 py-1.5 text-lg leading-6 text-nucolor4 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
+                >
+                  <Save className="w-5" />
+                  Save Edits
+                </button>
 
-                    <button
-                      onClick={deleteUser}
-                      className=" btn flex w-max text-sm justify-center rounded-md bg-red-700 hover:bg-red-400 px-3 py-1.5 text-lg leading-6 text-gray-100 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
-                    >
-                      <Trash2 className="w-5" />
-                      Delete User
-                    </button>
+                <button
+                  onClick={deleteUser}
+                  className=" btn flex w-max text-sm justify-center rounded-md bg-red-700 hover:bg-red-400 px-3 py-1.5 text-lg leading-6 text-gray-100 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
+                >
+                  <Trash2 className="w-5" />
+                  Archive User
+                </button>
                   </div>
                 </form>
               )}

@@ -43,6 +43,10 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  event_dep: {
+    type: String,
+    required: true,
+  },
   attendees: [AttendeeSchema],
 });
 
