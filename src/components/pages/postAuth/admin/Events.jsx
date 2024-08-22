@@ -140,7 +140,7 @@ const Events = () => {
 
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
-  };
+  };  
 
   const formatDate = (dateString) => {
     const options = { month: "long", day: "numeric", year: "numeric" };
@@ -208,7 +208,7 @@ const Events = () => {
     <>
       <div className="bg-white flex p-12 justify-start w-full h-full">
         <div className="bg-white w-full">
-          <div className="text-4xl text-blue mb-3 font-bold">Manage Events</div>
+          <div className="text-4xl text-blue mb-3 font-bold">Manage Activities</div>
 
           <div className="form-control">
             <div className="flex input-group gap-3 justify-center items-">
@@ -308,13 +308,62 @@ const Events = () => {
                   <li>
                     <a
                       onClick={() =>
-                        setSelectedDepartment("Senior High School Department")
+                        setSelectedDepartment("Community Extension Office")
                       }
                     >
-                      Senior High School Department
+                      Community Extension Office
                     </a>
                   </li>
                   {/* Add other department options as needed */}
+                </ul>
+              </div>
+
+              {/* filter 1 */}
+              <div className="dropdown">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn"
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  <div className="flex flex-row gap-2">
+                    <SquareLibrary className="w-4 h-4" />
+                    {/* {selectedDepartment} */}
+                    Type of Activity
+                  </div>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
+                >
+                  <li>
+                    <a onClick={() => setSelectedDepartment("All Departments")}>
+                      Type of Activity
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("College of Dentistry")
+                      }
+                    >
+                      Outreach
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() =>
+                        setSelectedDepartment("School of Optometry")
+                      }
+                    >
+                      Institutional
+                    </a>
+                  </li>
+                  
                 </ul>
               </div>
 
@@ -329,7 +378,7 @@ const Events = () => {
               {/* add total users here */}
               <div className="btn no-animation">
                 <CalendarDays className="w-4 h-4" />
-                Total Events: {filteredEvents.length}
+                Total Activities: {filteredEvents.length}
               </div>
 
               {/* create event button */}
@@ -340,7 +389,7 @@ const Events = () => {
                 className="btn mb-7 w-max hover:shadow-inner shadow-sm bg-nucolor3 shadow-md hover:bg-nucolor2 hover:shadow-md"
               >
                 <CirclePlus className="w-5" />
-                Create Event
+                Propose Activity
               </div>
             </div>
           </div>
@@ -383,7 +432,7 @@ const Events = () => {
                             className="btn hover:shadow-inner bg-white hover:bg-gray-100"
                           >
                             <PencilIcon className="w-4" />
-                            Edit Event
+                            Edit Activity
                           </button>
                         </td>
                       </tr>
@@ -409,11 +458,11 @@ const Events = () => {
 
             <div className="max-w-4xl mx-auto text-[#333] p-3">
               <div className="text-4xl font-semibold text-center mb-7">
-                Edit Event
+                Edit Activity
               </div>
               <form className="space-y-4">
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">Event Title</label>
+                  <label className="text-sm font-semibold">Activity Title</label>
                   <input
                     className="input w-full p-2 border border-gray-300 "
                     type="text"
@@ -446,7 +495,7 @@ const Events = () => {
 
                 <div className="flex flex-col space-y-1">
                   <label className="text-sm font-semibold">
-                    Event Department
+                    Activity Department
                   </label>
                   <select
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
@@ -485,11 +534,50 @@ const Events = () => {
                     <option value="School of Architecture">
                       School of Architecture
                     </option>
-                    <option value="Senior High School Department">
-                      Senior High School Department
+                    <option value="Community Extension Office">
+                      Community Extension Office
                     </option>
+                    
                   </select>
                   {errors.event_dep && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_dep}
+                    </p>
+                  )}
+                </div>
+
+                {/* type of activity */}
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">
+                  Activity Type
+                  </label>
+                  <select
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_dep ? "border-red-500" : ""
+                    }`}
+                    name="event_dep"
+                    value={newEvent.event_dep}
+                    onChange={(e) =>
+                      setNewEvent({
+                        ...newEvent,
+                        event_dep: e.target.value,
+                      })
+                    }
+                  >
+                    <option disabled selected>
+                      Choose Department
+                    </option>
+                    <option value="College of Dentistry">
+                      Outreach
+                    </option>
+                    <option value="School of Optometry">
+                      Institutional
+                    </option>
+                    <option value="School of Health Sciences">
+                      Sustainable
+                    </option>
+                  </select>
+                  {errors.event_organizer && (
                     <p className="text-red-500 text-xs mt-1">
                       {errors.event_dep}
                     </p>
@@ -528,7 +616,7 @@ const Events = () => {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">Event Date</label>
+                  <label className="text-sm font-semibold">Activity Date</label>
                   <input
                     className="w-full p-2 border border-gray-300 "
                     type="date"
@@ -544,7 +632,7 @@ const Events = () => {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">Event Time</label>
+                  <label className="text-sm font-semibold">Activity Time</label>
                   <input
                     className="w-full p-2 border border-gray-300 "
                     type="time"
@@ -594,11 +682,11 @@ const Events = () => {
 
             <div className="max-w-4xl mx-auto text-[#333] p-3">
               <div className="text-4xl font-semibold text-center mb-7">
-                Create Event
+                Propose Activity
               </div>
               <form className="space-y-4" onSubmit={handleCreateEvent}>
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">Event Title</label>
+                  <label className="text-sm font-semibold">Activity Title</label>
                   <input
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
                       errors.event_title ? "border-red-500" : ""
@@ -644,7 +732,7 @@ const Events = () => {
 
                 <div className="flex flex-col space-y-1">
                   <label className="text-sm font-semibold">
-                    Event Department
+                    Activity Department
                   </label>
                   <select
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
@@ -683,8 +771,46 @@ const Events = () => {
                     <option value="School of Architecture">
                       School of Architecture
                     </option>
-                    <option value="Senior High School Department">
-                      Senior High School Department
+                    <option value="Community Extension Office">
+                      Community Extension Office
+                    </option>
+                  </select>
+                  {errors.event_organizer && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.event_dep}
+                    </p>
+                  )}
+                </div>
+
+                {/* type of activity */}
+                <div className="flex flex-col space-y-1">
+                  <label className="text-sm font-semibold">
+                  Activity Type
+                  </label>
+                  <select
+                    className={`input w-full p-2 border border-gray-300 rounded-md ${
+                      errors.event_dep ? "border-red-500" : ""
+                    }`}
+                    name="event_dep"
+                    value={newEvent.event_dep}
+                    onChange={(e) =>
+                      setNewEvent({
+                        ...newEvent,
+                        event_dep: e.target.value,
+                      })
+                    }
+                  >
+                    <option disabled selected>
+                      Choose Department
+                    </option>
+                    <option value="College of Dentistry">
+                      Outreach
+                    </option>
+                    <option value="School of Optometry">
+                      Institutional
+                    </option>
+                    <option value="School of Health Sciences">
+                      Sustainable
                     </option>
                   </select>
                   {errors.event_organizer && (
@@ -739,7 +865,7 @@ const Events = () => {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">Event Date</label>
+                  <label className="text-sm font-semibold">Activity Date</label>
                   <input
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
                       errors.event_date ? "border-red-500" : ""
@@ -760,7 +886,7 @@ const Events = () => {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">Event Time</label>
+                  <label className="text-sm font-semibold">Activity Time</label>
                   <input
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
                       errors.event_time ? "border-red-500" : ""
@@ -786,7 +912,7 @@ const Events = () => {
                     className="btn bg-nucolor3 hover:bg-nucolor2 text-black hover:text-gray-500 hover:shadow-md"
                     onClick={handleCreateEvent}
                   >
-                    Create Event
+                    Create Activity
                   </button>
                 </div>
               </form>
