@@ -2,8 +2,10 @@ import { ChevronDown, ChevronUp, CircleUserRound, LogOut } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { UserContext } from "../../../../components/UserContext";
+import { UserContext } from "../UserContext";
 import axios from "axios";
+
+import ccLogo from "../images/ccLogo.png"
 
 // add items here
 const menuItems = [
@@ -18,7 +20,7 @@ const menuItems = [
   },
 ];
 
-const Dnavbar = () => {
+const PreAuthNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // New state for dropdown
   const { user, setUser } = useContext(UserContext); // Added setUser here
@@ -218,7 +220,7 @@ const Dnavbar = () => {
 
   return (
     <>
-      <div className="navbar bg-nucolor1 text-white2 border-b-4 border-nucolor3 drop-shadow-md">
+      <div className="navbar bg-nucolor1 text-white2 border-b-4 border-nucolor3 drop-shadow-lg">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -257,8 +259,9 @@ const Dnavbar = () => {
               ))}
             </ul>
           </div>
-          <div>
-            <img className="w-44" src="https://i.imgur.com/FKLQLuv.png" />
+          <div className="ml-3 flex flex-row justify-center items-center gap-1 ">
+            <img className="w-16" src={ccLogo} />
+            <h1 className="text-2xl invisible sm:visible font-semibold  ">COMEX CONNECT</h1>
           </div>
           {/* <a className="btn btn-ghost text-xl">COMsX CONNECT</a> */}
         </div>
@@ -775,4 +778,4 @@ const Dnavbar = () => {
   );
 };
 
-export default Dnavbar;
+export default PreAuthNavbar;

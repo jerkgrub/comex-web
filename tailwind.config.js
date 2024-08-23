@@ -44,7 +44,7 @@ export default {
         "nucolor7" : "#525db3",
       },
       screens: {
-        // 'sm': '1263px',
+        'sm': '646px',
       }
     }
   },

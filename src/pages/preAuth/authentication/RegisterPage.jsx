@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
-import "./RegisterPage.css";
 
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../../components/UserContext";
+import { UserContext } from "../../../components/UserContext";
 
 const RegisterPage = () => {
   const navigate = useNavigate();

@@ -1,30 +1,50 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { useContext, useState, useEffect } from 'react';
-import { UserContext } from './components/UserContext';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
+import { UserContext } from "./components/UserContext";
 
-import Sidebar, { SidebarItem } from './pages/postAuth/admin/Sidebar';
-import { About, Home } from './pages/postAuth/client';
-import LoginPage from './pages/preAuth/LoginPage';
-import { BookCopy, ContactRound, Gauge, Shield, SquareCheckBig, Ticket } from 'lucide-react';
-import Dashboard from './pages/postAuth/admin/Dashboard';
-import Events from './pages/postAuth/admin/Events';
-import Header from './pages/postAuth/client/Navbar/Header';
-import CommunityEngagementForm from './pages/postAuth/client/Forms/CommunityEngagementForm';
-import StudentEngagementForm from './pages/postAuth/client/Forms/StudentEngagementForm';
-import RegisterPage from './pages/preAuth/Register';
-import Cnavbar from './pages/postAuth/client/Navbar/Cnavbar';
-import ComexForms from './pages/postAuth/admin/ComexForms';
-import Accounts from './pages/postAuth/admin/Accounts';
-import Dnavbar from './pages/postAuth/client/Navbar/Dnavbar';
-import { Footer } from './components/Footer';
-import HeroPage from './pages/preAuth/HeroPage';
-import postAuthRedirect from './components/postAuthRedirect';
-import Profile from './pages/postAuth/client/Profile';
+import { Home } from "./pages/postAuth/client";
+import {
+  BookCopy,
+  ContactRound,
+  Gauge,
+  Shield,
+  SquareCheckBig,
+  Ticket,
+} from "lucide-react";
+
+import { Footer } from "./components/Footer";
+
+// Pre Authentication
+import PreAuthNavbar from "./components/navbar/PreAuthNavbar";
+import HeroPage from "./pages/preAuth/HeroPage";
+import RegisterPage from "./pages/preAuth/Authentication/RegisterPage";
+import LoginPage from "./pages/preAuth/Authentication/LoginPage";
+
+// Post Authentication {Admin}
+import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
+import Dashboard from "./pages/postAuth/admin/sidebarPages/Dashboard";
+import Events from "./pages/postAuth/admin/sidebarPages/Events";
+import ComexForms from "./pages/postAuth/admin/sidebarPages/ComexForms";
+import Accounts from "./pages/postAuth/admin/sidebarPages/Accounts";
+
+// Post Authentication {Client}
+import PostAuthNavbar from "./components/navbar/PostAuthNavbar";
+import Profile from "./pages/postAuth/client/Profile";
+
+// Misc
+import CommunityEngagementForm from "./pages/postAuth/client/forms/CommunityEngagementForm";
+import StudentEngagementForm from "./pages/postAuth/client/forms/StudentEngagementForm";
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
   const { user } = useContext(UserContext);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   
   if (!user || !token) {
     return <Navigate to="/" replace />;
@@ -32,19 +52,16 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-
 // Protected Hero Page
 function HeroPageWithNavbarAndFooter() {
   return (
     <>
-      <Dnavbar />
+      <PreAuthNavbar />
       <HeroPage />
       <Footer />
     </>
   );
 }
-
-const ProtectedHeroPage = postAuthRedirect(HeroPageWithNavbarAndFooter);
 
 // Admin Layout
 function AdminLayout() {
@@ -53,14 +70,43 @@ function AdminLayout() {
   return (
     <div className="flex">
       <Sidebar>
-        <SidebarItem to="/admin/dashboard" icon={<Gauge size={20} />} text={"Dashboard"} active />
-        <SidebarItem to="/admin/comextracker" icon={<SquareCheckBig size={20} />} text={"COMEX Tracker"} />
-        <SidebarItem to="/admin/comexforms" icon={<BookCopy size={20} />} text={"COMEX Forms"} />
-        <SidebarItem to="/admin/accounts" icon={<ContactRound size={20} />} text={"Manage Users"} />
-        <SidebarItem to="/admin/events" icon={<Ticket size={20} />} text={"Manage Events"} />
-        <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text={"Manage NSTP"} />
+        <SidebarItem
+          to="/admin/dashboard"
+          icon={<Gauge size={20} />}
+          text={"Dashboard"}
+          active
+        />
+        <SidebarItem
+          to="/admin/comextracker"
+          icon={<SquareCheckBig size={20} />}
+          text={"COMEX Tracker"}
+        />
+        <SidebarItem
+          to="/admin/comexforms"
+          icon={<BookCopy size={20} />}
+          text={"COMEX Forms"}
+        />
+        <SidebarItem
+          to="/admin/accounts"
+          icon={<ContactRound size={20} />}
+          text={"Manage Users"}
+        />
+        <SidebarItem
+          to="/admin/events"
+          icon={<Ticket size={20} />}
+          text={"Manage Events"}
+        />
+        <SidebarItem
+          to="/admin/nstp"
+          icon={<Shield size={20} />}
+          text={"Manage NSTP"}
+        />
       </Sidebar>
-      <div className={`flex-grow transition-all duration-200 ${expanded ? 'ml-64' : 'ml-16'} p-4`}>
+      <div
+        className={`flex-grow transition-all duration-200 ${
+          expanded ? "ml-64" : "ml-16"
+        } p-4`}
+      >
         <Outlet />
       </div>
     </div>
@@ -70,16 +116,16 @@ function AdminLayout() {
 function App() {
   const [user, setUser] = useState(() => {
     // Retrieve user from localStorage if it exists
-    const savedUser = localStorage.getItem('user');
+    const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
   useEffect(() => {
     // Save user to localStorage whenever it changes
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
     }
   }, [user]);
 
@@ -89,11 +135,36 @@ function App() {
         <Routes>
           {/* Pre Authentication */}
           <Route path="/" element={<HeroPageWithNavbarAndFooter />} />
-          <Route path="/login" element={<><Dnavbar /><LoginPage /><Footer /></>} />
-          <Route path="/register" element={<><Dnavbar /><RegisterPage /><Footer /></>} />
+          <Route
+            path="/login"
+            element={
+              <>
+                <PreAuthNavbar />
+                <LoginPage />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <>
+                <PreAuthNavbar />
+                <RegisterPage />
+                <Footer />
+              </>
+            }
+          />
 
           {/* Protected Routes for Admin */}
-          <Route path="/admin/*" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="events" element={<Events />} />
             <Route path="comexforms" element={<ComexForms />} />
@@ -101,12 +172,60 @@ function App() {
           </Route>
 
           {/* Protected Routes for Client */}
-          <Route path="/client/*" element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
-            <Route path="home" element={<><Cnavbar/><Home /><Footer /></>} />
-            <Route path="profile" element={<><Cnavbar/><Profile /><Footer /></>} />
-            <Route path="comexforms" element={<><Header /><ComexForms /><Footer /></>} />
-            <Route path="events" element={<><Header /><Events /><Footer /></>} />
-            <Route path="nstp" element={<><Header /><About /><Footer /></>} />
+          <Route
+            path="/client/*"
+            element={
+              <ProtectedRoute>
+                <Outlet />
+              </ProtectedRoute>
+            }
+          >
+            <Route
+              path="home"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <Home />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <Profile />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="comexforms"
+              element={
+                <>
+                  <ComexForms />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="events"
+              element={
+                <>
+                  <Events />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="nstp"
+              element={
+                <>
+                  <Footer />
+                </>
+              }
+            />
           </Route>
 
           {/* Forms */}

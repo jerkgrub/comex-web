@@ -1,61 +1,23 @@
 import { useNavigate } from "react-router-dom";
+import comexLOGO from "../../components/images/comexLOGO.png"
 
 const HeroPage = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const start_btn = () => {
+    // navigate('/login');
+  };
 
-    const start_btn = () =>{
-        // navigate('/login');
-    };
-
-    return (
-        <section className="text-gray-600 body-font bg-gradient-bg2 dark:bg-slate-900">
-    <div className="mx-auto flex md:px-24 md:py-10 md:flex-row flex-col items-center">
-        <div className="lg:flex-grow mt-5 md:mt-0 md:w-1.5/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-            <h1 className="text-4xl font-bold leading-9 text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 sm:-mb-9  md:text-7xl md:leading-normal">
-                Unlock your
-            </h1>
-            <h1 className="text-4xl font-bold leading-9 mb-1 text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-7xl md:leading-normal">
-                Community Impact.
-            </h1>
-            <p className="mb-4 font-normal md:pl-0 pl-2 pr-2 text-xl leading-relaxed dark:text-black">
-            Help shape our future together, here at NU MoA COMEX CONNECT.
-            </p>
-            
-            <div className="flex justify-center">
-                <button 
-                onClick={start_btn}
-                className="
-                btn
-                btn-ghost
-                btn-wide
-                flex 
-                justify-center 
-                rounded-md 
-                bg-nucolor3 
-                px-3 py-1.5 
-                text-lg 
-                font-semibold 
-                leading-6 
-                text-nucolor4 
-                shadow-sm 
-                hover:bg-lightyellow 
-                hover:text-white3 
-                focus-visible:outline 
-                focus-visible:outline-2 
-                focus-visible:outline-offset-2 
-                focus-visible:outline-nucolor2
-                ">
-                    Let's Start
-                </button>
-            </div>
+  return (
+    <div>
+        <div className="bg-gradient-bg3 p-10 py-24 flex flex-col bg-nucolor2 justify-around items-center gap-1">
+            <p className="font-semibold  text-6xl drop-shadow-lg	">"Unlock your Community Impact."</p>
+            <p className=" font-extralight text-2xl drop-shadow-lg italic">Welcome to Comex Connect!</p>
+            <img className="h-72 mt-12 drop-shadow-2xl" alt="hero" src="https://www.svgrepo.com/show/490900/hot-air-balloon.svg"/>
         </div>
-        <div className="lg:max-w-lg lg:w-full mb-5 md:mb-12 md:w-1/2 w-3/6">
-            <img className="object-cover object-center rounded" alt="hero" src="https://www.svgrepo.com/show/490900/hot-air-balloon.svg"/>
-        </div>
+        
     </div>
-</section>  
-    );
-}
+  );
+};
 
 export default HeroPage;

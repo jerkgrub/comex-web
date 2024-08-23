@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../../components/UserContext";
+import { UserContext } from "../../../components/UserContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();

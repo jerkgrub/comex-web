@@ -1,10 +1,10 @@
 import axios from "axios";
 import {
+  Archive,
   Blinds,
   CirclePlus,
   PencilIcon,
   Save,
-  Sigma,
   SquareLibrary,
   Trash2,
   Users,
@@ -626,7 +626,7 @@ const Accounts = () => {
                       onClick={deleteUser}
                       className=" btn flex w-max text-sm justify-center rounded-md bg-red-700 hover:bg-red-400 px-3 py-1.5 text-lg leading-6 text-gray-100 shadow-sm hover:bg-lightyellow hover:text-white3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nucolor2"
                     >
-                      <Trash2 className="w-5" />
+                      <Archive className="w-5" />
                       Archive User
                     </button>
                   </div>

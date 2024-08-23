@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Carousel, Card } from "flowbite-react";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -106,22 +106,7 @@ export const Home = () => {
             src="https://media.assettype.com/tribune%2F2024-04%2F3dfc4787-bf5e-46ed-ae8e-bbbfa9af00bf%2Ffp22king2.jpg?w=1200&auto=format%2Ccompress&fit=max"
             alt="..."
           />
-          <img
-            src="https://scontent.fmnl25-5.fna.fbcdn.net/v/t39.30808-6/409395598_332594226207403_8283928636046012260_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFs4NE3RrUTaI_zRyF5mam3XlKe9j1zNnxeUp72PXM2fFlVwPx2X3atgWM0Kq8bTe31lhwobg5sOga-vLXEt2Yp&_nc_ohc=DvGEwMIyC84Q7kNvgH_OwU6&_nc_ht=scontent.fmnl25-5.fna&oh=00_AYBqCmrpDMIdTx5Jfri1DjYanvUjnygXYYLlxKED0hEeDw&oe=666786C7"
-            alt="..."
-          />
-          <img
-            src="https://scontent.fmnl25-4.fna.fbcdn.net/v/t39.30808-6/379698356_284134601053366_3950300267946090664_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFov7NQA_DZsFvsKMNPcx4tLylJObNQ_O0vKUk5s1D87fhbgexgJwHyLMsC1KYnssTIgWRYajW8NMQ8akbJiOlZ&_nc_ohc=tpxYvTInk-AQ7kNvgFQxN4k&_nc_ht=scontent.fmnl25-4.fna&oh=00_AYCZXqRVQFB1iXm9WybYhCw0jSuLIJ1p_pPT0lNuP6TGEw&oe=66679FDC"
-            alt="..."
-          />
-          <img
-            src="https://scontent.fmnl25-4.fna.fbcdn.net/v/t39.30808-6/367731575_266680646132095_3079328307547621839_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFT2PjR_jpNtSTW86qkc98XZNPnT4STjDVk0-dPhJOMNYoY7mw908XQVAEEQy80Zzp_62yFs-rmHyC-IShh2FNf&_nc_ohc=6jjLpZ_tvUQQ7kNvgHMzTVB&_nc_ht=scontent.fmnl25-4.fna&oh=00_AYBUvPgCLftgHOAU2YEHASrbFoBjMkaywJxL8k7OjJD7vw&oe=6667A29F"
-            alt="..."
-          />
-          <img
-            src="https://national-u.edu.ph/wp-content/uploads/2022/03/IMG_6110-Copy.jpg  "
-            alt="..."
-          />
+
         </Carousel>
       </div>
 

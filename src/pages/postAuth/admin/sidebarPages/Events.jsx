@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  Archive,
   BookUser,
   CalendarDays,
   CirclePlus,
@@ -659,8 +660,8 @@ const Events = () => {
                     className="btn bg-red-700 hover:bg-red-300 text-white"
                     onClick={deleteEvent}
                   >
-                    <Trash2 className="w-4" />
-                    Delete Event
+                    <Archive className="w-4" />
+                    Archive Event
                   </button>
                 </div>
               </form>
