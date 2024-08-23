@@ -1,11 +1,11 @@
-const Event = require("../models/event_model");
+const Activity = require("../models/Activity_model");
 
 // 1. Create
-const newEvent = (req, res) => {
+const newActivity = (req, res) => {
   try {
-    Event.create(req.body)
-      .then((newEvent) => {
-        res.send({ newEvent: newEvent, status: "successfully inserted" });
+    Activity.create(req.body)
+      .then((newActivity) => {
+        res.send({ newActivity: newActivity, status: "successfully inserted" });
       })
       .catch((err) => {
         res.send({ message: "Something went wrong", error: err });
@@ -16,23 +16,23 @@ const newEvent = (req, res) => {
 };
 
 // 2. Read
-const findAllEvent = (req, res) => {
-  Event.find()
-    .then((allDaEvent) => {
-      res.json({ Events: allDaEvent });
+const findAllActivity = (req, res) => {
+  Activity.find()
+    .then((allDaActivity) => {
+      res.json({ Activities: allDaActivity });
     })
     .catch((err) => {
       res.json({ message: "Something went wrong", error: err });
     });
 };
 // FIND BY ID
-const findOneEvent = (req, res) => {
-  Event.findById(req.params.id)
-    .then((Event) => {
-      if (Event) {
-        res.json({ Event: Event });
+const findOneActivity = (req, res) => {
+  Activity.findById(req.params.id)
+    .then((Activity) => {
+      if (Activity) {
+        res.json({ Activity: Activity });
       } else {
-        res.status(404).json({ message: "Event not found" });
+        res.status(404).json({ message: "Activity not found" });
       }
     })
     .catch((err) => {
@@ -41,15 +41,15 @@ const findOneEvent = (req, res) => {
 };
 
 // 3. Update
-const updateEvent = (req, res) => {
-  Event.findOneAndUpdate({ _id: req.params.id }, req.body, {
+const updateActivity = (req, res) => {
+  Activity.findOneAndUpdate({ _id: req.params.id }, req.body, {
     new: true,
     runValidators: true,
   })
-    .then((updatedEvent) => {
+    .then((updatedActivity) => {
       res.json({
-        updatedEvent: updatedEvent,
-        status: "successfully Updated the Event",
+        updatedActivity: updatedActivity,
+        status: "successfully Updated the Activity",
       });
     })
     .catch((err) => {
@@ -58,13 +58,13 @@ const updateEvent = (req, res) => {
 };
 
 // 4. Delete
-const deleteEvent = (req, res) => {
-  Event.findOneAndDelete({ _id: req.params.id })
-    .then((deletedEvent) => {
-      if (deletedEvent) {
-        res.json({ message: "Event successfully deleted", deletedEvent });
+const deleteActivity = (req, res) => {
+  Activity.findOneAndDelete({ _id: req.params.id })
+    .then((deletedActivity) => {
+      if (deletedActivity) {
+        res.json({ message: "Activity successfully deleted", deletedActivity });
       } else {
-        res.status(404).json({ message: "Event not found" });
+        res.status(404).json({ message: "Activity not found" });
       }
     })
     .catch((err) => {
@@ -77,17 +77,17 @@ const deleteEvent = (req, res) => {
 // Create
 // Create
 const addAttendee = (req, res) => {
-  const eventId = req.params.id;
+  const ActivityId = req.params.id;
   const newAttendee = req.body; // Expecting { at_email: "email", at_fname: "fname", at_lname: "lname", at_mnum: "mnum" }
 
-  Event.findById(eventId)
-    .then((event) => {
-      if (!event) {
-        return res.status(404).json({ message: "Event not found" });
+  Activity.findById(ActivityId)
+    .then((Activity) => {
+      if (!Activity) {
+        return res.status(404).json({ message: "Activity not found" });
       }
 
       // Check if the attendee with the provided email already exists
-      const existingAttendee = event.attendees.find(
+      const existingAttendee = Activity.attendees.find(
         (attendee) => attendee.at_email === newAttendee.at_email
       );
       if (existingAttendee) {
@@ -97,12 +97,12 @@ const addAttendee = (req, res) => {
       }
 
       // Add the new attendee
-      event.attendees.push(newAttendee);
-      return event.save();
+      Activity.attendees.push(newAttendee);
+      return Activity.save();
     })
-    .then((updatedEvent) => {
+    .then((updatedActivity) => {
       res.json({
-        updatedEvent: updatedEvent,
+        updatedActivity: updatedActivity,
         status: "Attendee added successfully",
       });
     })
@@ -114,12 +114,12 @@ const addAttendee = (req, res) => {
 // Read
 // all attendees
 const getAllAttendees = (req, res) => {
-  Event.findById(req.params.id)
-    .then((event) => {
-      if (event) {
-        res.json({ attendees: event.attendees });
+  Activity.findById(req.params.id)
+    .then((Activity) => {
+      if (Activity) {
+        res.json({ attendees: Activity.attendees });
       } else {
-        res.status(404).json({ message: "Event not found" });
+        res.status(404).json({ message: "Activity not found" });
       }
     })
     .catch((err) => {
@@ -129,23 +129,23 @@ const getAllAttendees = (req, res) => {
 
 // Delete
 const deleteAttendee = (req, res) => {
-  const eventId = req.params.eventId;
+  const ActivityId = req.params.ActivityId;
   const attendeeEmail = req.params.email;
 
-  Event.findById(eventId)
-    .then((event) => {
-      if (event) {
-        event.attendees = event.attendees.filter(
+  Activity.findById(ActivityId)
+    .then((Activity) => {
+      if (Activity) {
+        Activity.attendees = Activity.attendees.filter(
           (attendee) => attendee.at_email !== attendeeEmail
         );
-        return event.save();
+        return Activity.save();
       } else {
-        res.status(404).json({ message: "Event not found" });
+        res.status(404).json({ message: "Activity not found" });
       }
     })
-    .then((updatedEvent) => {
+    .then((updatedActivity) => {
       res.json({
-        updatedEvent: updatedEvent,
+        updatedActivity: updatedActivity,
         status: "Attendee deleted successfully",
       });
     })
@@ -155,12 +155,12 @@ const deleteAttendee = (req, res) => {
 };
 
 module.exports = {
-  // events
-  newEvent,
-  findAllEvent,
-  findOneEvent,
-  updateEvent,
-  deleteEvent,
+  // Activities
+  newActivity,
+  findAllActivity,
+  findOneActivity,
+  updateActivity,
+  deleteActivity,
 
   // attendees
   addAttendee,

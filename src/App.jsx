@@ -29,7 +29,7 @@ import LoginPage from "./pages/preAuth/Authentication/LoginPage";
 // Post Authentication {Admin}
 import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
 import Dashboard from "./pages/postAuth/admin/sidebarPages/Dashboard";
-import Events from "./pages/postAuth/admin/sidebarPages/Events";
+import Activities from "./pages/postAuth/admin/sidebarPages/Activities";
 import ComexForms from "./pages/postAuth/admin/sidebarPages/ComexForms";
 import Accounts from "./pages/postAuth/admin/sidebarPages/Accounts";
 
@@ -92,9 +92,9 @@ function AdminLayout() {
           text={"Manage Users"}
         />
         <SidebarItem
-          to="/admin/events"
+          to="/admin/activities"
           icon={<Ticket size={20} />}
-          text={"Manage Events"}
+          text={"Manage Activities"}
         />
         <SidebarItem
           to="/admin/nstp"
@@ -166,7 +166,7 @@ function App() {
             }
           >
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="events" element={<Events />} />
+            <Route path="activities" element={<Activities />} />
             <Route path="comexforms" element={<ComexForms />} />
             <Route path="accounts" element={<Accounts />} />
           </Route>
@@ -210,10 +210,10 @@ function App() {
               }
             />
             <Route
-              path="events"
+              path="activities"
               element={
                 <>
-                  <Events />
+                  <Activities />
                   <Footer />
                 </>
               }
