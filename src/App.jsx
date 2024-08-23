@@ -2,24 +2,24 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from './components/UserContext';
 
-import Sidebar, { SidebarItem } from './components/pages/postAuth/admin/Sidebar';
-import { About, Home } from './components/pages/postAuth/client';
-import LoginPage from './components/pages/preAuth/LoginPage';
+import Sidebar, { SidebarItem } from './pages/postAuth/admin/Sidebar';
+import { About, Home } from './pages/postAuth/client';
+import LoginPage from './pages/preAuth/LoginPage';
 import { BookCopy, ContactRound, Gauge, Shield, SquareCheckBig, Ticket } from 'lucide-react';
-import Dashboard from './components/pages/postAuth/admin/Dashboard';
-import Events from './components/pages/postAuth/admin/Events';
-import Header from './components/pages/postAuth/client/Navbar/Header';
-import CommunityEngagementForm from './components/pages/postAuth/client/Forms/CommunityEngagementForm';
-import StudentEngagementForm from './components/pages/postAuth/client/Forms/StudentEngagementForm';
-import RegisterPage from './components/pages/preAuth/Register';
-import Cnavbar from './components/pages/postAuth/client/Navbar/Cnavbar';
-import ComexForms from './components/pages/postAuth/admin/ComexForms';
-import Accounts from './components/pages/postAuth/admin/Accounts';
-import Dnavbar from './components/pages/postAuth/client/Navbar/Dnavbar';
+import Dashboard from './pages/postAuth/admin/Dashboard';
+import Events from './pages/postAuth/admin/Events';
+import Header from './pages/postAuth/client/Navbar/Header';
+import CommunityEngagementForm from './pages/postAuth/client/Forms/CommunityEngagementForm';
+import StudentEngagementForm from './pages/postAuth/client/Forms/StudentEngagementForm';
+import RegisterPage from './pages/preAuth/Register';
+import Cnavbar from './pages/postAuth/client/Navbar/Cnavbar';
+import ComexForms from './pages/postAuth/admin/ComexForms';
+import Accounts from './pages/postAuth/admin/Accounts';
+import Dnavbar from './pages/postAuth/client/Navbar/Dnavbar';
 import { Footer } from './components/Footer';
-import HeroPage from './components/pages/preAuth/HeroPage';
+import HeroPage from './pages/preAuth/HeroPage';
 import postAuthRedirect from './components/postAuthRedirect';
-import Profile from './components/pages/postAuth/client/Profile';
+import Profile from './pages/postAuth/client/Profile';
 
 // Protected Route Component
 function ProtectedRoute({ children }) {

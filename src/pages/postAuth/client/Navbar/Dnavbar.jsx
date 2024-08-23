@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp, CircleUserRound, LogOut } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { UserContext } from "../../../../UserContext";
+import { UserContext } from "../../../../components/UserContext";
 import axios from "axios";
 
 // add items here

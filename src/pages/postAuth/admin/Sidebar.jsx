@@ -1,7 +1,7 @@
 import { ChevronsLeft, ChevronsRight, LogOut } from "lucide-react";
 import { useContext, createContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { UserContext } from "../../../UserContext";
+import { UserContext } from "../../../components/UserContext";
 import Swal from 'sweetalert2';
 
 const SidebarContext = createContext();

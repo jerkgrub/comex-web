@@ -1,15 +1,10 @@
 import React, { useContext, useState } from "react";
 import "./RegisterPage.css";
 
-import email_icon from "../../images/email.png";
-import password_icon from "../../images/password.png";
-import logo from "../../images/logo.png";
-
-import { FiEye, FiEyeOff } from "react-icons/fi";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../../UserContext";
+import { UserContext } from "../../components/UserContext";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
