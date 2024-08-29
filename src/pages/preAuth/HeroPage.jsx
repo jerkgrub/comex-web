@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import comexLOGO from "../../components/images/comexLOGO.png"
 
 const HeroPage = () => {
   const navigate = useNavigate();

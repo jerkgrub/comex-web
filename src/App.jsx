@@ -23,8 +23,8 @@ import { Footer } from "./components/Footer";
 // Pre Authentication
 import PreAuthNavbar from "./components/navbar/PreAuthNavbar";
 import HeroPage from "./pages/preAuth/HeroPage";
-import RegisterPage from "./pages/preAuth/Authentication/RegisterPage";
-import LoginPage from "./pages/preAuth/Authentication/LoginPage";
+import RegisterPage from "./pages/preAuth/authentication/RegisterPage";
+import LoginPage from "./pages/preAuth/authentication/LoginPage";
 
 // Post Authentication {Admin}
 import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
