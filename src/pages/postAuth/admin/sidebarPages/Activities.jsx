@@ -61,7 +61,7 @@ const Activities = () => {
   };
 
   const updateActivity = (e) => {
-    e.practivityDefault();
+    e.preventDefault();
     axios
       .put(
         `http://localhost:8000/api/activity/update/${selectedActivity._id}`,
@@ -100,7 +100,7 @@ const Activities = () => {
 
   const handleCreateActivity = (e) => {
     console.log("choif");
-    e.practivityDefault();
+    e.preventDefault();
     if (validateForm()) {
       axios
         .post("http://localhost:8000/api/activity/new", newActivity)

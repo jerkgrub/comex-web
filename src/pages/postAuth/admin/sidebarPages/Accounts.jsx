@@ -6,7 +6,6 @@ import {
   PencilIcon,
   Save,
   SquareLibrary,
-  Trash2,
   Users,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
