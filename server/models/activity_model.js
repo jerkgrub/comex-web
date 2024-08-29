@@ -1,40 +1,40 @@
 const mongoose = require("mongoose");
 
 const AttendeeSchema = new mongoose.Schema({
-  at_email: {
+  email: {
     type: String,
   },
-  at_fname: {
+  firstName: {
     type: String,
   },
-  at_lname: {
+  lastName: {
     type: String,
   },
-  at_mnum: {
+  mobileNumber: {
     type: String,
   },
 });
 
 const ActivitySchema = new mongoose.Schema({
-  activity_title: {
+  title: {
     type: String,
   },
-  activity_organizer: {
+  organizer: {
     type: String,
   },
-  activity_description: {
+  description: {
     type: String,
   },
-  activity_image: {
+  image: {
     type: String,
   },
-  activity_date: {
+  date: {
     type: Date,
   },
-  activity_time: {
+  time: {
     type: String,
   },
-  activity_dep: {
+  department: {
     type: String,
   },
   attendees: [AttendeeSchema],

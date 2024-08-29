@@ -5,7 +5,6 @@ import {
   CalendarDays,
   CirclePlus,
   PencilIcon,
-  Plus,
   Save,
   SquareLibrary,
   Trash2,
@@ -18,13 +17,13 @@ const Activities = () => {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [attendees, setAttendees] = useState([]);
   const [newActivity, setNewActivity] = useState({
-    activity_title: "",
-    activity_organizer: "",
-    activity_description: "",
-    activity_image: "",
-    activity_date: "",
-    activity_time: "",
-    activity_dep: "",
+    title: "",
+    organizer: "",
+    description: "",
+    image: "",
+    date: "",
+    time: "",
+    department: "",
   });
   const [errors, setErrors] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,10 +49,10 @@ const Activities = () => {
     fetch(`http://localhost:8000/api/activity/${activityId}`)
       .then((response) => response.json())
       .then((data) => {
-        const formattedDate = new Date(data.Activity.activity_date)
+        const formattedDate = new Date(data.Activity.date)
           .toISOString()
           .split("T")[0];
-        setSelectedActivity({ ...data.Activity, activity_date: formattedDate });
+        setSelectedActivity({ ...data.Activity, date: formattedDate });
         document.getElementById("modal_edit").showModal();
       })
       .catch((error) => {
@@ -109,13 +108,13 @@ const Activities = () => {
           console.log(response.data);
           setActivities([...activities, response.data.newActivity]);
           setNewActivity({
-            activity_title: "",
-            activity_organizer: "",
-            activity_description: "",
-            activity_image: "",
-            activity_date: "",
-            activity_time: "",
-            activity_dep: "",
+            title: "",
+            organizer: "",
+            description: "",
+            image: "",
+            date: "",
+            time: "",
+            department: "",
           });
           setErrors({});
           document.getElementById("modal_create").close();
@@ -128,16 +127,16 @@ const Activities = () => {
 
   const validateForm = () => {
     let formErrors = {};
-    if (!newActivity.activity_title)
-      formErrors.activity_title = "Activity title is required";
-    if (!newActivity.activity_organizer)
-      formErrors.activity_organizer = "Activity organizer is required";
-    if (!newActivity.activity_description)
-      formErrors.activity_description = "Activity description is required";
-    if (!newActivity.activity_image)
-      formErrors.activity_image = "Activity image is required";
-    if (!newActivity.activity_date) formErrors.activity_date = "Activity date is required";
-    if (!newActivity.activity_time) formErrors.activity_time = "Activity time is required";
+    if (!newActivity.title)
+      formErrors.title = "Activity title is required";
+    if (!newActivity.organizer)
+      formErrors.organizer = "Activity organizer is required";
+    if (!newActivity.description)
+      formErrors.description = "Activity description is required";
+    if (!newActivity.image)
+      formErrors.image = "Activity image is required";
+    if (!newActivity.date) formErrors.date = "Activity date is required";
+    if (!newActivity.time) formErrors.time = "Activity time is required";
 
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
@@ -199,9 +198,9 @@ const Activities = () => {
   const filteredActivities = activities.filter((activity) => {
     return (
       activity &&
-      activity.activity_title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      activity.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (selectedDepartment === "All Departments" ||
-        activity.activity_dep === selectedDepartment)
+        activity.department === selectedDepartment)
     );
   });
 
@@ -414,10 +413,10 @@ const Activities = () => {
                     filteredActivities.map((activity, index) => (
                       <tr className="hover:shadow-inner hover" key={activity._id}>
                         <th>{index + 1}</th>
-                        <td>{activity.activity_title}</td>
-                        <td>{activity.activity_organizer}</td>
-                        <td>{activity.activity_dep}</td>
-                        <td>{formatDate(activity.activity_date)}</td>
+                        <td>{activity.title}</td>
+                        <td>{activity.organizer}</td>
+                        <td>{activity.department}</td>
+                        <td>{formatDate(activity.date)}</td>
                         <td>
                           <button
                             onClick={() => handleViewAttendeesClick(activity._id)}
@@ -467,12 +466,12 @@ const Activities = () => {
                   <input
                     className="input w-full p-2 border border-gray-300 "
                     type="text"
-                    name="activity_title"
-                    value={selectedActivity?.activity_title || ""}
+                    name="title"
+                    value={selectedActivity?.title || ""}
                     onChange={(e) =>
                       setSelectedActivity({
                         ...selectedActivity,
-                        activity_title: e.target.value,
+                        title: e.target.value,
                       })
                     }
                   />
@@ -483,12 +482,12 @@ const Activities = () => {
                   <input
                     className="input  w-full p-2 border border-gray-300 "
                     type="text"
-                    name="activity_organizer"
-                    value={selectedActivity?.activity_organizer || ""}
+                    name="organizer"
+                    value={selectedActivity?.organizer || ""}
                     onChange={(e) =>
                       setSelectedActivity({
                         ...selectedActivity,
-                        activity_organizer: e.target.value,
+                        organizer: e.target.value,
                       })
                     }
                   />
@@ -500,18 +499,18 @@ const Activities = () => {
                   </label>
                   <select
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_dep ? "border-red-500" : ""
+                      errors.department ? "border-red-500" : ""
                     }`}
-                    name="activity_dep"
-                    value={selectedActivity?.activity_dep || ""}
+                    name="department"
+                    value={selectedActivity?.department || ""}
                     onChange={(e) =>
                       setSelectedActivity({
                         ...selectedActivity,
-                        activity_dep: e.target.value,
+                        department: e.target.value,
                       })
                     }
                   >
-                    <option disabled selected={!selectedActivity?.activity_dep}>
+                    <option disabled selected={!selectedActivity?.department}>
                       Choose Department
                     </option>
                     <option value="College of Dentistry">
@@ -540,9 +539,9 @@ const Activities = () => {
                     </option>
                     
                   </select>
-                  {errors.activity_dep && (
+                  {errors.department && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_dep}
+                      {errors.department}
                     </p>
                   )}
                 </div>
@@ -554,14 +553,14 @@ const Activities = () => {
                   </label>
                   <select
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_dep ? "border-red-500" : ""
+                      errors.department ? "border-red-500" : ""
                     }`}
-                    name="activity_dep"
-                    value={newActivity.activity_dep}
+                    name="department"
+                    value={newActivity.department}
                     onChange={(e) =>
                       setNewActivity({
                         ...newActivity,
-                        activity_dep: e.target.value,
+                        department: e.target.value,
                       })
                     }
                   >
@@ -578,9 +577,9 @@ const Activities = () => {
                       Sustainable
                     </option>
                   </select>
-                  {errors.activity_organizer && (
+                  {errors.organizer && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_dep}
+                      {errors.department}
                     </p>
                   )}
                 </div>
@@ -589,12 +588,12 @@ const Activities = () => {
                   <label className="text-sm font-semibold">Description</label>
                   <textarea
                     className="textarea text-base w-full p-2 border border-gray-300 "
-                    name="activity_description"
-                    value={selectedActivity?.activity_description || ""}
+                    name="description"
+                    value={selectedActivity?.description || ""}
                     onChange={(e) =>
                       setSelectedActivity({
                         ...selectedActivity,
-                        activity_description: e.target.value,
+                        description: e.target.value,
                       })
                     }
                   />
@@ -605,12 +604,12 @@ const Activities = () => {
                   <input
                     className="input w-full p-2 border border-gray-300 "
                     type="text"
-                    name="activity_image"
-                    value={selectedActivity?.activity_image || ""}
+                    name="image"
+                    value={selectedActivity?.image || ""}
                     onChange={(e) =>
                       setSelectedActivity({
                         ...selectedActivity,
-                        activity_image: e.target.value,
+                        image: e.target.value,
                       })
                     }
                   />
@@ -621,12 +620,12 @@ const Activities = () => {
                   <input
                     className="w-full p-2 border border-gray-300 "
                     type="date"
-                    name="activity_date"
-                    value={selectedActivity?.activity_date || ""}
+                    name="date"
+                    value={selectedActivity?.date || ""}
                     onChange={(e) =>
                       setSelectedActivity({
                         ...selectedActivity,
-                        activity_date: e.target.value,
+                        date: e.target.value,
                       })
                     }
                   />
@@ -637,12 +636,12 @@ const Activities = () => {
                   <input
                     className="w-full p-2 border border-gray-300 "
                     type="time"
-                    name="activity_time"
-                    value={selectedActivity?.activity_time || ""}
+                    name="time"
+                    value={selectedActivity?.time || ""}
                     onChange={(e) =>
                       setSelectedActivity({
                         ...selectedActivity,
-                        activity_time: e.target.value,
+                        time: e.target.value,
                       })
                     }
                   />
@@ -690,19 +689,19 @@ const Activities = () => {
                   <label className="text-sm font-semibold">Activity Title</label>
                   <input
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_title ? "border-red-500" : ""
+                      errors.title ? "border-red-500" : ""
                     }`}
                     type="text"
-                    name="activity_title"
-                    value={newActivity.activity_title}
+                    name="title"
+                    value={newActivity.title}
                     onChange={(e) =>
-                      setNewActivity({ ...newActivity, activity_title: e.target.value })
+                      setNewActivity({ ...newActivity, title: e.target.value })
                     }
                     placeholder="Enter activity title"
                   />
-                  {errors.activity_title && (
+                  {errors.title && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_title}
+                      {errors.title}
                     </p>
                   )}
                 </div>
@@ -711,22 +710,22 @@ const Activities = () => {
                   <label className="text-sm font-semibold">Organizer</label>
                   <input
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_organizer ? "border-red-500" : ""
+                      errors.organizer ? "border-red-500" : ""
                     }`}
                     type="text"
-                    name="activity_organizer"
-                    value={newActivity.activity_organizer}
+                    name="organizer"
+                    value={newActivity.organizer}
                     onChange={(e) =>
                       setNewActivity({
                         ...newActivity,
-                        activity_organizer: e.target.value,
+                        organizer: e.target.value,
                       })
                     }
                     placeholder="Enter organizer name"
                   />
-                  {errors.activity_organizer && (
+                  {errors.organizer && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_organizer}
+                      {errors.organizer}
                     </p>
                   )}
                 </div>
@@ -737,14 +736,14 @@ const Activities = () => {
                   </label>
                   <select
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_dep ? "border-red-500" : ""
+                      errors.department ? "border-red-500" : ""
                     }`}
-                    name="activity_dep"
-                    value={newActivity.activity_dep}
+                    name="department"
+                    value={newActivity.department}
                     onChange={(e) =>
                       setNewActivity({
                         ...newActivity,
-                        activity_dep: e.target.value,
+                        department: e.target.value,
                       })
                     }
                   >
@@ -776,9 +775,9 @@ const Activities = () => {
                       Community Extension Office
                     </option>
                   </select>
-                  {errors.activity_organizer && (
+                  {errors.organizer && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_dep}
+                      {errors.department}
                     </p>
                   )}
                 </div>
@@ -790,14 +789,14 @@ const Activities = () => {
                   </label>
                   <select
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_dep ? "border-red-500" : ""
+                      errors.department ? "border-red-500" : ""
                     }`}
-                    name="activity_dep"
-                    value={newActivity.activity_dep}
+                    name="department"
+                    value={newActivity.department}
                     onChange={(e) =>
                       setNewActivity({
                         ...newActivity,
-                        activity_dep: e.target.value,
+                        department: e.target.value,
                       })
                     }
                   >
@@ -814,9 +813,9 @@ const Activities = () => {
                       Sustainable
                     </option>
                   </select>
-                  {errors.activity_organizer && (
+                  {errors.organizer && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_dep}
+                      {errors.department}
                     </p>
                   )}
                 </div>
@@ -825,21 +824,21 @@ const Activities = () => {
                   <label className="text-sm font-semibold">Description</label>
                   <textarea
                     className={`textarea w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_description ? "border-red-500" : ""
+                      errors.description ? "border-red-500" : ""
                     }`}
-                    name="activity_description"
-                    value={newActivity.activity_description}
+                    name="description"
+                    value={newActivity.description}
                     onChange={(e) =>
                       setNewActivity({
                         ...newActivity,
-                        activity_description: e.target.value,
+                        description: e.target.value,
                       })
                     }
                     placeholder="Enter activity description"
                   />
-                  {errors.activity_description && (
+                  {errors.description && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_description}
+                      {errors.description}
                     </p>
                   )}
                 </div>
@@ -848,19 +847,19 @@ const Activities = () => {
                   <label className="text-sm font-semibold">Image URL</label>
                   <input
                     type="text"
-                    name="activity_image"
-                    value={newActivity.activity_image}
+                    name="image"
+                    value={newActivity.image}
                     onChange={(e) =>
-                      setNewActivity({ ...newActivity, activity_image: e.target.value })
+                      setNewActivity({ ...newActivity, image: e.target.value })
                     }
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_image ? "border-red-500" : ""
+                      errors.image ? "border-red-500" : ""
                     }`}
                     placeholder="Enter image URL"
                   />
-                  {errors.activity_image && (
+                  {errors.image && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_image}
+                      {errors.image}
                     </p>
                   )}
                 </div>
@@ -869,19 +868,19 @@ const Activities = () => {
                   <label className="text-sm font-semibold">Activity Date</label>
                   <input
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_date ? "border-red-500" : ""
+                      errors.date ? "border-red-500" : ""
                     }`}
                     type="date"
-                    name="activity_date"
-                    value={newActivity.activity_date}
+                    name="date"
+                    value={newActivity.date}
                     onChange={(e) =>
-                      setNewActivity({ ...newActivity, activity_date: e.target.value })
+                      setNewActivity({ ...newActivity, date: e.target.value })
                     }
                     placeholder="Enter activity date"
                   />
-                  {errors.activity_date && (
+                  {errors.date && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_date}
+                      {errors.date}
                     </p>
                   )}
                 </div>
@@ -890,19 +889,19 @@ const Activities = () => {
                   <label className="text-sm font-semibold">Activity Time</label>
                   <input
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
-                      errors.activity_time ? "border-red-500" : ""
+                      errors.time ? "border-red-500" : ""
                     }`}
                     type="time"
-                    name="activity_time"
-                    value={newActivity.activity_time}
+                    name="time"
+                    value={newActivity.time}
                     onChange={(e) =>
-                      setNewActivity({ ...newActivity, activity_time: e.target.value })
+                      setNewActivity({ ...newActivity, time: e.target.value })
                     }
                     placeholder="Enter activity time"
                   />
-                  {errors.activity_time && (
+                  {errors.time && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.activity_time}
+                      {errors.time}
                     </p>
                   )}
                 </div>

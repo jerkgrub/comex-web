@@ -3,25 +3,26 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const UserSchema = new mongoose.Schema({
-  is_archived: Boolean,
+  isArchived: Boolean,
   password: String,
-  u_fname: String,
-  u_mname: String,
-  u_lname: String,
-  u_dep: String,
-  u_datehired: String,
+  avatar: String,
+  firstName: String,
+  middleName: String,
+  lastName: String,
+  department: String,
+  dateHired: String,
 
   usertype: {
     type: String,
     enum: ["student", "admin", "teacher", "asp", "ntp"], //different types
   },
 
-  u_mnum: {
+  mobileNumber: {
     type: String,
     unique: true,
   },
 
-  u_studnum: {
+  studentNumber: {
     //for student
     type: String,
     unique: true,
