@@ -8,16 +8,16 @@ const userController = require('../controllers/user_controller');
 router.post('/api/login', userController.login);
 
 // 1. Create
-router.post('/api/acc/new', userController.newAcc);
+router.post('/api/users/new', userController.newAcc);
 
 // 2. Read
-router.get('/api/acc/all', userController.findAllUser);
-router.get('/api/acc/:id', userController.findOneUser);
+router.get('/api/users/all', userController.findAllUser);
+router.get('/api/users/:id', userController.findOneUser);
 
 // 3. Update
-router.put('/api/acc/update/:id', userController.updateUser);
+router.put('/api/users/update/:id', userController.updateUser);
 
 // 4. Delete
-router.delete('/api/acc/delete/:id', userController.deleteUser); //DELETE
+router.delete('/api/users/delete/:id', userController.deleteUser); //DELETE
 
 module.exports = router;

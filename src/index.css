@@ -3,43 +3,42 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'titillium';
-    src: url('../public/fonts/titillium/TitilliumWeb-Regular.ttf') format('truetype');
-    font-weight: 400; /* Regular */
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'titillium';
-    src: url('../public/fonts/titillium/TitilliumWeb-SemiBold.ttf') format('truetype');
-    font-weight: 600; /* Bold */
-    font-style: semibold;
-  }
+  font-family: 'roboto-slab';
+  src: url('../public/fonts/roboto-slab/RobotoSlab-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
 
-  @font-face {
-    font-family: 'titillium';
-    src: url('../public/fonts/titillium/TitilliumWeb-Bold.ttf') format('truetype');
-    font-weight: 700; /* Bold */
-    font-style: bold;
-  }
+@font-face {
+  font-family: 'roboto';
+  src: url('../public/fonts/roboto/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
 
-  @font-face {
-    font-family: 'titillium';
-    src: url('../public/fonts/titillium/TitilliumWeb-Black.ttf') format('truetype');
-    font-weight: 900; /* Bold */
-    font-style: black;
-  }
+@font-face {
+  font-family: 'roboto';
+  src: url('../public/fonts/roboto/Roboto-Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: bold;
+}
 
-  @font-face {
-    font-family: 'titillium';
-    src: url('../public/fonts/titillium/TitilliumWeb-Light.ttf') format('truetype');
-    font-weight: 300; /* Bold */
-    font-style: light;
-  }
+@font-face {
+  font-family: 'roboto';
+  src: url('../public/fonts/roboto/Roboto-Light.ttf') format('truetype');
+  font-weight: 300; /* Light */
+  font-style: light;
+}
 
 @layer base {
-    body {
-        font-family: titillium, sans-serif;
-        
-    }
+  body {
+    font-family: 'roboto', sans-serif;
+  }
+}
+
+@layer components {
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
 }

@@ -70,68 +70,59 @@ const deleteUser = (req, res) => {
 };
 
 // auth
-const login = (req, res) => {
-  User.findOne({
-    email: req.body.email,
-  })
-    .then((user) => {
-      if (user === null) {
-        res.json({ message: "invalid login attempt" });
-      } else {
-        const correctPassword = bcrypt.compareSync(
-          req.body.password,
-          user.password
-        );
-        if (correctPassword) {
-          const token = user.generateAuthToken();
-          if (user.usertype === "admin") {
-            res.json({
-              message: "Successfully logged in as admin",
-              token: token,
-              user: {
-                firstName: user.firstName,
-                middleName: user.middleName,
-                mobileNumber: user.mobileNumber,
-                lastName: user.lastName,
-                department: user.department,
-                email: user.email,
-              },
-            });
-          } else if (user.usertype === "student") {
-            res.json({
-              message: "Successfully logged in as student",
-              token: token,
-              user: {
-                firstName: user.firstName,
-                middleName: user.middleName,
-                mobileNumber: user.mobileNumber,
-                lastName: user.lastName,
-                department: user.department,
-                email: user.email,
-              },
-            });
-          } else {
-            res.json({
-              message: "Role not recognized",
-              token: token,
-              user: {
-                firstName: user.firstName,
-                middleName: user.middleName,
-                mobileNumber: user.mobileNumber,
-                lastName: user.lastName,
-                department: user.department,
-                email: user.email,
-              },
-            });
-          }
-        } else {
-          res.json({ message: "invalid login attempt" });
-        }
-      }
-    })
-    .catch((err) => {
-      res.json({ message: "Something went wrong", error: err });
+const login = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    // Check if user exists
+    if (!user) {
+      return res.status(401).json({ message: "Email does not exist" });
+    }
+
+    // Check if the password is correct
+    const isPasswordCorrect = bcrypt.compareSync(
+      req.body.password,
+      user.password
+    );
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ message: "Incorrect password" });
+    }
+
+    // If login is successful
+    const token = user.generateAuthToken();
+    const userInfo = {
+      avatar: user.avatar,
+      firstName: user.firstName,
+      middleName: user.middleName,
+      lastName: user.lastName,
+      department: user.department,
+      idNumber: user.idNumber,
+      usertype: user.usertype,
+      mobileNumber: user.mobileNumber,
+      email: user.email,
+    };
+
+    const userTypeMessages = {
+      admin: "Successfully logged in as Admin",
+      "comex coordinator": "Successfully logged in as Comex Coordinator",
+      faculty: "Successfully logged in as Faculty",
+      ntp: "Successfully logged in as NTP",
+      student: "Successfully logged in as Student",
+    };
+
+    const userType = user.usertype.toLowerCase(); // Normalizing usertype to lowercase
+    const message = userTypeMessages[userType] || "Role not recognized";
+
+    res.status(200).json({
+      message,
+      token,
+      user: userInfo,
     });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
 };
 
 module.exports = {

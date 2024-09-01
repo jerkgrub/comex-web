@@ -10,19 +10,18 @@ const UserSchema = new mongoose.Schema({
   middleName: String,
   lastName: String,
   department: String,
-  dateHired: String,
 
   usertype: {
     type: String,
-    enum: ["student", "admin", "teacher", "asp", "ntp"], //different types
+    enum: ["Admin", "Comex Coordinator", "Faculty", "NTP", "Student"],
   },
-
+  
   mobileNumber: {
     type: String,
     unique: true,
   },
 
-  studentNumber: {
+  idNumber: {
     //for student
     type: String,
     unique: true,

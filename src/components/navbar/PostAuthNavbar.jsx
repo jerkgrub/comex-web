@@ -127,7 +127,7 @@ const PostAuthNavbar = () => {
           </div>
           <div className="ml-3 flex flex-row justify-center items-center gap-1 ">
             <img className="w-16" src={ccLogo} />
-            <h1 className="text-2xl font-semibold invisible sm:visible">COMEX CONNECT</h1>
+            <h1 className="text-2xl font-semibold invisible sm:visible font-roboto-slab">COMEX CONNECT</h1>
           </div>
         </div>
 

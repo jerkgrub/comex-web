@@ -2,6 +2,7 @@ const flowbite = require("flowbite-react/tailwind");
 
 /** @type {import('tailwindcss').Config} */
 export default {
+  
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -9,11 +10,14 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'roboto-slab': ['"roboto-slab"', 'serif'],
+      },
       boxShadow: {
         'right-thick': '5px 0 5px -3px rgba(0, 0, 0, 0.1), 5px 0 20px -5px rgba(0, 0, 0, 0.1)',
       },
       backgroundImage: theme => ({
-        'gradient-bg': "linear-gradient(rgba(24, 29, 63, 0.8), rgba(65, 62, 205, 0.8)), url('https://i.ytimg.com/vi/H-SEbyzIMYo/maxresdefault.jpg')",
+        'gradient-bg': "linear-gradient(rgba(24, 29, 63, 0.8), rgba(56 55 47 / 0.87)), url('https://i.ytimg.com/vi/H-SEbyzIMYo/maxresdefault.jpg')",
         'gradient-bg2': "linear-gradient(to right, #5fa2ff4d, #ffc47163)" ,
         'gradient-bg3': "linear-gradient(rgba(155, 168, 255, 0.8), rgba(255, 250, 182, 0.55)), url('https://i.imgur.com/QAFH7gb.jpeg')",
       }),

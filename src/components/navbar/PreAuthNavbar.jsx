@@ -28,6 +28,14 @@ const PreAuthNavbar = () => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
 
+  const buttonLogin = () => {
+    navigate("/login");
+  };
+
+  const buttonRegister = () => {
+    navigate("/register");
+  };
+
   // terms and service checkbox
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -261,7 +269,7 @@ const PreAuthNavbar = () => {
           </div>
           <div className="ml-3 flex flex-row justify-center items-center gap-1 ">
             <img className="w-16" src={ccLogo} />
-            <h1 className="text-2xl invisible sm:visible font-semibold  ">COMEX CONNECT</h1>
+            <h1 className="text-2xl invisible sm:visible font-semibold font-roboto-slab">COMEX CONNECT</h1>
           </div>
           {/* <a className="btn btn-ghost text-xl">COMsX CONNECT</a> */}
         </div>
@@ -315,9 +323,7 @@ const PreAuthNavbar = () => {
             <div className="dropdown dropdown-end">
               <div
                 role="button"
-                onClick={() =>
-                  document.getElementById("my_modal_1").showModal()
-                }
+                onClick={buttonLogin}
                 className="font-normal text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer"
               >
                 Log In
@@ -436,11 +442,9 @@ const PreAuthNavbar = () => {
               <div
                 role="button"
                 className="font-normal text-sm btn btn-ghost bg-nucolor3 hover:bg-[#9d8124] text-black  tracking-widest cursor-pointer"
-                onClick={() =>
-                  document.getElementById("my_modal_2").showModal()
-                }
+                onClick={buttonRegister}
               >
-                Sign up
+                Register
               </div>
             </div>
           </div>

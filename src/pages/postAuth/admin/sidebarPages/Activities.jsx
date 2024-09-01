@@ -9,9 +9,11 @@ import {
   SquareLibrary,
   Trash2,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -72,7 +74,9 @@ const Activities = () => {
         document.getElementById("modal_edit").close();
         setActivities((prevActivities) =>
           prevActivities.map((activity) =>
-            activity._id === selectedActivity._id ? response.data.updatedActivity : activity
+            activity._id === selectedActivity._id
+              ? response.data.updatedActivity
+              : activity
           )
         );
         setSelectedActivity(null);
@@ -84,12 +88,16 @@ const Activities = () => {
 
   const deleteActivity = () => {
     axios
-      .delete(`http://localhost:8000/api/activity/delete/${selectedActivity._id}`)
+      .delete(
+        `http://localhost:8000/api/activity/delete/${selectedActivity._id}`
+      )
       .then((response) => {
         console.log(response.data);
         document.getElementById("modal_edit").close();
         setActivities((prevActivities) =>
-          prevActivities.filter((activity) => activity._id !== selectedActivity._id)
+          prevActivities.filter(
+            (activity) => activity._id !== selectedActivity._id
+          )
         );
         setSelectedActivity(null);
       })
@@ -127,20 +135,18 @@ const Activities = () => {
 
   const validateForm = () => {
     let formErrors = {};
-    if (!newActivity.title)
-      formErrors.title = "Activity title is required";
+    if (!newActivity.title) formErrors.title = "Activity title is required";
     if (!newActivity.organizer)
       formErrors.organizer = "Activity organizer is required";
     if (!newActivity.description)
       formErrors.description = "Activity description is required";
-    if (!newActivity.image)
-      formErrors.image = "Activity image is required";
+    if (!newActivity.image) formErrors.image = "Activity image is required";
     if (!newActivity.date) formErrors.date = "Activity date is required";
     if (!newActivity.time) formErrors.time = "Activity time is required";
 
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
-  };  
+  };
 
   const formatDate = (dateString) => {
     const options = { month: "long", day: "numeric", year: "numeric" };
@@ -148,7 +154,10 @@ const Activities = () => {
   };
 
   const handleViewAttendeesClick = (activityId) => {
-    setSelectedActivity((prevActivity) => ({ ...prevActivity, _id: activityId })); // Set the selectedActivity ID
+    setSelectedActivity((prevActivity) => ({
+      ...prevActivity,
+      _id: activityId,
+    })); // Set the selectedActivity ID
     fetch(`http://localhost:8000/api/activity/get/attendee/${activityId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -208,7 +217,9 @@ const Activities = () => {
     <>
       <div className="bg-white flex p-12 justify-start w-full h-full">
         <div className="bg-white w-full">
-          <div className="text-4xl text-blue mb-3 font-bold">Manage Activities</div>
+          <div className="text-4xl text-blue mb-3 font-bold">
+            Manage Activities
+          </div>
 
           <div className="form-control">
             <div className="flex input-group gap-3 justify-center items-">
@@ -363,7 +374,6 @@ const Activities = () => {
                       Institutional
                     </a>
                   </li>
-                  
                 </ul>
               </div>
 
@@ -411,7 +421,10 @@ const Activities = () => {
                 <tbody>
                   {filteredActivities.length > 0 ? (
                     filteredActivities.map((activity, index) => (
-                      <tr className="hover:shadow-inner hover" key={activity._id}>
+                      <tr
+                        className="hover:shadow-inner hover"
+                        key={activity._id}
+                      >
                         <th>{index + 1}</th>
                         <td>{activity.title}</td>
                         <td>{activity.organizer}</td>
@@ -419,7 +432,9 @@ const Activities = () => {
                         <td>{formatDate(activity.date)}</td>
                         <td>
                           <button
-                            onClick={() => handleViewAttendeesClick(activity._id)}
+                            onClick={() =>
+                              handleViewAttendeesClick(activity._id)
+                            }
                             className="btn hover:shadow-inner bg-white hover:bg-gray-100"
                           >
                             <BookUser className="w-4" />
@@ -462,7 +477,9 @@ const Activities = () => {
               </div>
               <form className="space-y-4">
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">Activity Title</label>
+                  <label className="text-sm font-semibold">
+                    Activity Title
+                  </label>
                   <input
                     className="input w-full p-2 border border-gray-300 "
                     type="text"
@@ -537,7 +554,6 @@ const Activities = () => {
                     <option value="Community Extension Office">
                       Community Extension Office
                     </option>
-                    
                   </select>
                   {errors.department && (
                     <p className="text-red-500 text-xs mt-1">
@@ -548,9 +564,7 @@ const Activities = () => {
 
                 {/* type of activity */}
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">
-                  Activity Type
-                  </label>
+                  <label className="text-sm font-semibold">Activity Type</label>
                   <select
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
                       errors.department ? "border-red-500" : ""
@@ -567,12 +581,8 @@ const Activities = () => {
                     <option disabled selected>
                       Choose Department
                     </option>
-                    <option value="College of Dentistry">
-                      Outreach
-                    </option>
-                    <option value="School of Optometry">
-                      Institutional
-                    </option>
+                    <option value="College of Dentistry">Outreach</option>
+                    <option value="School of Optometry">Institutional</option>
                     <option value="School of Health Sciences">
                       Sustainable
                     </option>
@@ -686,7 +696,9 @@ const Activities = () => {
               </div>
               <form className="space-y-4" onSubmit={handleCreateActivity}>
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">Activity Title</label>
+                  <label className="text-sm font-semibold">
+                    Activity Title
+                  </label>
                   <input
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
                       errors.title ? "border-red-500" : ""
@@ -700,9 +712,7 @@ const Activities = () => {
                     placeholder="Enter activity title"
                   />
                   {errors.title && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.title}
-                    </p>
+                    <p className="text-red-500 text-xs mt-1">{errors.title}</p>
                   )}
                 </div>
 
@@ -784,9 +794,7 @@ const Activities = () => {
 
                 {/* type of activity */}
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold">
-                  Activity Type
-                  </label>
+                  <label className="text-sm font-semibold">Activity Type</label>
                   <select
                     className={`input w-full p-2 border border-gray-300 rounded-md ${
                       errors.department ? "border-red-500" : ""
@@ -803,12 +811,8 @@ const Activities = () => {
                     <option disabled selected>
                       Choose Department
                     </option>
-                    <option value="College of Dentistry">
-                      Outreach
-                    </option>
-                    <option value="School of Optometry">
-                      Institutional
-                    </option>
+                    <option value="College of Dentistry">Outreach</option>
+                    <option value="School of Optometry">Institutional</option>
                     <option value="School of Health Sciences">
                       Sustainable
                     </option>
@@ -858,9 +862,7 @@ const Activities = () => {
                     placeholder="Enter image URL"
                   />
                   {errors.image && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.image}
-                    </p>
+                    <p className="text-red-500 text-xs mt-1">{errors.image}</p>
                   )}
                 </div>
 
@@ -879,9 +881,7 @@ const Activities = () => {
                     placeholder="Enter activity date"
                   />
                   {errors.date && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.date}
-                    </p>
+                    <p className="text-red-500 text-xs mt-1">{errors.date}</p>
                   )}
                 </div>
 
@@ -900,9 +900,7 @@ const Activities = () => {
                     placeholder="Enter activity time"
                   />
                   {errors.time && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.time}
-                    </p>
+                    <p className="text-red-500 text-xs mt-1">{errors.time}</p>
                   )}
                 </div>
 
