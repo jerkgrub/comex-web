@@ -6,6 +6,7 @@ import { UserContext } from "../UserContext";
 import axios from "axios";
 
 import ccLogo from "../images/ccLogo.png";
+import ComexConnectHeader from "./ComexConnectHeader";
 
 // add items here
 const menuItems = [
@@ -162,12 +163,7 @@ const PreAuthNavbar = () => {
               ))}
             </ul>
           </div>
-          <div className="ml-3 flex flex-row justify-center items-center gap-1 ">
-            <img className="w-16 drop-shadow-md" src={ccLogo} />
-            <h1 className="text-2xl invisible sm:visible font-semibold font-roboto-slab drop-shadow-lg">
-              COMEX CONNECT
-            </h1>
-          </div>
+          <ComexConnectHeader/>
           {/* <a className="btn btn-ghost text-xl">COMsX CONNECT</a> */}
         </div>
 

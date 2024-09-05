@@ -25,13 +25,13 @@ import PreAuthNavbar from "./components/navbar/PreAuthNavbar";
 import HeroPage from "./pages/preAuth/HeroPage";
 import RegisterPage from "./pages/preAuth/authentication/RegisterPage";
 import LoginPage from "./pages/preAuth/authentication/LoginPage";
+import Users from "./pages/postAuth/admin/sidebarPages/Users";
 
 // Post Authentication {Admin}
 import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
 import Dashboard from "./pages/postAuth/admin/sidebarPages/Dashboard";
 import Activities from "./pages/postAuth/admin/sidebarPages/Activities";
 import ComexForms from "./pages/postAuth/admin/sidebarPages/ComexForms";
-import Accounts from "./pages/postAuth/admin/sidebarPages/Accounts";
 
 // Post Authentication {Client}
 import PostAuthNavbar from "./components/navbar/PostAuthNavbar";
@@ -46,7 +46,7 @@ import ScrollToTop from "./components/hooks/ScrollToTop";
 function ProtectedRoute({ children }) {
   const { user } = useContext(UserContext);
   const token = localStorage.getItem("token");
-  
+
   if (!user || !token) {
     return <Navigate to="/" replace />;
   }
@@ -77,18 +77,9 @@ function AdminLayout() {
           text={"Dashboard"}
           active
         />
+
         <SidebarItem
-          to="/admin/comextracker"
-          icon={<SquareCheckBig size={20} />}
-          text={"COMEX Tracker"}
-        />
-        <SidebarItem
-          to="/admin/comexforms"
-          icon={<BookCopy size={20} />}
-          text={"COMEX Forms"}
-        />
-        <SidebarItem
-          to="/admin/accounts"
+          to="/admin/users"
           icon={<ContactRound size={20} />}
           text={"Manage Users"}
         />
@@ -97,6 +88,7 @@ function AdminLayout() {
           icon={<Ticket size={20} />}
           text={"Manage Activities"}
         />
+
         <SidebarItem
           to="/admin/nstp"
           icon={<Shield size={20} />}
@@ -133,7 +125,7 @@ function App() {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
-        <ScrollToTop/>
+        <ScrollToTop />
         <Routes>
           {/* Pre Authentication */}
           <Route path="/" element={<HeroPageWithNavbarAndFooter />} />
@@ -170,7 +162,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="activities" element={<Activities />} />
             <Route path="comexforms" element={<ComexForms />} />
-            <Route path="accounts" element={<Accounts />} />
+            <Route path="users" element={<Users />} />
           </Route>
 
           {/* Protected Routes for Client */}

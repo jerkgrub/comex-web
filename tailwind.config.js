@@ -51,7 +51,16 @@ export default {
       },
       screens: {
         'sm': '646px',
-      }
+      },
+      keyframes: {
+        shine: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0.5' },
+          '100%': { transform: 'translateX(100%)', opacity: '0' },
+        },
+      },
+      animation: {
+        shine: 'shine 1s linear',
+      },
     }
   },
   plugins: [

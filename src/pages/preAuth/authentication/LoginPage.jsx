@@ -69,9 +69,6 @@ const LoginPage = () => {
             linkText="Register"
           />
         </div>
-        <button className="btn" onClick={handleTest}>
-          choips
-        </button>
       </div>
     </div>
   );

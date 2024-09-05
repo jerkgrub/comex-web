@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const UserSchema = new mongoose.Schema({
+
+  // user details
   isArchived: Boolean,
   password: String,
   avatar: String,
@@ -11,16 +13,8 @@ const UserSchema = new mongoose.Schema({
   lastName: String,
   department: String,
   usertype: String,
-  
-  mobileNumber: {
-    type: String,
-  },
-
-  idNumber: {
-    //for student
-    type: String,
-  },
-
+  mobileNumber: String,
+  idNumber: String,
   email: {
     type: String,
     unique: true,
