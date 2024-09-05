@@ -1,64 +1,55 @@
-import { Avatar } from "flowbite-react";
-import React from "react";
+import TextInput from "../../../components/inputs/TextInput";
+import AvatarWithName from "../../../components/AvatarWithName";
+import SelectInput from "../../../components/inputs/SelectInput";
+import MobileNumberInput from "../../../components/inputs/MobileNumberInput";
+import FetchUserData from "../../../components/hooks/FetchUserData";
+import ProfileInfoCard from "../../../components/ProfileInfoCard";
+import ButtonGeneric from "../../../components/inputs/ButtonGeneric";
+import { FileBadge, Handshake, RectangleEllipsis, Settings, Trophy, UserRoundPen } from "lucide-react";
 
 const Profile = () => {
+  const user = FetchUserData();
+
+  console.log(user.firstName);
+
   return (
-    <div className="w-full h-full bg-slate-200 p-6">
-      <div className="card justify-center items-center p-12 gap-6">
-        <div className="flex justify-center items-center gap-3">
-          <Avatar
-          rounded
-            img="https://www.2020mag.com/CMSImagesContent/2014/9/Guy-Nerd-glasses_w.png"
-            size="lg"
+    <div className="min-h-[91.3vh] bg-gradient-bg3 bg-cover bg-no-repeat flex flex-col justify-start items-center py-16 gap-6">
+      <ProfileInfoCard />
+
+      <div className="flex flex-col sm:flex-row">
+        {/* Settings */}
+        <div className=" backdrop-blur-sm p-4 rounded-lg w-max justify-center items-center flex flex-col gap-2 drop-shadow-lg">
+          <div className="text-xl flex flex-row justify-center items-center gap-1 self-start">
+            <Settings className="w-[1.21rem]" />
+            Settings
+          </div>
+          <ButtonGeneric
+            label="Edit Profile"
+            icon={UserRoundPen}
+            className="bg-white2 w-full"
           />
-
-          <div className="flex flex-col">
-            <h1 className="text-5xl font-bold text-nucolor1">Hello</h1>
-            <h1 className="text-5xl font-bold text-nucolor3">
-              {localStorage.getItem("userFirstName")}!
-            </h1>
-          </div>
+          <ButtonGeneric
+            label="Change Password"
+            icon={RectangleEllipsis}
+            className="bg-white2 w-full "
+          />
         </div>
-
-        <div className="card shadow-lg p-6 bg-white w-max h-max flex gap-6">
-          <div>
-            <div className="font-bold">Full Name</div>
-            <div>{`${localStorage.getItem(
-              "userFirstName"
-            )} ${localStorage.getItem("userLastName")}`}</div>
+        {/* Achievements */}
+        <div className=" backdrop-blur-sm p-4 rounded-lg w-max justify-center items-center flex flex-col gap-2 drop-shadow-lg">
+          <div className="text-xl flex flex-row justify-center items-center gap-1 self-start">
+            <Trophy className="w-[1.19rem]" />
+            Achievements
           </div>
-
-          <div>
-            <div className="font-bold">Mobile</div>
-            <div>{localStorage.getItem("userMnum")}</div>
-          </div>
-
-          <div>
-            <div className="font-bold">Department</div>
-            <div>{localStorage.getItem("userDep")}</div>
-          </div>
-
-          <div>
-            <div className="font-bold">Email</div>
-            <div>{localStorage.getItem("userEmail")}</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col p-6 gap-6 justify-center items-center">
-        <div className="w-max">
-          <div className="text-4xl font-regular text-nucolor1">
-            You have participated in..
-          </div>
-          <div className="text-5xl font-semibold">Community Service</div>
-        </div>
-
-        <div className="stats shadow">
-          <div className="stat">
-            <div className="stat-title">I have Completed</div>
-            <div className="stat-value">40</div>
-            <div className="stat-desc">hours of community service</div>
-          </div>
+          <ButtonGeneric
+            label="View Participated Activities"
+            icon={Handshake}
+            className="bg-white2 w-full"
+          />
+          <ButtonGeneric
+            label="Download Certificates"
+            icon={FileBadge}
+            className="bg-white2 w-full "
+          />
         </div>
       </div>
     </div>

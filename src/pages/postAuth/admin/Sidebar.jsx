@@ -3,12 +3,14 @@ import { useContext, createContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../../components/UserContext";
 import Swal from 'sweetalert2';
+import { showToast } from "../../../components/Toast";
+import FetchUserData from "../../../components/hooks/FetchUserData";
 
 const SidebarContext = createContext();
 
 export default function Sidebar({ children }) {
   const [expanded, setExpanded] = useState(false);
-  const { user, setUser } = useContext(UserContext);
+  const user = FetchUserData();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -28,17 +30,9 @@ export default function Sidebar({ children }) {
           }
         }).then(() => {
           console.log("Logged out");
-          localStorage.removeItem('token');
-          localStorage.removeItem('userFirstName');
-          navigate('/').then(() => {
-            // Display a success message
-            Swal.fire({
-              icon: 'success',
-              title: 'Logged out.',
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          });
+          localStorage.clear();
+          showToast("success", "Signed out!");
+          navigate("/")
         });
       }
     });
@@ -68,7 +62,7 @@ export default function Sidebar({ children }) {
         <div className="border-t border-nucolor6 flex p-3 items-center">
           <div className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
             <div className="leading-4">
-              <h4 className="font-semibold text-whitey">Admin</h4>
+              <h4 className="font-semibold text-whitey">{user.firstName}</h4>
               <span className="text-xs text-gray-400"></span>
             </div>
 

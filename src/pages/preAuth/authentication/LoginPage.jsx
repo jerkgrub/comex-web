@@ -7,6 +7,7 @@ import RememberMe from "../../../components/inputs/RememberMe";
 import ForgotPassword from "../../../components/inputs/ForgotPassword";
 import LoginButton from "../../../components/LoginButton";
 import { UserContext } from "../../../components/UserContext";
+import { showToast } from "../../../components/Toast";
 
 const LoginPage = () => {
   const { setUser } = useContext(UserContext);
@@ -26,8 +27,12 @@ const LoginPage = () => {
     setPasswordError(!e.target.value);
   };
 
+  const handleTest = () => {
+    showToast("success", "Registration complete!");
+  }
+
   return (
-    <div className="py-9 bg-gradient-bg bg-cover bg-no-repeat p-3 flex justify-center items-center">
+    <div className="min-h-[91.3vh] py-9 bg-gradient-bg bg-cover bg-no-repeat p-3 flex justify-center items-center">
       <div className="bg-white2 sm:w-max flex flex-col w-full py-8 px-4 rounded-xl shadow-xl">
         <h1 className="text-2xl font-extrabold text-center mb-5">Log in</h1>
 
@@ -64,6 +69,9 @@ const LoginPage = () => {
             linkText="Register"
           />
         </div>
+        <button className="btn" onClick={handleTest}>
+          choips
+        </button>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ router.post('/api/users/new', userController.newAcc);
 // 2. Read
 router.get('/api/users/all', userController.findAllUser);
 router.get('/api/users/:id', userController.findOneUser);
+router.get('/api/users/email/:email', userController.findOneUserByEmail);
 
 // 3. Update
 router.put('/api/users/update/:id', userController.updateUser);

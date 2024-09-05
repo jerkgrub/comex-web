@@ -1,12 +1,14 @@
+// src/components/inputs/TextInput.jsx
+
 const TextInput = ({
   label,
-  type = 'text',
-  placeholder = '',
+  type = "text",
+  placeholder = "",
   value,
   onChange,
-  className = '',
+  className = "",
   error = false,
-  errorMessage = '',
+  errorMessage = "",
 }) => {
   return (
     <div className="mb-5">
@@ -16,9 +18,11 @@ const TextInput = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`input input-bordered w-full ${className} ${error ? 'border-red-500' : ''}`}
+        className={`input input-bordered w-full ${className} ${
+          error ? "border-red-500" : ""
+        }`}
       />
-      {error && <p className="pl-1 text-red-500 text-sm mt-1">* {errorMessage}.</p>}
+      {error && <p className="pl-1 text-red-500 text-sm mt-1">* {errorMessage}</p>}
     </div>
   );
 };

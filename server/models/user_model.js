@@ -10,21 +10,15 @@ const UserSchema = new mongoose.Schema({
   middleName: String,
   lastName: String,
   department: String,
-
-  usertype: {
-    type: String,
-    enum: ["Admin", "Comex Coordinator", "Faculty", "NTP", "Student"],
-  },
+  usertype: String,
   
   mobileNumber: {
     type: String,
-    unique: true,
   },
 
   idNumber: {
     //for student
     type: String,
-    unique: true,
   },
 
   email: {
@@ -47,10 +41,10 @@ UserSchema.pre("save", function (next) {
   next();
 });
 
-UserSchema.pre("save", function (next) {
-  this.usertype = this.usertype.toLowerCase();
-  next();
-});
+// UserSchema.pre("save", function (next) {
+//   this.usertype = this.usertype.toLowerCase();
+//   next();
+// });
 
 UserSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(

@@ -3,12 +3,30 @@ const bcrypt = require("bcryptjs");
 
 // 1. Create
 const newAcc = (req, res) => {
-  User.create(req.body)
-    .then((newAcc) => {
-      res.json({ newAcc: newAcc, status: "successfully inserted" });
+  const { email } = req.body;
+
+  // Check if the email already exists
+  User.findOne({ email })
+    .then((existingUser) => {
+      if (existingUser) {
+        // If the email is already registered
+        return res.status(400).json({
+          message:
+            "The email you have provided is already associated with an account.",
+        });
+      }
+
+      // If email is not used, create the new user
+      User.create(req.body)
+        .then((newAcc) => {
+          res.json({ newAcc: newAcc, status: "successfully inserted" });
+        })
+        .catch((err) => {
+          res.status(500).json({ message: "Something went wrong", error: err });
+        });
     })
     .catch((err) => {
-      res.json({ message: "Something went wrong", error: err });
+      res.status(500).json({ message: "Something went wrong", error: err });
     });
 };
 
@@ -25,6 +43,20 @@ const findAllUser = (req, res) => {
 // FIND BY ID
 const findOneUser = (req, res) => {
   User.findById(req.params.id)
+    .then((user) => {
+      if (user) {
+        res.json({ User: user });
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Something went wrong", error: err });
+    });
+};
+// FIND BY EMAIL
+const findOneUserByEmail = (req, res) => {
+  User.findOne({ email: req.params.email })
     .then((user) => {
       if (user) {
         res.json({ User: user });
@@ -132,6 +164,7 @@ module.exports = {
 
   findAllUser, //read
   findOneUser, //read
+  findOneUserByEmail, //read
 
   updateUser, //update
 

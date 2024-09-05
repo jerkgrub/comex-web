@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { showToast } from "./Toast";
 
 const LoginButton = ({ email, password, setUser, disabled = false }) => {
   const navigate = useNavigate();
@@ -22,12 +23,16 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
           const { token, user, message } = response.data;
           if (response.status === 200) {
             // Store user details and JWT in local storage
+            // localStorage.setItem("token", token);
+            // localStorage.setItem("userFirstName", user.firstName);
+            // localStorage.setItem("userLastName", user.lastName);
+            // localStorage.setItem("userEmail", user.email);
+            // localStorage.setItem("userMnum", user.mobileNumber);
+            // localStorage.setItem("userDep", user.department);
+
             localStorage.setItem("token", token);
-            localStorage.setItem("userFirstName", user.firstName);
-            localStorage.setItem("userLastName", user.lastName);
             localStorage.setItem("userEmail", user.email);
-            localStorage.setItem("userMnum", user.mobileNumber);
-            localStorage.setItem("userDep", user.department);
+            localStorage.setItem("userUsertype", user.usertype);
 
             setUser({ email, token }); // Update user context
 
@@ -39,13 +44,8 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
             const path = successMessages[message];
 
             if (path) {
-              Swal.fire({
-                scrollbarPadding: false,
-                icon: "success",
-                title: message,
-                showConfirmButton: false,
-                timer: 1500,
-              });
+              // showToast("success", message + "!");
+              showToast("success", "Logged in!");
               navigate(path);
             } else {
               Swal.fire({

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react'; // Adjust the import path if necessary
 
-const PasswordInput = ({ label, placeholder = '', value, onChange, className = '' }) => {
+const PasswordInput = ({ label, placeholder = '', value, onChange, className = '', error = false, errorMessage = '' }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -11,7 +11,7 @@ const PasswordInput = ({ label, placeholder = '', value, onChange, className = '
   return (
     <div className="mb-5">
       {label && <h2 className="pl-1 font-semibold mb-1">{label}</h2>}
-      <label className="input input-bordered flex  items-center gap-2 w-full">
+      <label className={`input input-bordered flex items-center gap-2 w-full ${error ? 'border-red-500' : ''}`}>
         <input
           type={isPasswordVisible ? 'text' : 'password'}
           placeholder={placeholder}
@@ -27,6 +27,7 @@ const PasswordInput = ({ label, placeholder = '', value, onChange, className = '
           {isPasswordVisible ? <EyeOff className='w-5' /> : <Eye className='w-5' />}
         </button>
       </label>
+      {error && <p className="pl-1 text-red-500 text-sm mt-1">* {errorMessage}</p>}
     </div>
   );
 };

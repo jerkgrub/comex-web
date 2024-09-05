@@ -2,11 +2,13 @@ import React from 'react';
 
 const SelectInput = ({
   label,
-  options = [], // Default to an empty array if no options are provided
+  options = [],
   value,
   onChange,
   className = '',
   placeholder = 'Select an option',
+  error = false,
+  errorMessage = '',
 }) => {
   return (
     <div className="mb-5">
@@ -14,7 +16,7 @@ const SelectInput = ({
       <select
         value={value}
         onChange={onChange}
-        className={`select select-bordered w-full ${className}`}
+        className={`select select-bordered w-full ${className} ${error ? 'border-red-500' : ''}`}
       >
         <option value="" disabled>
           {placeholder}
@@ -25,6 +27,7 @@ const SelectInput = ({
           </option>
         ))}
       </select>
+      {error && <p className="pl-1 text-red-500 text-sm mt-1">* {errorMessage}</p>}
     </div>
   );
 };

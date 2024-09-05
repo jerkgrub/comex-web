@@ -40,6 +40,7 @@ import Profile from "./pages/postAuth/client/Profile";
 // Misc
 import CommunityEngagementForm from "./pages/postAuth/client/forms/CommunityEngagementForm";
 import StudentEngagementForm from "./pages/postAuth/client/forms/StudentEngagementForm";
+import ScrollToTop from "./components/hooks/ScrollToTop";
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -132,6 +133,7 @@ function App() {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
+        <ScrollToTop/>
         <Routes>
           {/* Pre Authentication */}
           <Route path="/" element={<HeroPageWithNavbarAndFooter />} />

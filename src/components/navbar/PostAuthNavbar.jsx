@@ -1,9 +1,10 @@
 import { ChevronDown, CircleUserRound, LogOut } from "lucide-react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { UserContext } from "../UserContext";
-import ccLogo from "../images/ccLogo.png"
+import ccLogo from "../images/ccLogo.png";
+import { showToast } from "../Toast";
+import FetchUserData from "../hooks/FetchUserData";
 
 // Add items here
 const menuItems = [
@@ -15,13 +16,6 @@ const menuItems = [
       { name: "Adopted Barangays", link: "#" },
     ],
   },
-  // {
-  //   name: 'Tracker',
-  //   subItems: [
-  //     { name: 'Administrators', link: '#' },
-  //     { name: 'Adopted Barangays', link: '#' },
-  //   ]
-  // },
   {
     name: "Events",
     subItems: [
@@ -33,10 +27,9 @@ const menuItems = [
 ];
 
 const PostAuthNavbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // New state for dropdown
-  const { user, setUser } = useContext(UserContext); // Added setUser here
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+  const user = FetchUserData();
+
   const navigate = useNavigate();
 
   const handleProfile = () => {
@@ -45,14 +38,14 @@ const PostAuthNavbar = () => {
 
   const handleLogout = () => {
     Swal.fire({
-      title: "Are you sure you want to log out?",
+      title: "Are you sure you want to sign out?",
       showDenyButton: true,
       confirmButtonText: "Yes",
       denyButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: "Logging out...",
+          title: "Signing out...",
           timer: 1000,
           timerProgressBar: true,
           didOpen: () => {
@@ -60,17 +53,9 @@ const PostAuthNavbar = () => {
           },
         }).then(() => {
           console.log("Logged out");
-          localStorage.removeItem("token");
-          localStorage.removeItem("userFirstName");
-          navigate("/").then(() => {
-            // Display a success message
-            Swal.fire({
-              icon: "success",
-              title: "Logged out.",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          });
+          localStorage.clear();
+          showToast("success", "Signed out!");
+          navigate("/");
         });
       }
     });
@@ -84,7 +69,7 @@ const PostAuthNavbar = () => {
 
   return (
     <>
-      <div className="navbar bg-nucolor1 text-white2 border-b-4 border-nucolor3 drop-shadow-lg z-20 relative">
+      <div className="navbar fixed top-0 left-0 w-full z-50  bg-nucolor1/85 backdrop-blur-md text-white2 border-b-4 border-nucolor3 drop-shadow-lg">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -171,14 +156,14 @@ const PostAuthNavbar = () => {
           </ul>
         </div>
 
-        <div className="navbar-end bg-nucolor1">
+        <div className="navbar-end  ">
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
               role="button"
-              className="font-normal text-sm btn btn-ghost bg-nucolor1 tracking-widest cursor-pointer"
+              className="font-normal text-sm btn btn-ghost   tracking-widest cursor-pointer"
             >
-              Hello, {localStorage.getItem("userFirstName")}
+              Hello, {user.firstName}
             </div>
             <ul
               tabIndex={0}
@@ -206,6 +191,8 @@ const PostAuthNavbar = () => {
           </div>
         </div>
       </div>
+
+      <div className="pt-20"/>
     </>
   );
 };
