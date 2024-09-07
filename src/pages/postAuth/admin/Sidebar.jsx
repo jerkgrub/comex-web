@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { showToast } from "../../../components/Toast";
 import FetchUserData from "../../../components/hooks/FetchUserData";
 import ccHeader2 from "../../../components/images/ccHeader2.png";
-import CardModal from "../../../components/CardModal";  
+import CardModal from "../../../components/modals/CardModal";
 
 const SidebarContext = createContext();
 

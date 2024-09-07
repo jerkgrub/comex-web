@@ -1,9 +1,14 @@
 const UserTableMap = ({ users }) => {
+  const handleClick = () => {
+    console.log("clicked");
+    document.getElementById("CardModal").showModal()
+  };
+
   return (
     <>
       {users.length > 0 ? (
         users.map((user, index) => (
-          <tr className="hover" key={index}>
+          <tr className="hover:bg-gray-100 cursor-pointer" key={index} onClick={handleClick}>
             <th>
               <label>
                 <input type="checkbox" className="checkbox" />

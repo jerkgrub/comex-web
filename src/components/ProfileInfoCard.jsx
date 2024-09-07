@@ -1,5 +1,5 @@
 import { Avatar } from "flowbite-react";
-import React, { useState, useEffect } from "react"; // Import useState and useEffect
+import { useState, useEffect } from "react"; // Import useState and useEffect
 import ccLogo from "../components/images/ccLogo.png";
 import DisplayDetail from "./DisplayDetail";
 import FetchUserData from "./hooks/FetchUserData";
@@ -35,7 +35,7 @@ const ProfileInfoCard = () => {
         <div className="flex justify-start flex-col items-center">
           <Avatar img={user.avatar} size="xl" className="pointer-events-none select-none drop-shadow-sm" />
           <p className="select-none mt-1 text-sm font-roboto-slab font-bold">
-            {localStorage.getItem("userUsertype")}
+            {user.usertype}
           </p>
         </div>
 

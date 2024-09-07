@@ -5,10 +5,6 @@ import { useNavigate } from 'react-router-dom';
 const ComexForms = () => {
     
     const navigate = useNavigate();
-    const btn_comexforms = () => {
-        console.log('COMEX Forms');
-        navigate('/admin/comexforms');
-    }
 
     return (
         <div className='flex-1 p-14 bg-white text-blue font-bold'>

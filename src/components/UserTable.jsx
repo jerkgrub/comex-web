@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UserTableMap from "./UserTableMap";
 
-const UserTable = ({ searchInput }) => {
+const UserTable = ({ searchInput, filters }) => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]); // State for filtered users
 
@@ -25,14 +25,29 @@ const UserTable = ({ searchInput }) => {
   }, []);
 
   useEffect(() => {
-    // Filter users based on search input (first name, last name, or email)
-    const filtered = users.filter((user) =>
-      `${user.firstName} ${user.lastName} ${user.email}`
+    console.log("Filters:", filters);
+    // Filter users based on search input, user type, and department
+    const filtered = users.filter((user) => {
+      console.log("User:", user); // Log each user object
+      const matchesSearch = `${user.firstName} ${user.lastName} ${user.email}`
         .toLowerCase()
-        .includes(searchInput.toLowerCase())
-    );
+        .includes(searchInput.toLowerCase());
+      const matchesUserType = filters.userType === "All Usertypes" || filters.userType === ""
+        ? true
+        : user.usertype === filters.userType;
+      const matchesDepartment = filters.department === "All Departments" || filters.department === ""
+        ? true
+        : user.department === filters.department;
+
+      console.log(`Comparing userType: ${user.usertype} with filter: ${filters.userType}`);
+      console.log(`Comparing department: ${user.department} with filter: ${filters.department}`);
+      console.log(`matchesSearch: ${matchesSearch}, matchesUserType: ${matchesUserType}, matchesDepartment: ${matchesDepartment}`);
+
+      return matchesSearch && matchesUserType && matchesDepartment;
+    });
+    console.log("Filtered Users:", filtered);
     setFilteredUsers(filtered);
-  }, [searchInput, users]);
+  }, [searchInput, filters, users]);
 
   return (
     <div className="mt-6 card bg-white max-w max-h shadow-xl">

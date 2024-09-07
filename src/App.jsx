@@ -10,11 +10,9 @@ import { UserContext } from "./components/UserContext";
 
 import { Home } from "./pages/postAuth/client";
 import {
-  BookCopy,
   ContactRound,
   Gauge,
   Shield,
-  SquareCheckBig,
   Ticket,
 } from "lucide-react";
 

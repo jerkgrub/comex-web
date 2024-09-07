@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileInfoCard from "./ProfileInfoCard";
+import ProfileInfoCard from "../ProfileInfoCard";
 
 export default function CardModal() {
   return (

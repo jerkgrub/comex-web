@@ -1,23 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ButtonGeneric from "./ButtonGeneric";
 
-const DropdownGeneric = ({ label, icon, items }) => {
+const DropdownGeneric = ({ label, icon, items, value, onChange }) => {
   const [selectedItem, setSelectedItem] = useState(label || items[0].label); // Default to first item if label not provided
+
+  useEffect(() => {
+    if (value) {
+      const selected = items.find(item => item.value === value);
+      if (selected) {
+        setSelectedItem(selected.label);
+      }
+    }
+  }, [value, items]);
 
   const handleItemClick = (item) => {
     setSelectedItem(item.label); // Update the label with the selected item
+    onChange(item.value); // Call the onChange handler with the selected value
   };
 
   return (
-    <div className="dropdown dropdown-left">
+    <div className="dropdown dropdown-bottom">
       <div className="flex w-max">
-      <ButtonGeneric
-        label={selectedItem}
-        icon={icon}
-        tabIndex={0}
-        role="button"
-        className="btn"
-      />
+        <ButtonGeneric
+          label={selectedItem}
+          icon={icon}
+          tabIndex={0}
+          role="button"
+          className="btn"
+        />
       </div>
       <ul
         tabIndex={0}
