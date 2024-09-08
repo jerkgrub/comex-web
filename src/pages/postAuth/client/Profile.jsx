@@ -1,11 +1,7 @@
-import TextInput from "../../../components/inputs/TextInput";
-import AvatarWithName from "../../../components/AvatarWithName";
-import SelectInput from "../../../components/inputs/SelectInput";
-import MobileNumberInput from "../../../components/inputs/MobileNumberInput";
 import FetchUserData from "../../../components/hooks/FetchUserData";
-import ProfileInfoCard from "../../../components/ProfileInfoCard";
 import ButtonGeneric from "../../../components/inputs/ButtonGeneric";
 import { FileBadge, Handshake, RectangleEllipsis, Settings, Trophy, UserRoundPen } from "lucide-react";
+import ProfileInfoCardSigned from "../../../components/ProfileInfoCardSigned";
 
 const Profile = () => {
   const user = FetchUserData();
@@ -14,7 +10,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-[91.3vh] bg-gradient-bg3 bg-cover bg-no-repeat flex flex-col justify-start items-center py-16 gap-6">
-      <ProfileInfoCard />
+      <ProfileInfoCardSigned />
 
       <div className="flex flex-col sm:flex-row">
         {/* Settings */}

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UserTableMap from "./UserTableMap";
+import ViewUserModal from "./modals/ViewUserModal";
 
 const UserTable = ({ searchInput, filters }) => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]); // State for filtered users
+  const [selectedUser, setSelectedUser] = useState(null); // State for selected user
 
   useEffect(() => {
     axios
@@ -67,11 +69,11 @@ const UserTable = ({ searchInput, filters }) => {
             </tr>
           </thead>
           <tbody>
-            {/* Pass the filtered users to UserTableMap */}
-            <UserTableMap users={filteredUsers} />
+            <UserTableMap users={filteredUsers} onUserClick={setSelectedUser} />
           </tbody>
         </table>
       </div>
+      {selectedUser && <ViewUserModal user={selectedUser} />}
     </div>
   );
 };

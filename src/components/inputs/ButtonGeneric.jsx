@@ -8,6 +8,7 @@ const ButtonGeneric = ({
   onChange,
   tabIndex,
   role,
+  onClick,
 }) => {
   return (
     <>
@@ -15,6 +16,7 @@ const ButtonGeneric = ({
         className={`btn border-none flex flex-row justify-start items-center ${className}`}
         disabled={disabled}
         onChange={onChange}
+        onClick={onClick}
         tabIndex={tabIndex}
         role={role}
       >

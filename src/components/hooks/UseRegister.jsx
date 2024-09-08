@@ -1,8 +1,5 @@
-// UseRegister.jsx
-
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { showToast } from "../Toast";
 
@@ -18,6 +15,7 @@ const UseRegister = ({
   password,
   confirmPassword,
   isChecked,
+  loginPath = "/login", // Added loginPath as a prop with a default value
 }) => {
   const navigate = useNavigate();
 
@@ -42,6 +40,7 @@ const UseRegister = ({
 
     const newUser = {
       isActivated: true,
+      avatar: "https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg", // Set default avatar
       usertype,
       firstName,
       middleName,
@@ -74,7 +73,7 @@ const UseRegister = ({
           });
         } else {
           showToast("success", "Registration complete!");
-          navigate("/login");
+          navigate(loginPath); // Use the loginPath prop
         }
       })
       .catch((error) => {

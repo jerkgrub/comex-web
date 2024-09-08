@@ -9,6 +9,7 @@ const TextInput = ({
   className = "",
   error = false,
   errorMessage = "",
+  maxLength
 }) => {
   return (
     <div className="mb-5">
@@ -18,6 +19,7 @@ const TextInput = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        maxLength={maxLength}
         className={`input input-bordered w-full ${className} ${
           error ? "border-red-500" : ""
         }`}

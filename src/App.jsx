@@ -2,19 +2,13 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
   Outlet,
 } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 
 import { Home } from "./pages/postAuth/client";
-import {
-  ContactRound,
-  Gauge,
-  Shield,
-  Ticket,
-} from "lucide-react";
+import { ContactRound, Gauge, Shield, Ticket } from "lucide-react";
 
 import { Footer } from "./components/Footer";
 
@@ -30,6 +24,7 @@ import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
 import Dashboard from "./pages/postAuth/admin/sidebarPages/Dashboard";
 import Activities from "./pages/postAuth/admin/sidebarPages/Activities";
 import ComexForms from "./pages/postAuth/admin/sidebarPages/ComexForms";
+import CreateUserPage from "./pages/postAuth/admin/sidebarPages/CreateUserPage";
 
 // Post Authentication {Client}
 import PostAuthNavbar from "./components/navbar/PostAuthNavbar";
@@ -40,18 +35,10 @@ import CommunityEngagementForm from "./pages/postAuth/client/forms/CommunityEnga
 import StudentEngagementForm from "./pages/postAuth/client/forms/StudentEngagementForm";
 import ScrollToTop from "./components/hooks/ScrollToTop";
 
-// Protected Route Component
-function ProtectedRoute({ children }) {
-  const { user } = useContext(UserContext);
-  const token = localStorage.getItem("token");
+// Route protection
+import ProtectedRoute from "./components/ProtectedRoute";
 
-  if (!user || !token) {
-    return <Navigate to="/" replace />;
-  }
-  return children;
-}
-
-// Protected Hero Page
+// Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
   return (
     <>
@@ -148,11 +135,11 @@ function App() {
             }
           />
 
-          {/* Protected Routes for Admin */}
+          {/* Admin Routes */}
           <Route
             path="/admin/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["Admin"]}>
                 <AdminLayout />
               </ProtectedRoute>
             }
@@ -161,13 +148,21 @@ function App() {
             <Route path="activities" element={<Activities />} />
             <Route path="comexforms" element={<ComexForms />} />
             <Route path="users" element={<Users />} />
+            <Route path="create-user" element={<CreateUserPage />} />
           </Route>
 
-          {/* Protected Routes for Client */}
+          {/* Client Routes */}
           <Route
             path="/client/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute
+                allowedRoles={[
+                  "Comex Coordinator",
+                  "Faculty",
+                  "NTP",
+                  "Student",
+                ]}
+              >
                 <Outlet />
               </ProtectedRoute>
             }

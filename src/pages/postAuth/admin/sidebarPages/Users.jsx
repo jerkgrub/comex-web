@@ -8,13 +8,19 @@ import {
   departmentItems,
   usertypeItems,
 } from "../../../../components/ItemOptions";
+import { useNavigate } from "react-router-dom";
 
 const Users = () => {
   const [searchInput, setSearchInput] = useState(""); // State for search input
   const [filters, setFilters] = useState({ department: "", userType: "" }); // State for filters
+  const navigate = useNavigate();
+
+  const handleCreateUserButton = () => {
+    navigate("/admin/create-user");
+  };
 
   const handleFilterChange = (filterName, value) => {
-    setFilters(prevFilters => ({
+    setFilters((prevFilters) => ({
       ...prevFilters,
       [filterName]: value,
     }));
@@ -47,7 +53,7 @@ const Users = () => {
               icon={UsersRound}
               items={usertypeItems}
               value={filters.userType}
-              onChange={(value) => handleFilterChange('userType', value)}
+              onChange={(value) => handleFilterChange("userType", value)}
               className="p-2 border border-gray-300 rounded-md"
             />
 
@@ -56,7 +62,7 @@ const Users = () => {
               icon={School}
               items={departmentItems}
               value={filters.department}
-              onChange={(value) => handleFilterChange('department', value)}
+              onChange={(value) => handleFilterChange("department", value)}
               className="p-2 border border-gray-300 rounded-md"
             />
             <div className="divider divider-horizontal"></div>
@@ -65,6 +71,7 @@ const Users = () => {
             <ButtonGeneric
               icon={Plus}
               label="Create User"
+              onClick={handleCreateUserButton}
               className="bg-nucolor3 hover:bg-nucolor2 hover:text-white3 p-2 rounded-md"
             />
           </div>

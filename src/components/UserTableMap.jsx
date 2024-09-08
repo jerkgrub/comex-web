@@ -1,14 +1,17 @@
-const UserTableMap = ({ users }) => {
-  const handleClick = () => {
+import { useState } from "react";
+
+const UserTableMap = ({ users, onUserClick }) => {
+  const handleClick = (user) => {
     console.log("clicked");
-    document.getElementById("CardModal").showModal()
+    onUserClick(user);
+    document.getElementById("ViewUserModal").showModal();
   };
 
   return (
     <>
       {users.length > 0 ? (
         users.map((user, index) => (
-          <tr className="hover:bg-gray-100 cursor-pointer" key={index} onClick={handleClick}>
+          <tr className="hover:bg-gray-100 cursor-pointer" key={index}>
             <th>
               <label>
                 <input type="checkbox" className="checkbox" />
@@ -35,6 +38,7 @@ const UserTableMap = ({ users }) => {
             <td>{user.email}</td>
             <td>{user.department}</td>
             <th>
+              <button className="btn btn-ghost btn-xs" onClick={() => handleClick(user)}>View Profile</button>
               <button className="btn btn-ghost btn-xs">Edit Profile</button>
             </th>
           </tr>

@@ -1,21 +1,29 @@
-import { useState, useEffect } from "react";
-import ButtonGeneric from "./ButtonGeneric";
+import React, { useState, useEffect } from 'react';
+import ButtonGeneric from './ButtonGeneric';
 
-const DropdownGeneric = ({ label, icon, items, value, onChange }) => {
-  const [selectedItem, setSelectedItem] = useState(label || items[0].label); // Default to first item if label not provided
+const DropdownGeneric = ({ value, icon, items, onChange }) => {
+  const [selectedItem, setSelectedItem] = useState('');
 
   useEffect(() => {
-    if (value) {
-      const selected = items.find(item => item.value === value);
-      if (selected) {
-        setSelectedItem(selected.label);
+    const selected = items.find(item => item.value === value);
+    if (selected) {
+      setSelectedItem(selected.label);
+    } else {
+      // Set default values if "All Usertypes" or "All Departments" are present
+      const defaultItem = items.find(item => item.label === "All Usertypes" || item.label === "All Departments");
+      if (defaultItem) {
+        setSelectedItem(defaultItem.label);
+        onChange(defaultItem.value);
       }
     }
-  }, [value, items]);
+  }, [value, items, onChange]);
 
   const handleItemClick = (item) => {
     setSelectedItem(item.label); // Update the label with the selected item
     onChange(item.value); // Call the onChange handler with the selected value
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur(); // Blur the active element to close the dropdown
+    }
   };
 
   return (
