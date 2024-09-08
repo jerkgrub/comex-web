@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UserTableMap from "./UserTableMap";
-import ViewUserModal from "./modals/ViewUserModal";
 
 const UserTable = ({ searchInput, filters }) => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]); // State for filtered users
-  const [selectedUser, setSelectedUser] = useState(null); // State for selected user
 
   useEffect(() => {
     axios
@@ -28,9 +26,8 @@ const UserTable = ({ searchInput, filters }) => {
 
   useEffect(() => {
     console.log("Filters:", filters);
-    // Filter users based on search input, user type, and department
+    // Filter users based on search input, user type, department, and account status
     const filtered = users.filter((user) => {
-      console.log("User:", user); // Log each user object
       const matchesSearch = `${user.firstName} ${user.lastName} ${user.email}`
         .toLowerCase()
         .includes(searchInput.toLowerCase());
@@ -40,14 +37,12 @@ const UserTable = ({ searchInput, filters }) => {
       const matchesDepartment = filters.department === "All Departments" || filters.department === ""
         ? true
         : user.department === filters.department;
+      const matchesAccountStatus = filters.accountStatus === "Activated"
+        ? user.isActivated
+        : !user.isActivated;
 
-      console.log(`Comparing userType: ${user.usertype} with filter: ${filters.userType}`);
-      console.log(`Comparing department: ${user.department} with filter: ${filters.department}`);
-      console.log(`matchesSearch: ${matchesSearch}, matchesUserType: ${matchesUserType}, matchesDepartment: ${matchesDepartment}`);
-
-      return matchesSearch && matchesUserType && matchesDepartment;
+      return matchesSearch && matchesUserType && matchesDepartment && matchesAccountStatus;
     });
-    console.log("Filtered Users:", filtered);
     setFilteredUsers(filtered);
   }, [searchInput, filters, users]);
 
@@ -69,11 +64,10 @@ const UserTable = ({ searchInput, filters }) => {
             </tr>
           </thead>
           <tbody>
-            <UserTableMap users={filteredUsers} onUserClick={setSelectedUser} />
+            <UserTableMap users={filteredUsers} />
           </tbody>
         </table>
       </div>
-      {selectedUser && <ViewUserModal user={selectedUser} />}
     </div>
   );
 };

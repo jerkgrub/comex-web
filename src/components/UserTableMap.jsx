@@ -49,12 +49,6 @@ const UserTableMap = ({ users }) => {
               >
                 View Profile
               </button>
-              <button
-                className="btn btn-ghost btn-xs text-blue-600"
-                onClick={() => handleEditUser(user)}
-              >
-                Edit
-              </button>
             </th>
           </tr>
         ))
