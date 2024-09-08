@@ -4,7 +4,7 @@ import {
   Route,
   Outlet,
 } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 
 import { Home } from "./pages/postAuth/client";
