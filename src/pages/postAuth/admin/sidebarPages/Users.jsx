@@ -1,4 +1,4 @@
-import { Plus, School, UsersRound } from "lucide-react";
+import { Archive, Plus, School, UsersRound } from "lucide-react";
 import { useState } from "react";
 import ButtonGeneric from "../../../../components/inputs/ButtonGeneric";
 import SearchInput from "../../../../components/inputs/SearchInput";
@@ -69,11 +69,18 @@ const Users = () => {
 
             {/* create user button */}
             <ButtonGeneric
+              icon={Archive}
+              label="Show Deactivated Users"
+              onClick={handleCreateUserButton}
+              className="bg-gray-300 p-2 rounded-md"
+            />
+            <ButtonGeneric
               icon={Plus}
               label="Create User"
               onClick={handleCreateUserButton}
               className="bg-nucolor3 hover:bg-nucolor2 hover:text-white3 p-2 rounded-md"
             />
+            
           </div>
 
           {/* 3rd section */}

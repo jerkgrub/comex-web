@@ -1,33 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import RegisterComponentAdmin from "../../../../components/RegisterComponentAdmin";
+import { ArrowLeft } from "lucide-react";
 
 const CreateUserPage = () => {
   const navigate = useNavigate();
 
   const handleBackButton = () => {
-    console.log("Back button clicked");
     navigate("/admin/users");
-  }
+  };
 
   return (
-    <>
-      <div className="bg-white flex p-12 justify-start w-full h-full">
-        <div className="bg-white w-full">
-          {/* 1st section */}
-          <div className="flex flex-row justify-start items-center gap-4">
-            <div className="text-4xl text-blue mb-3 font-bold hover:underline" onClick={handleBackButton}>
-              Manage Users
-            </div>
-            <div className="text-xl"> / Create User</div>
-          </div>
+    <div className="p-8 bg-gray-50 min-h-screen">
+      {/* Back Button */}
+      <button
+        onClick={handleBackButton}
+        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6"
+      >
+        <ArrowLeft className="w-5 h-5" /> Back to Users
+      </button>
 
-          {/* 2nd section */}
-          <div className="flex justify-center items-center">
-          <RegisterComponentAdmin/>
-          </div>
-        </div>
+      <h2 className="text-5xl font-extrabold text-gray-800 mb-6">Create New User</h2>
+
+      <div className="bg-white p-8 rounded-lg shadow-lg">
+        {/* RegisterComponentAdmin */}
+        <RegisterComponentAdmin />
       </div>
-    </>
+    </div>
   );
 };
 

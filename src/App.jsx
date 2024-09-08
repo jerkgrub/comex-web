@@ -37,6 +37,8 @@ import ScrollToTop from "./components/hooks/ScrollToTop";
 
 // Route protection
 import ProtectedRoute from "./components/ProtectedRoute";
+import ViewUserPage from "./pages/postAuth/admin/sidebarPages/ViewUserPage";
+import EditUserPage from "./pages/postAuth/admin/sidebarPages/EditUserPage";
 
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -149,6 +151,8 @@ function App() {
             <Route path="comexforms" element={<ComexForms />} />
             <Route path="users" element={<Users />} />
             <Route path="create-user" element={<CreateUserPage />} />
+            <Route path="users/:userid" element={<ViewUserPage />} />
+            <Route path="users/:userid/edit" element={<EditUserPage />} />
           </Route>
 
           {/* Client Routes */}

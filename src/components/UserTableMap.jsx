@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-const UserTableMap = ({ users, onUserClick }) => {
-  const handleClick = (user) => {
-    console.log("clicked");
-    onUserClick(user);
-    document.getElementById("ViewUserModal").showModal();
+const UserTableMap = ({ users }) => {
+  const navigate = useNavigate();
+
+  const handleViewProfile = (user) => {
+    navigate(`/admin/users/${user._id}`); // Navigate to the ViewUserPage
+  };
+
+  const handleEditUser = (user) => {
+    navigate(`/admin/users/${user._id}/edit`); // Navigate to the EditUserPage
   };
 
   return (
@@ -22,6 +26,7 @@ const UserTableMap = ({ users, onUserClick }) => {
                 <div className="avatar select-none pointer-events-none">
                   <div className="mask mask-squircle h-12 w-12">
                     <img
+                      className="rounded-full"
                       src={user.avatar || "/default-avatar.png"}
                       alt={`${user.firstName} ${user.lastName}`}
                     />
@@ -38,8 +43,18 @@ const UserTableMap = ({ users, onUserClick }) => {
             <td>{user.email}</td>
             <td>{user.department}</td>
             <th>
-              <button className="btn btn-ghost btn-xs" onClick={() => handleClick(user)}>View Profile</button>
-              <button className="btn btn-ghost btn-xs">Edit Profile</button>
+              <button
+                className="btn btn-ghost btn-xs"
+                onClick={() => handleViewProfile(user)}
+              >
+                View Profile
+              </button>
+              <button
+                className="btn btn-ghost btn-xs text-blue-600"
+                onClick={() => handleEditUser(user)}
+              >
+                Edit
+              </button>
             </th>
           </tr>
         ))

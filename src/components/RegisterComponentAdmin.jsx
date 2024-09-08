@@ -67,8 +67,8 @@ const RegisterComponentAdmin = ({ loginPath = "/admin/users" }) => {
   };
 
   return (
-    <div className=" sm:w-max flex flex-col w-full py-8 px-4 rounded-xl shadow-md">
-      <h1 className="self-start text-2xl font-extrabold text-center mb-5">
+    <div className="flex flex-col w-full py-8 px-4 rounded-xl shadow-md">
+      <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
         Create an Account
       </h1>
 
@@ -77,20 +77,20 @@ const RegisterComponentAdmin = ({ loginPath = "/admin/users" }) => {
         value={usertype}
         onChange={(e) => {
           setUsertype(e.target.value);
-          validateField("usertype", e.target.value); // Validate on change
+          validateField("usertype", e.target.value);
         }}
         options={UserTypeOptions()}
         error={!!errors.usertype}
         errorMessage={errors.usertype}
       />
 
-      <div className="flex flex-col sm:flex-row gap-x-3">
+      <div className="flex flex-col sm:flex-row gap-x-3 mb-6">
         <TextInput
           label="First name"
           value={firstName}
           onChange={(e) => {
             setFirstName(e.target.value);
-            validateField("firstName", e.target.value); // Validate on change
+            validateField("firstName", e.target.value);
           }}
           error={!!errors.firstName}
           errorMessage={errors.firstName}
@@ -100,7 +100,7 @@ const RegisterComponentAdmin = ({ loginPath = "/admin/users" }) => {
           value={middleName}
           onChange={(e) => {
             setMiddleName(e.target.value);
-            validateField("middleName", e.target.value); // Validate on change
+            validateField("middleName", e.target.value);
           }}
           error={!!errors.middleName}
           errorMessage={errors.middleName}
@@ -110,40 +110,36 @@ const RegisterComponentAdmin = ({ loginPath = "/admin/users" }) => {
           value={lastName}
           onChange={(e) => {
             setLastName(e.target.value);
-            validateField("lastName", e.target.value); // Validate on change
+            validateField("lastName", e.target.value);
           }}
           error={!!errors.lastName}
           errorMessage={errors.lastName}
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-x-3">
-        <div className="w-full">
-          <TextInput
-            label="ID Number"
-            value={idNumber}
-            maxLength={11}
-            onChange={(e) => {
-              setIdNumber(e.target.value);
-              validateField("idNumber", e.target.value); // Validate on change
-            }}
-            error={!!errors.idNumber}
-            errorMessage={errors.idNumber}
-          />
-        </div>
-        <div className="w-full">
-          <MobileNumberInput
-            label="Mobile Number"
-            type="tel"
-            value={mobileNumber}
-            onChange={(e) => {
-              setMobileNumber(e.target.value);
-              validateField("mobileNumber", e.target.value); // Validate on change
-            }}
-            error={!!errors.mobileNumber}
-            errorMessage={errors.mobileNumber}
-          />
-        </div>
+      <div className="flex flex-col sm:flex-row gap-x-3 mb-6">
+        <TextInput
+          label="ID Number"
+          value={idNumber}
+          maxLength={11}
+          onChange={(e) => {
+            setIdNumber(e.target.value);
+            validateField("idNumber", e.target.value);
+          }}
+          error={!!errors.idNumber}
+          errorMessage={errors.idNumber}
+        />
+        <MobileNumberInput
+          label="Mobile Number"
+          type="tel"
+          value={mobileNumber}
+          onChange={(e) => {
+            setMobileNumber(e.target.value);
+            validateField("mobileNumber", e.target.value);
+          }}
+          error={!!errors.mobileNumber}
+          errorMessage={errors.mobileNumber}
+        />
       </div>
 
       <SelectInput
@@ -151,7 +147,7 @@ const RegisterComponentAdmin = ({ loginPath = "/admin/users" }) => {
         value={department}
         onChange={(e) => {
           setDepartment(e.target.value);
-          validateField("department", e.target.value); // Validate on change
+          validateField("department", e.target.value);
         }}
         options={DepartmentOptions()}
         error={!!errors.department}
@@ -169,36 +165,30 @@ const RegisterComponentAdmin = ({ loginPath = "/admin/users" }) => {
         errorMessage={errors.email}
       />
 
-      <div className="flex flex-col sm:flex-row gap-x-3">
-        <div className="w-full">
-          <PasswordInput
-            label="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              validateField("password", e.target.value);
-            }}
-            error={!!errors.password}
-            errorMessage={errors.password}
-          />
-        </div>
-        <div className="w-full">
-          <PasswordInput
-            label="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-              validateField("confirmPassword", e.target.value, {
-                password,
-              });
-            }}
-            error={!!errors.confirmPassword}
-            errorMessage={errors.confirmPassword}
-          />
-        </div>
+      <div className="flex flex-col sm:flex-row gap-x-3 mb-6">
+        <PasswordInput
+          label="Password"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            validateField("password", e.target.value);
+          }}
+          error={!!errors.password}
+          errorMessage={errors.password}
+        />
+        <PasswordInput
+          label="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
+            validateField("confirmPassword", e.target.value, { password });
+          }}
+          error={!!errors.confirmPassword}
+          errorMessage={errors.confirmPassword}
+        />
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-4">
         <TermsOfService
           isChecked={isChecked}
           handleCheckboxChange={handleCheckboxChange}

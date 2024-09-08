@@ -122,6 +122,7 @@ const RegisterComponent = () => {
           <TextInput
             label="ID Number"
             value={idNumber}
+            maxLength={11}
             onChange={(e) => {
               setIdNumber(e.target.value);
               validateField("idNumber", e.target.value); // Validate on change
