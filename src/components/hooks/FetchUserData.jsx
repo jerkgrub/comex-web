@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const FetchUserData = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({}); // Reverting back to the original empty object state
 
   const fetchUserData = async () => {
     const signedEmail = localStorage.getItem("userEmail");
@@ -25,7 +25,7 @@ const FetchUserData = () => {
     fetchUserData();
   }, []);
 
-  return user;
+  return user; // Return only the user object
 };
 
 export default FetchUserData;
