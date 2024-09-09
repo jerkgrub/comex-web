@@ -1,10 +1,13 @@
-import { Archive, Plus, Power, PowerOff, School, UsersRound } from "lucide-react";
+import { Plus, Power, PowerOff, School, UsersRound } from "lucide-react";
 import { useState } from "react";
 import ButtonGeneric from "../../../../components/inputs/ButtonGeneric";
 import SearchInput from "../../../../components/inputs/SearchInput";
 import UserTable from "../../../../components/UserTable";
 import DropdownGeneric from "../../../../components/inputs/DropdownGeneric";
-import { departmentItems, usertypeItems } from "../../../../components/ItemOptions";
+import {
+  departmentItems,
+  usertypeItems,
+} from "../../../../components/ItemOptions";
 import { useNavigate } from "react-router-dom";
 
 const Users = () => {
@@ -31,7 +34,8 @@ const Users = () => {
   const toggleAccountStatus = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      accountStatus: prevFilters.accountStatus === "Activated" ? "Deactivated" : "Activated",
+      accountStatus:
+        prevFilters.accountStatus === "Activated" ? "Deactivated" : "Activated",
     }));
   };
 
@@ -40,7 +44,9 @@ const Users = () => {
       <div className="bg-white flex p-6 sm:p-12 justify-start w-full h-full">
         <div className="bg-white w-full">
           {/* 1st section */}
-          <div className="text-2xl sm:text-4xl text-blue mb-3 font-bold">Manage Users</div>
+          <div className="text-2xl sm:text-4xl text-blue mb-3 font-bold">
+            Manage Users
+          </div>
 
           {/* 2nd section */}
           <div className="flex flex-col lg:flex-row gap-3 justify-center items-center p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-50">
@@ -54,7 +60,9 @@ const Users = () => {
             </div>
 
             <div className="divider hidden lg:block divider-horizontal"></div>
-            <p className="select-none font-semibold text-gray-700 hidden lg:block">Filters:</p>
+            <p className="select-none font-semibold text-gray-700 hidden lg:block">
+              Filters:
+            </p>
 
             {/* usertype filter */}
             <DropdownGeneric
@@ -79,10 +87,16 @@ const Users = () => {
             {/* Toggle account status button with dynamic icon and color */}
             <ButtonGeneric
               icon={filters.accountStatus === "Activated" ? Power : PowerOff}
-              label={filters.accountStatus === "Activated" ? "Activated Users" : "Deactivated Users"}
+              label={
+                filters.accountStatus === "Activated"
+                  ? "Activated Users"
+                  : "Deactivated Users"
+              }
               onClick={toggleAccountStatus}
               className={`w-full lg:w-auto p-2 rounded-md ${
-                filters.accountStatus === "Activated" ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                filters.accountStatus === "Activated"
+                  ? "bg-green-500 text-white"
+                  : "bg-red-500 text-white"
               }`}
             />
 

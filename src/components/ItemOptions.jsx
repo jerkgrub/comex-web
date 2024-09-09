@@ -20,4 +20,10 @@ const departmentItems = [
   { label: "Others", value: "Others" },
 ];
 
-export { usertypeItems, departmentItems };
+const activityTypeItems = [
+  { label: "All Activities", value: "" },
+  { label: "Institutional", value: "Institutional" },
+  { label: "College Driven", value: "College Driven" },
+];
+
+export { usertypeItems, departmentItems, activityTypeItems };

@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 
 import { Home } from "./pages/postAuth/client";
-import { ContactRound, Gauge, Shield, Ticket } from "lucide-react";
+import { ContactRound, Gauge, List, Shield, Ticket } from "lucide-react";
 
 import { Footer } from "./components/Footer";
 
@@ -25,6 +25,7 @@ import Dashboard from "./pages/postAuth/admin/sidebarPages/Dashboard";
 import Activities from "./pages/postAuth/admin/sidebarPages/Activities";
 import ComexForms from "./pages/postAuth/admin/sidebarPages/ComexForms";
 import CreateUserPage from "./pages/postAuth/admin/sidebarPages/CreateUserPage";
+import ViewActivityPage from "./pages/postAuth/admin/sidebarPages/ViewActivityPage";
 
 // Post Authentication {Client}
 import PostAuthNavbar from "./components/navbar/PostAuthNavbar";
@@ -39,6 +40,8 @@ import ScrollToTop from "./components/hooks/ScrollToTop";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewUserPage from "./pages/postAuth/admin/sidebarPages/ViewUserPage";
 import EditUserPage from "./pages/postAuth/admin/sidebarPages/EditUserPage";
+import CreateActivityPage from "./pages/postAuth/admin/sidebarPages/CreateActivityPage";
+import EditActivityPage from "./pages/postAuth/admin/sidebarPages/EditActivityPage";
 
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -80,6 +83,11 @@ function AdminLayout() {
           to="/admin/nstp"
           icon={<Shield size={20} />}
           text={"Manage NSTP"}
+        />
+        <SidebarItem
+          to="/admin/evaluation"
+          icon={<List size={20} />}
+          text={"Manage Evaluation"}
         />
       </Sidebar>
       <div
@@ -147,6 +155,10 @@ function App() {
             }
           >
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="activities" element={<Activities />} />
+            <Route path="create-activity" element={<CreateActivityPage />} />
+            <Route path="activities/:activityid" element={<ViewActivityPage />} />
+            <Route path="activities/:activityid/edit" element={<EditActivityPage />} />
             <Route path="activities" element={<Activities />} />
             <Route path="comexforms" element={<ComexForms />} />
             <Route path="users" element={<Users />} />

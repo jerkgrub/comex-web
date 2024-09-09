@@ -1,5 +1,4 @@
-import { BookCopy, LocateFixed, SquareCheckBig } from 'lucide-react';
-import React, { useState } from 'react';
+import { BookCopy, SquareCheckBig } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {

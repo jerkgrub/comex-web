@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const ActivitySchema = new mongoose.Schema({
 
   // activity details
+  type: String,
+  isActivated: Boolean,
   title: String,
   organizer: String,
   description: String,
