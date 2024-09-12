@@ -1,5 +1,3 @@
-import React from "react";
-
 const FormatDepartment = ({ department }) => {
   if (!department) return null;
   

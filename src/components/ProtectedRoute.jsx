@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   }, [user]);
 
   // Show loading indicator while fetching user data
-  if (loading) {
+  if (loading) {  
     return <div>Loading...</div>;
   }
 
