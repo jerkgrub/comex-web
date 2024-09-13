@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import ccLogo from "../images/ccLogo.png";
 import { showToast } from "../Toast";
 import FetchUserData from "../hooks/FetchUserData";
-
+  
 // Add items here
 const menuItems = [
   { name: "Home", link: "/client/home" },
