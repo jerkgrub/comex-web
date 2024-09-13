@@ -11,19 +11,20 @@ const menuItems = [
   { name: "Home", link: "/client/home" },
   {
     name: "About Us",
-    subItems: [
-      { name: "Administrators", link: "#" },
-      { name: "Adopted Barangays", link: "#" },
-    ],
+    link: "/client/about-us",
   },
   {
-    name: "Events",
+    name: "Activties",
     subItems: [
-      { name: "NSTP", link: "#" },
-      { name: "Community Immersion", link: "#" },
+      { name: "View Activities", link: "/client/view-activities" },
+      {
+        name: "List of Upcoming  Activities",
+        link: "/client/upcoming-activities",
+      },
+      { name: "Evaluation Forms", link: "/client/evaluation-forms" },
     ],
   },
-  { name: "Highlights", link: "/client/home" },
+  { name: "Highlights", link: "/client/highlights" },
 ];
 
 const PostAuthNavbar = () => {
@@ -112,7 +113,9 @@ const PostAuthNavbar = () => {
           </div>
           <div className="ml-3 flex flex-row justify-center items-center gap-1 ">
             <img className="w-16" src={ccLogo} />
-            <h1 className="text-2xl font-semibold invisible sm:visible font-roboto-slab">COMEX CONNECT</h1>
+            <h1 className="text-2xl font-semibold invisible sm:visible font-roboto-slab">
+              COMEX CONNECT
+            </h1>
           </div>
         </div>
 
@@ -192,7 +195,7 @@ const PostAuthNavbar = () => {
         </div>
       </div>
 
-      <div className="pt-20"/>
+      <div className="pt-20" />
     </>
   );
 };
