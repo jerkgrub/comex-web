@@ -27,7 +27,7 @@ const AboutUs = () => {
         {/* Content */}
         <div className="select-none relative z-10 flex flex-col items-center justify-center h-full px-4">
           <motion.h1
-            className="text-5xl  md:text-7xl text-white text-center drop-shadow-lg"
+            className="text-5xl  md:text-6xl text-white text-center drop-shadow-lg"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
@@ -35,7 +35,7 @@ const AboutUs = () => {
             About Us
           </motion.h1>
           <motion.p
-            className="text-lg md:text-2xl text-white text-center max-w-3xl mt-6 leading-relaxed font-light text-justify"
+            className="text-lg md:text-xl text-white text-center max-w-3xl mt-6 leading-relaxed font-light text-justify"
             variants={fadeInVariant}
             initial="hidden"
             whileInView="visible"
@@ -128,7 +128,7 @@ const AboutUs = () => {
                 Contact Us
               </h2>
               <div className="flex justify-center items-center">
-                <div className="flex flex-col justify-start items-start w-max">
+                <div className="flex flex-col justify-start items-stat w-max">
                   <div>
                     <p className="text-gray-700 text-lg font-light">
                       📞 Mobile Number -{" "}

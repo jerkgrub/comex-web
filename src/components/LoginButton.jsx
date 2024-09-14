@@ -22,13 +22,6 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
         .then((response) => {
           const { token, user, message } = response.data;
           if (response.status === 200) {
-            // Store user details and JWT in local storage
-            // localStorage.setItem("token", token);
-            // localStorage.setItem("userFirstName", user.firstName);
-            // localStorage.setItem("userLastName", user.lastName);
-            // localStorage.setItem("userEmail", user.email);
-            // localStorage.setItem("userMnum", user.mobileNumber);
-            // localStorage.setItem("userDep", user.department);
 
             localStorage.setItem("token", token);
             localStorage.setItem("userEmail", user.email);
@@ -39,6 +32,8 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
             const successMessages = {
               "Successfully logged in as Admin": "/admin/dashboard",
               "Successfully logged in as Student": "/client/home",
+              "Successfully logged in as Comex Coordinator": "/client/home",
+              "Successfully logged in as Faculty": "/client/home",
             };
 
             const path = successMessages[message];

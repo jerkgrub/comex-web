@@ -1,3 +1,5 @@
+// src/App.js
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -44,6 +46,10 @@ import CreateActivityPage from "./pages/postAuth/admin/sidebarPages/CreateActivi
 import EditActivityPage from "./pages/postAuth/admin/sidebarPages/EditActivityPage";
 import Highlights from "./pages/postAuth/client/Highlights";
 import AboutUs from "./pages/postAuth/client/AboutUs";
+
+// Import the NotFound component
+import NotFound from "./components/NotFound";
+import ViewAllActivities from "./pages/postAuth/client/ViewAllActivities";
 
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -177,7 +183,6 @@ function App() {
               path="activities/:activityid/edit"
               element={<EditActivityPage />}
             />
-            <Route path="activities" element={<Activities />} />
             <Route path="comexforms" element={<ComexForms />} />
             <Route path="users" element={<Users />} />
             <Route path="create-user" element={<CreateUserPage />} />
@@ -218,6 +223,16 @@ function App() {
                 <>
                   <PostAuthNavbar />
                   <AboutUs />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="view-activities"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <ViewAllActivities />
                   <Footer />
                 </>
               }
@@ -265,6 +280,9 @@ function App() {
           {/* Forms */}
           <Route path="/comform" element={<CommunityEngagementForm />} />
           <Route path="/studform" element={<StudentEngagementForm />} />
+
+          {/* 404 Not Found Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </UserContext.Provider>

@@ -5,31 +5,71 @@ import Swal from "sweetalert2";
 import ccLogo from "../images/ccLogo.png";
 import { showToast } from "../Toast";
 import FetchUserData from "../hooks/FetchUserData";
-  
-// Add items here
-const menuItems = [
-  { name: "Home", link: "/client/home" },
-  {
-    name: "About Us",
-    link: "/client/about-us",
-  },
-  {
-    name: "Activties",
-    subItems: [
-      { name: "View Activities", link: "/client/view-activities" },
-      {
-        name: "List of Upcoming  Activities",
-        link: "/client/upcoming-activities",
-      },
-      { name: "Evaluation Forms", link: "/client/evaluation-forms" },
-    ],
-  },
-  { name: "Highlights", link: "/client/highlights" },
-];
+
+// Define menu items for each user type
+const menuItemsByUserType = {
+  Admin: [
+    { name: "Admin Dashboard", link: "/admin/dashboard" },
+    {
+      name: "User Management",
+      subItems: [
+        { name: "Manage Users", link: "/admin/users" },
+        { name: "Roles & Permissions", link: "/admin/roles" },
+      ],
+    },
+    { name: "Settings", link: "/admin/settings" },
+  ],
+  "Comex Coordinator": [
+    { name: "Coordinator Home", link: "/coordinator/home" },
+    {
+      name: "Activities",
+      subItems: [
+        { name: "Create Activity", link: "/coordinator/create-activity" },
+        { name: "Manage Activities", link: "/coordinator/manage-activities" },
+      ],
+    },
+    { name: "Reports", link: "/coordinator/reports" },
+  ],
+  Faculty: [
+    { name: "Faculty Dashboard", link: "/faculty/dashboard" },
+    {
+      name: "Courses",
+      subItems: [
+        { name: "My Courses", link: "/faculty/my-courses" },
+        { name: "Assignments", link: "/faculty/assignments" },
+      ],
+    },
+    { name: "Faculty Resources", link: "/faculty/resources" },
+  ],
+  NTP: [
+    { name: "NTP Home", link: "/ntp/home" },
+    {
+      name: "Tasks",
+      subItems: [
+        { name: "My Tasks", link: "/ntp/my-tasks" },
+        { name: "Submit Report", link: "/ntp/submit-report" },
+      ],
+    },
+    { name: "NTP Guidelines", link: "/ntp/guidelines" },
+  ],
+  Student: [
+    { name: "Home", link: "/client/home" },
+    { name: "About Us", link: "/client/about-us" },
+    {
+      name: "Activities",
+      subItems: [
+        { name: "View Activities", link: "/client/view-activities" },
+        { name: "Evaluation Forms", link: "/student/evaluation-forms" },
+      ],
+    },
+    { name: "Highlights", link: "/client/highlights" },
+  ],
+};
 
 const PostAuthNavbar = () => {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const user = FetchUserData();
+  const userType = user.usertype; // Assuming 'usertype' is the property name
 
   const navigate = useNavigate();
 
@@ -68,12 +108,16 @@ const PostAuthNavbar = () => {
     }
   };
 
+  // Get menu items based on user type
+  const menuItems = menuItemsByUserType[userType] || [];
+
   return (
     <>
-      <div className="navbar fixed top-0 left-0 w-full z-50  bg-nucolor1  text-white2 border-b-4 border-nucolor3 drop-shadow-lg">
+      <div className="navbar fixed top-0 left-0 w-full z-50 bg-nucolor1 text-white2 border-b-4 border-nucolor3 drop-shadow-lg">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+              {/* Mobile menu icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -81,25 +125,26 @@ const PostAuthNavbar = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
               </svg>
             </div>
             <ul
               tabIndex={0}
               className="text-black menu menu-sm dropdown-content mt-3 z-20 p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {menuItems.map((item) => (
-                <li key={item.name}>
-                  <a onClick={() => handleNavigation(item.link)}>{item.name}</a>
+              {menuItems.map((item, index) => (
+                <li key={index}>
+                  <a
+                    onClick={() =>
+                      item.subItems ? null : handleNavigation(item.link)
+                    }
+                  >
+                    {item.name}
+                  </a>
                   {item.subItems && (
                     <ul className="p-2">
-                      {item.subItems.map((subItem) => (
-                        <li key={subItem.name}>
+                      {item.subItems.map((subItem, subIndex) => (
+                        <li key={subIndex}>
                           <a onClick={() => handleNavigation(subItem.link)}>
                             {subItem.name}
                           </a>
@@ -112,7 +157,7 @@ const PostAuthNavbar = () => {
             </ul>
           </div>
           <div className="ml-3 flex flex-row justify-center items-center gap-1 ">
-            <img className="w-16" src={ccLogo} />
+            <img className="w-16" src={ccLogo} alt="Logo" />
             <h1 className="text-2xl font-semibold invisible sm:visible font-roboto-slab">
               COMEX CONNECT
             </h1>
@@ -159,12 +204,12 @@ const PostAuthNavbar = () => {
           </ul>
         </div>
 
-        <div className="navbar-end  ">
+        <div className="navbar-end">
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
               role="button"
-              className="font-normal text-sm btn btn-ghost   tracking-widest cursor-pointer"
+              className="font-normal text-sm btn btn-ghost tracking-widest cursor-pointer"
             >
               Hello, {user.firstName}
             </div>
