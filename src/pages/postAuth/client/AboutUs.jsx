@@ -1,65 +1,202 @@
-import React from "react";
+import { motion } from "framer-motion";
 
 const AboutUs = () => {
+  // Animation variants
+  const fadeInVariant = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (custom) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, delay: custom, ease: "easeOut" },
+    }),
+  };
+
   return (
-    <div className="flex flex-col items-center bg-gray-100 py-8 px-4">
-      <h1 className="text-2xl font-bold mb-6">About Us</h1>
+    <div className="bg-gray-100">
+      {/* Hero Section */}
+      <div
+        className="relative h-[calc(100vh_-_80px)] min-h-[91.3vh] bg-fixed bg-center bg-cover"
+        style={{
+          backgroundImage:
+            "url('https://www.marconews.com/gcdn/presto/2021/09/18/PTCN/299593ab-386d-41d4-bd8d-6f3018a0c512-TCN_COASTAL_CLEANUP07.jpg')",
+        }}
+      >
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,_0,_0,_0.6)_0%,_transparent_70%)] backdrop-brightness-75"></div>
 
-      <div className="bg-white p-6 rounded-lg shadow-md max-w-4xl w-full">
-        <p className="text-center text-gray-700 mb-6">
-          The Community Extension Office is responsible for the development and
-          implementation of sustainable community projects, social
-          responsibility, and long-term learning programs on behalf of National
-          University.
-        </p>
-
-        <div className="flex flex-col lg:flex-row justify-between mb-6">
-          <div className="lg:w-1/2">
-            <h2 className="text-xl font-bold mb-4">Mission</h2>
-            <p className="text-gray-700">
-              Guided by the core values and characterized by our cultural
-              heritage of Dynamic Filipinism, National University is committed
-              to provide relevant, innovative, and accessible quality education
-              and other development programs to its students, associates,
-              faculty, alumni, and other stakeholders to be pro-active in
-              socio-economic-environmental problems both local and national
-              through the Community Extension Office program and services
-              addressing local and international concerns as well as
-              contributing to global priorities.
-            </p>
-          </div>
-
-          <div className="lg:w-1/2 mt-6 lg:mt-0">
-            <h2 className="text-xl font-bold mb-4">Vision</h2>
-            <p className="text-gray-700">
-              The Community Extension Unit of National University will be the
-              primary facilitator and provider of effective programs and
-              projects to help empower communities and sectors in addressing
-              socio-economic environmental problems as well as promoting
-              volunteerism by using dynamic, science-based educational
-              resources.
-            </p>
-          </div>
+        {/* Content */}
+        <div className="select-none relative z-10 flex flex-col items-center justify-center h-full px-4">
+          <motion.h1
+            className="text-5xl  md:text-7xl text-white text-center drop-shadow-lg"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
+            About Us
+          </motion.h1>
+          <motion.p
+            className="text-lg md:text-2xl text-white text-center max-w-3xl mt-6 leading-relaxed font-light text-justify"
+            variants={fadeInVariant}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ amount: 0.2 }}
+            custom={0.2}
+          >
+            The Community Extension Office is responsible for the development
+            and implementation of sustainable community projects, social
+            responsibility, and long-term learning programs on behalf of
+            National University.
+          </motion.p>
         </div>
       </div>
 
-      <div className="mt-8 text-center">
-        <h2 className="text-xl font-bold mb-4">Contact Information</h2>
-        <p className="text-gray-700">Mobile Number: 09123456789</p>
-        <p className="text-gray-700">Email: comexoffice@nu-moa.edu.ph</p>
-      </div>
+      {/* Main Content */}
+      <div className="py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Introduction */}
+          <Section>
+            <motion.div
+              className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg p-12 rounded-lg shadow-lg -mt-20"
+              variants={fadeInVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.2 }}
+              custom={0.1}
+            >
+              {/* Mission and Vision */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                {/* Mission */}
+                <motion.div
+                  variants={fadeInVariant}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ amount: 0.2 }}
+                  custom={0.3}
+                >
+                  <h2 className="text-3xl font-semibold mb-4 text-blue-900">
+                    🚀 Our Mission
+                  </h2>
+                  <p className="text-gray-700 leading-relaxed font-light text-justify">
+                    Guided by the core values and characterized by our cultural
+                    heritage of Dynamic Filipinism, National University is
+                    committed to provide relevant, innovative, and accessible
+                    quality education and other development programs to its
+                    students, associates, faculty, alumni, and other
+                    stakeholders to be proactive in socio-economic-environmental
+                    problems both local and national through the Community
+                    Extension Office program and services addressing local and
+                    international concerns as well as contributing to global
+                    priorities.
+                  </p>
+                </motion.div>
 
-      <div className="mt-8 text-center">
-        <h2 className="text-xl font-bold mb-4">Administration & Staff</h2>
-        <div className="flex flex-col items-center">
-          <img
-            src="https://i.imgur.com/xHQfWxh.png"
-            alt="Zoren Matthew M.Blardonny"
-            className="w-24 h-24 rounded-full object-cover mb-4"
-          />
-          <p className="text-gray-700 font-semibold">
-            Zoren Matthew M.Blardonny
-          </p>
+                {/* Vision */}
+                <motion.div
+                  variants={fadeInVariant}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ amount: 0.2 }}
+                  custom={0.4}
+                >
+                  <h2 className="text-3xl font-semibold mb-4 text-blue-900">
+                    📌 Our Vision
+                  </h2>
+                  <p className="text-gray-700 leading-relaxed font-light text-justify">
+                    The Community Extension Unit of National University will be
+                    the primary facilitator and provider of effective programs
+                    and projects to help empower communities and sectors in
+                    addressing socio-economic environmental problems as well as
+                    promoting volunteerism by using dynamic, science-based
+                    educational resources.
+                  </p>
+                </motion.div>
+              </div>
+            </motion.div>
+          </Section>
+
+          {/* Contact Information */}
+          <Section>
+            <motion.div
+              className="mt-12 text-center"
+              variants={fadeInVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.2 }}
+              custom={0.5}
+            >
+              <h2 className="text-3xl font-semibold mb-4 text-blue-900">
+                Contact Us
+              </h2>
+              <div className="flex justify-center items-center">
+                <div className="flex flex-col justify-start items-start w-max">
+                  <div>
+                    <p className="text-gray-700 text-lg font-light">
+                      📞 Mobile Number -{" "}
+                      <a
+                        href="tel:09123456789"
+                        className="text-nucolor1 font-bold hover:underline hover:text-blue-700 transition duration-300"
+                      >
+                        0912 345 6789
+                      </a>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-700 text-lg mt-2 font-light ">
+                      📧 Email -{" "}
+                      <a
+                        href="mailto:comexoffice@nu-moa.edu.ph"
+                        className="text-nucolor1 font-bold hover:underline hover:text-blue-700 transition duration-300"
+                      >
+                        comexoffice@nu-moa.edu.ph
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </Section>
+
+          {/* Administration & Staff */}
+          <Section>
+            <motion.div
+              className="mt-12 text-center"
+              variants={fadeInVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.2 }}
+              custom={0.6}
+            >
+              <h2 className="text-3xl font-semibold mb-6 text-blue-900">
+                Administration & Staff
+              </h2>
+              <motion.div
+                className="flex flex-col items-center"
+                variants={{
+                  hidden: { opacity: 0, scale: 0.8 },
+                  visible: {
+                    opacity: 1,
+                    scale: 1,
+                    transition: { duration: 0.6, delay: 0.7, ease: "easeOut" },
+                  },
+                }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ amount: 0.2 }}
+              >
+                <img
+                  src="https://i.imgur.com/xHQfWxh.png"
+                  alt="Zoren Matthew M. Blardonny"
+                  className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-white shadow-md"
+                />
+                <p className="text-gray-800 text-xl font-medium">
+                  Zoren Matthew M. Blardonny
+                </p>
+                <p className="text-gray-600 font-light">
+                  Director of Community Extension
+                </p>
+              </motion.div>
+            </motion.div>
+          </Section>
         </div>
       </div>
     </div>
@@ -67,3 +204,11 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
+
+// Section Component
+const Section = ({ children }) => {
+  return <section className="mb-12">{children}</section>;
+};
+
+
+// 

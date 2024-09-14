@@ -13,11 +13,7 @@ const menuItems = [
   { name: "Home", link: "/ " },
   // { name: 'Events', link: '/client/home' },
   {
-    name: "About Us",
-    subItems: [
-      { name: "Administrators", link: "/administrators" },
-      { name: "Adopted Barangays", link: "/adopted-barangays" },
-    ],
+    name: "About Us", link: "/about-us",
   },
 ];
 

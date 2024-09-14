@@ -44,14 +44,13 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
             const path = successMessages[message];
 
             if (path) {
-              // showToast("success", message + "!");
               showToast("success", "Logged in!");
               navigate(path);
             } else {
               Swal.fire({
                 scrollbarPadding: false,
                 icon: "error",
-                title: message, // Display the specific message
+                title: message, 
                 showConfirmButton: false,
                 timer: 1500,
               });
@@ -63,7 +62,7 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
           Swal.fire({
             scrollbarPadding: false,
             icon: "error",
-            title: errorMessage, // Display specific error message
+            title: errorMessage, 
             showConfirmButton: false,
             timer: 1500,
           });

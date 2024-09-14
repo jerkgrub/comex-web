@@ -32,10 +32,10 @@ import PostAuthNavbar from "./components/navbar/PostAuthNavbar";
 import Profile from "./pages/postAuth/client/Profile";
 
 // Misc
-import CommunityEngagementForm from "./pages/postAuth/client/Forms/CommunityEngagementForm";
-import StudentEngagementForm from "./pages/postAuth/client/Forms/StudentEngagementForm";
+import CommunityEngagementForm from "./pages/postAuth/client/forms/CommunityEngagementForm";
+import StudentEngagementForm from "./pages/postAuth/client/forms/StudentEngagementForm";
 import ScrollToTop from "./components/hooks/ScrollToTop";
-        
+
 // Route protection
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewUserPage from "./pages/postAuth/admin/sidebarPages/ViewUserPage";
@@ -142,6 +142,16 @@ function App() {
               <>
                 <PreAuthNavbar />
                 <RegisterPage />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="about-us"
+            element={
+              <>
+                <PreAuthNavbar />
+                <AboutUs />
                 <Footer />
               </>
             }
