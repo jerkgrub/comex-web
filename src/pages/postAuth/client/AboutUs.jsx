@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const AboutUs = () => {
@@ -11,23 +12,45 @@ const AboutUs = () => {
     }),
   };
 
+  // State to track if the hero image has loaded
+  const [isHeroImageLoaded, setIsHeroImageLoaded] = useState(false);
+  const heroImageUrl =
+    "https://www.marconews.com/gcdn/presto/2021/09/18/PTCN/299593ab-386d-41d4-bd8d-6f3018a0c512-TCN_COASTAL_CLEANUP07.jpg";
+
+  useEffect(() => {
+    // Preload the hero image
+    const img = new Image();
+    img.src = heroImageUrl;
+    img.onload = () => {
+      setIsHeroImageLoaded(true);
+    };
+  }, [heroImageUrl]);
+
   return (
     <div className="bg-gray-100">
       {/* Hero Section */}
-      <div
-        className="relative h-[calc(100vh_-_80px)] min-h-[91.3vh] bg-fixed bg-center bg-cover"
-        style={{
-          backgroundImage:
-            "url('https://www.marconews.com/gcdn/presto/2021/09/18/PTCN/299593ab-386d-41d4-bd8d-6f3018a0c512-TCN_COASTAL_CLEANUP07.jpg')",
-        }}
-      >
+      <div className="relative h-[calc(100vh_-_80px)] min-h-[91.3vh]">
+        {/* Placeholder background */}
+        <div className="absolute inset-0 bg-gray-300"></div>
+
+        {/* Background image with loading animation */}
+        <motion.div
+          className="absolute inset-0 bg-fixed bg-center bg-cover"
+          style={{
+            backgroundImage: `url('${heroImageUrl}')`,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHeroImageLoaded ? 1 : 0 }}
+          transition={{ duration: 0.5 }}
+        ></motion.div>
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,_0,_0,_0.6)_0%,_transparent_70%)] backdrop-brightness-75"></div>
 
         {/* Content */}
         <div className="select-none relative z-10 flex flex-col items-center justify-center h-full px-4">
           <motion.h1
-            className="text-5xl  md:text-6xl text-white text-center drop-shadow-lg"
+            className="text-5xl md:text-6xl text-white text-center drop-shadow-lg"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
@@ -38,8 +61,7 @@ const AboutUs = () => {
             className="text-lg md:text-xl text-white text-center max-w-3xl mt-6 leading-relaxed font-light text-justify"
             variants={fadeInVariant}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ amount: 0.2 }}
+            animate="visible"
             custom={0.2}
           >
             The Community Extension Office is responsible for the development
@@ -128,7 +150,7 @@ const AboutUs = () => {
                 Contact Us
               </h2>
               <div className="flex justify-center items-center">
-                <div className="flex flex-col justify-start items-stat w-max">
+                <div className="flex flex-col justify-start items-start w-max">
                   <div>
                     <p className="text-gray-700 text-lg font-light">
                       📞 Mobile Number -{" "}
@@ -183,7 +205,7 @@ const AboutUs = () => {
                 whileInView="visible"
                 viewport={{ amount: 0.2 }}
               >
-                <img
+                <ImageWithLoader
                   src="https://i.imgur.com/xHQfWxh.png"
                   alt="Zoren Matthew M. Blardonny"
                   className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-white shadow-md"
@@ -210,5 +232,25 @@ const Section = ({ children }) => {
   return <section className="mb-12">{children}</section>;
 };
 
+// ImageWithLoader Component
+const ImageWithLoader = ({ src, alt, className }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
 
-// 
+  return (
+    <div className="relative">
+      {!isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`${className} ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        } transition-opacity duration-500`}
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
+  );
+};

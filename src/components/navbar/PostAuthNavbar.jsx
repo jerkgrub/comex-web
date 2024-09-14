@@ -75,6 +75,10 @@ const PostAuthNavbar = () => {
 
   const handleProfile = () => {
     navigate("/client/profile");
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur(); // Close the dropdown by blurring the active element
+    }
+    setOpenDropdownIndex(null); // Close the open dropdown
   };
 
   const handleLogout = () => {
@@ -108,6 +112,15 @@ const PostAuthNavbar = () => {
     }
   };
 
+  // Handle item click and close the dropdown
+  const handleItemClick = (itemLink) => {
+    handleNavigation(itemLink);
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur(); // Close the dropdown by blurring the active element
+    }
+    setOpenDropdownIndex(null); // Close the open dropdown
+  };
+
   // Get menu items based on user type
   const menuItems = menuItemsByUserType[userType] || [];
 
@@ -136,7 +149,7 @@ const PostAuthNavbar = () => {
                 <li key={index}>
                   <a
                     onClick={() =>
-                      item.subItems ? null : handleNavigation(item.link)
+                      item.subItems ? null : handleItemClick(item.link)
                     }
                   >
                     {item.name}
@@ -145,7 +158,7 @@ const PostAuthNavbar = () => {
                     <ul className="p-2">
                       {item.subItems.map((subItem, subIndex) => (
                         <li key={subIndex}>
-                          <a onClick={() => handleNavigation(subItem.link)}>
+                          <a onClick={() => handleItemClick(subItem.link)}>
                             {subItem.name}
                           </a>
                         </li>
@@ -178,7 +191,7 @@ const PostAuthNavbar = () => {
                         openDropdownIndex === index ? null : index
                       );
                     } else {
-                      handleNavigation(item.link);
+                      handleItemClick(item.link);
                     }
                   }}
                 >
@@ -192,7 +205,7 @@ const PostAuthNavbar = () => {
                   >
                     {item.subItems.map((subItem, subIndex) => (
                       <li key={subIndex}>
-                        <a onClick={() => handleNavigation(subItem.link)}>
+                        <a onClick={() => handleItemClick(subItem.link)}>
                           {subItem.name}
                         </a>
                       </li>
