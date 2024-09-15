@@ -3,8 +3,19 @@ import { useState } from "react";
 const UseFormValidation = () => {
   const [errors, setErrors] = useState({});
 
-  const validateField = (name, value, otherValues = {}) => {
+  // Validate a specific field, skip if disabled
+  const validateField = (name, value, otherValues = {}, isDisabled = false) => {
     let error = "";
+
+    if (isDisabled) {
+      // If the field is disabled, remove any existing error and skip validation
+      setErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[name];
+        return updatedErrors;
+      });
+      return ""; // No error if disabled
+    }
 
     switch (name) {
       case "email":
@@ -66,10 +77,12 @@ const UseFormValidation = () => {
     return error;
   };
 
-  const validateForm = (fields) => {
+  // Validate the entire form
+  const validateForm = (fields, disabledFields = {}) => {
     let formIsValid = true;
     Object.entries(fields).forEach(([name, value]) => {
-      const error = validateField(name, value, fields);
+      const isDisabled = disabledFields[name];
+      const error = validateField(name, value, fields, isDisabled);
       if (error) formIsValid = false;
     });
     return formIsValid;

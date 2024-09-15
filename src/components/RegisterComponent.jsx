@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextInput from "./inputs/TextInput";
 import SelectInput from "./inputs/SelectInput";
 import PasswordInput from "./inputs/PasswordInput";
@@ -10,6 +10,8 @@ import UserTypeOptions from "./inputs/UserTypeOptions";
 import DepartmentOptions from "./inputs/DepartmentOptions";
 import UseRegister from "./hooks/UseRegister";
 import UseFormValidation from "./hooks/UseFormValidation";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // Import datepicker styles
 
 const RegisterComponent = () => {
   const [usertype, setUsertype] = useState("");
@@ -23,6 +25,9 @@ const RegisterComponent = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [dateHired, setDateHired] = useState(null); // Add state for the date
+  const [isIdDisabled, setIsIdDisabled] = useState(true);
+  const [isDateHiredDisabled, setIsDateHiredDisabled] = useState(true);
 
   const { errors, validateField, validateForm } = UseFormValidation(); // Use the hook
   const { handleRegister } = UseRegister({
@@ -37,7 +42,25 @@ const RegisterComponent = () => {
     password,
     confirmPassword,
     isChecked,
+    dateHired,
   });
+
+  // Effect to handle enabling/disabling fields based on usertype
+  useEffect(() => {
+    if (!usertype) {
+      // If no usertype is selected, disable both fields
+      setIsIdDisabled(true);
+      setIsDateHiredDisabled(true);
+    } else if (usertype === "Student") {
+      // Enable ID Number and disable Date Hired for students
+      setIsIdDisabled(false);
+      setIsDateHiredDisabled(true);
+    } else {
+      // Disable ID Number and enable Date Hired for others
+      setIsIdDisabled(true);
+      setIsDateHiredDisabled(false);
+    }
+  }, [usertype]);
 
   const handleSubmit = () => {
     const fields = {
@@ -51,13 +74,18 @@ const RegisterComponent = () => {
       email,
       password,
       confirmPassword,
+      dateHired,
     };
 
-    if (validateForm(fields) && isChecked) {
-      // Check if the terms of service is checked
-      handleRegister(); // Only call this if the form is valid
+    // Include disabled status when validating the form
+    const disabledFields = {
+      idNumber: isIdDisabled,
+      dateHired: isDateHiredDisabled,
+    };
+
+    if (validateForm(fields, disabledFields) && isChecked) {
+      handleRegister();
     } else if (!isChecked) {
-      // Handle case where terms are not accepted
       alert("Please accept the terms of service.");
     }
   };
@@ -77,7 +105,7 @@ const RegisterComponent = () => {
         value={usertype}
         onChange={(e) => {
           setUsertype(e.target.value);
-          validateField("usertype", e.target.value); // Validate on change
+          validateField("usertype", e.target.value);
         }}
         options={UserTypeOptions()}
         error={!!errors.usertype}
@@ -90,7 +118,7 @@ const RegisterComponent = () => {
           value={firstName}
           onChange={(e) => {
             setFirstName(e.target.value);
-            validateField("firstName", e.target.value); // Validate on change
+            validateField("firstName", e.target.value);
           }}
           error={!!errors.firstName}
           errorMessage={errors.firstName}
@@ -100,7 +128,7 @@ const RegisterComponent = () => {
           value={middleName}
           onChange={(e) => {
             setMiddleName(e.target.value);
-            validateField("middleName", e.target.value); // Validate on change
+            validateField("middleName", e.target.value);
           }}
           error={!!errors.middleName}
           errorMessage={errors.middleName}
@@ -110,7 +138,7 @@ const RegisterComponent = () => {
           value={lastName}
           onChange={(e) => {
             setLastName(e.target.value);
-            validateField("lastName", e.target.value); // Validate on change
+            validateField("lastName", e.target.value);
           }}
           error={!!errors.lastName}
           errorMessage={errors.lastName}
@@ -120,14 +148,15 @@ const RegisterComponent = () => {
       <div className="flex flex-col sm:flex-row gap-x-3">
         <div className="w-full">
           <TextInput
+            disabled={isIdDisabled}
             label="ID Number"
             value={idNumber}
             maxLength={11}
             onChange={(e) => {
               setIdNumber(e.target.value);
-              validateField("idNumber", e.target.value); // Validate on change
+              validateField("idNumber", e.target.value, {}, isIdDisabled); // Pass isIdDisabled
             }}
-            error={!!errors.idNumber}
+            error={!!errors.idNumber && !isIdDisabled} // Show error only if not disabled
             errorMessage={errors.idNumber}
           />
         </div>
@@ -138,11 +167,42 @@ const RegisterComponent = () => {
             value={mobileNumber}
             onChange={(e) => {
               setMobileNumber(e.target.value);
-              validateField("mobileNumber", e.target.value); // Validate on change
+              validateField("mobileNumber", e.target.value);
             }}
             error={!!errors.mobileNumber}
             errorMessage={errors.mobileNumber}
           />
+        </div>
+      </div>
+
+      {/* Date picker for Date Hired */}
+      <div className="flex flex-col sm:flex-row gap-x-3 mb-5">
+        <div className="w-full">
+          <label className="mb-1 pl-1 font-semibold">Date Hired</label>
+          <input
+            type="date"
+            value={dateHired}
+            disabled={isDateHiredDisabled}
+            className={`input input-bordered w-full ${
+              errors.dateHired && !isDateHiredDisabled ? "border-red-500" : ""
+            }`}
+          >
+            {/* <DatePicker
+              disabled={isDateHiredDisabled}
+              selected={dateHired}
+              value={dateHired}
+              type="date"
+              onChange={(date) => setDateHired(date)}
+              dateFormat="MMMM d, yyyy"
+              className="w-full border-none outline-none focus:border-none input"
+              placeholderText="Select Date"
+            /> */}
+          </input>
+          {errors.dateHired && !isDateHiredDisabled && (
+            <p className="pl-1 text-red-500 text-sm mt-1">
+              * {errors.dateHired}
+            </p>
+          )}
         </div>
       </div>
 
@@ -151,7 +211,7 @@ const RegisterComponent = () => {
         value={department}
         onChange={(e) => {
           setDepartment(e.target.value);
-          validateField("department", e.target.value); // Validate on change
+          validateField("department", e.target.value);
         }}
         options={DepartmentOptions()}
         error={!!errors.department}

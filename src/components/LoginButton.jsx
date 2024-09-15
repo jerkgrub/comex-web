@@ -32,6 +32,7 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
             const successMessages = {
               "Successfully logged in as Admin": "/admin/dashboard",
               "Successfully logged in as Student": "/client/home",
+              "Successfully logged in as NTP": "/client/home",
               "Successfully logged in as Comex Coordinator": "/client/home",
               "Successfully logged in as Faculty": "/client/home",
             };

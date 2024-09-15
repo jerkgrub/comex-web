@@ -8,17 +8,27 @@ const MobileNumberInput = ({
   error = false,
   errorMessage = "",
 }) => {
+  
+  // Handle the change event to limit input to 11 digits
+  const handleChange = (e) => {
+    const { value } = e.target;
+    
+    // Limit the value to 11 digits
+    if (value.length <= 11) {
+      onChange(e); // Only call onChange if the value is within the limit
+    }
+  };
+
   return (
     <div className="mb-5">
       {label && <h2 className="mb-1 pl-1 font-semibold">{label}</h2>}
       <label className={`input input-bordered flex items-center gap-1 ${error ? 'border-red-500' : ''}`}>
         <text className="font-light">+63</text>
         <input
-          type={type}
+          type="number"
           placeholder={placeholder}
           value={value}
-          onChange={onChange}
-          maxLength={11}  // Limit the input to 11 characters
+          onChange={handleChange} // Use the custom handleChange function
           className={`border-none outline-none focus:border-none focus:ring-0 w-full ${className}`}
         />
       </label>
@@ -27,4 +37,4 @@ const MobileNumberInput = ({
   );
 };
 
-export default MobileNumberInput;
+export default MobileNumberInput; 

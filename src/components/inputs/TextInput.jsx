@@ -9,12 +9,14 @@ const TextInput = ({
   className = "",
   error = false,
   errorMessage = "",
-  maxLength
+  maxLength,
+  disabled,
 }) => {
   return (
     <div className="mb-5">
       {label && <h2 className="mb-1 pl-1 font-semibold">{label}</h2>}
       <input
+        disabled={disabled}
         type={type}
         placeholder={placeholder}
         value={value}

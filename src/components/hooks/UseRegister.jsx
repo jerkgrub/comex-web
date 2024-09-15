@@ -15,6 +15,7 @@ const UseRegister = ({
   password,
   confirmPassword,
   isChecked,
+  dateHired,
   loginPath = "/login", // Added loginPath as a prop with a default value
 }) => {
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ const UseRegister = ({
       department,
       email,
       password,
+      dateHired,
     };
 
     axios
