@@ -41,11 +41,11 @@ const Users = () => {
 
   return (
     <>
-      <div className="bg-white flex p-6 sm:p-12 justify-start w-full h-full">
-        <div className="bg-white w-full">
+      <div className="bg-gray-200 flex p-6 sm:p-12 justify-start w-full h-screen">
+        <div className="bg-gray-200  w-full">
           {/* 1st section */}
-          <div className="text-2xl sm:text-4xl text-blue mb-3 font-bold">
-            Manage Users
+          <div>
+            <h1 className="text-3xl font-bold">MANAGE USERS</h1>
           </div>
 
           {/* 2nd section */}

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const ActivitySchema = new mongoose.Schema({
-
   // activity details
   type: String,
   isActivated: Boolean,
@@ -9,9 +8,12 @@ const ActivitySchema = new mongoose.Schema({
   organizer: String,
   description: String,
   image: String,
-  date: String,
+  startDate: String,
+  endDate: String,
   time: String,
+  hours: Number,
   department: String,
+  progress: String,
 
   // respondents
   respondents: [{ userId: String }],

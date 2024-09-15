@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema({
   usertype: String,
   mobileNumber: String,
   idNumber: String,
+  dateHired: String,
   email: {
     type: String,
     unique: true,

@@ -42,11 +42,11 @@ const Activities = () => {
 
   return (
     <>
-      <div className="bg-white flex p-6 sm:p-12 justify-start w-full h-full">
-        <div className="bg-white w-full">
+      <div className="bg-gray-200  flex p-6 sm:p-12 justify-start w-full h-full">
+        <div className="bg-gray-200  w-full">
           {/* 1st section */}
-          <div className="text-2xl sm:text-4xl text-blue mb-3 font-bold">
-            Manage Activities
+          <div className="text-2xl sm:text-4xl  mb-3 font-bold">
+            MANAGE ACTIVITIES
           </div>
 
           {/* Tabs for Approved and Pending Activities */}

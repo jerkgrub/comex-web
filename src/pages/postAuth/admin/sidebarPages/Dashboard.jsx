@@ -1,36 +1,61 @@
-import { BookCopy, SquareCheckBig } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import {
+  BookCopy,
+  CalendarClock,
+  ClipboardCheck,
+  FileText,
+  SquareCheckBig,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import DataCard from "../../../../components/DataCard";
+import DashboardTrackerTable from "../../../../components/DashboardTrackerTable";
+import HighestEngagementParticipation from "../../../../components/HighestEngagementParticipation";
+import ActivitiesAccomplishedPerDepartment from "../../../../components/ActivitiesAccomplishedPerDepartment";
 
 const Dashboard = () => {
-    
-    const navigate = useNavigate();
-    const btn_comexforms = () => {
-        console.log('COMEX Forms');
-        navigate('/admin/comexforms');
-    }
+  const navigate = useNavigate();
 
-    return (
-        <div className='flex-1 p-14 bg-white text-blue font-bold'>
-            <div className=''>
-            <h1 className='text-3xl'>Welcome, Admin</h1>
-            </div>
+  return (
+    <div className="flex flex-col min-h-screen p-8 bg-gray-200 space-y-8">
+      {/* Label Section */}
+      <h1 className="text-3xl font-bold">DASHBOARD</h1>
 
-            <div className='mt-9 flex h-max w-ful'>
-                <div className='flex gap-3'>
+      {/* Data Cards Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <DataCard
+          title="NSTP Hardcopy Requests"
+          count={69}
+          icon={<FileText size={40} />}
+          color="border-red-300"
+        />
+        <DataCard
+          title="Pending Activities"
+          count={69}
+          icon={<CalendarClock size={40} />}
+          color="border-[#E7DF94]"
+        />
+        <DataCard
+          title="Pending Applications"
+          count={69}
+          icon={<ClipboardCheck size={40} />}
+          color="border-green-300"
+        />
+      </div>
 
-                    <button className='rounded-md flex m-3 p-16 bg-nucolor1 text-nucolor2'>
-                        <SquareCheckBig className='self-center w-16 h-16 j'/>
-                        <p className='ml-7 self-center text-2xl text-white'>COMEX Tracker</p>
-                    </button>
+      {/* Tracker Table and Charts Section */}
+      <div className="space-y-6">
+        <DashboardTrackerTable />
 
-                    <button onClick={btn_comexforms} className='rounded-md flex m-3 p-16 bg-nucolor1 text-nucolor2'>
-                        <BookCopy className='self-center w-16 h-16 j'/>
-                        <p className='ml-7 self-center text-2xl text-white'>COMEX Forms</p>
-                    </button>
-                </div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col h-auto">
+            <HighestEngagementParticipation />
+          </div>
+          <div className="flex flex-col h-auto">
+            <ActivitiesAccomplishedPerDepartment />
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;

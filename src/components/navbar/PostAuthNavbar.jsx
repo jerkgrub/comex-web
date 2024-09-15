@@ -39,7 +39,10 @@ const menuItemsByUserType = {
         { name: "Assignments", link: "/faculty/assignments" },
       ],
     },
-    { name: "Faculty Resources", link: "/faculty/resources" },
+    {
+      name: "Application for Engagement Appraisal",
+      link: "/faculty/application-for-engagement-appraisal",
+    },
   ],
   NTP: [
     { name: "NTP Home", link: "/ntp/home" },
@@ -138,7 +141,12 @@ const PostAuthNavbar = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
               </svg>
             </div>
             <ul

@@ -67,7 +67,7 @@ function AdminLayout() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="bg-gray-200">
       <Sidebar>
         <SidebarItem
           to="/admin/dashboard"
@@ -173,17 +173,15 @@ function App() {
             }
           >
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="comexforms" element={<ComexForms />} />
+           
+            {/* manage activity */}
             <Route path="activities" element={<Activities />} />
             <Route path="create-activity" element={<CreateActivityPage />} />
-            <Route
-              path="activities/:activityid"
-              element={<ViewActivityPage />}
-            />
-            <Route
-              path="activities/:activityid/edit"
-              element={<EditActivityPage />}
-            />
-            <Route path="comexforms" element={<ComexForms />} />
+            <Route path="activities/:activityid" element={<ViewActivityPage />}/>
+            <Route path="activities/:activityid/edit" element={<EditActivityPage />}/>
+
+            {/* manage users */}
             <Route path="users" element={<Users />} />
             <Route path="create-user" element={<CreateUserPage />} />
             <Route path="users/:userid" element={<ViewUserPage />} />

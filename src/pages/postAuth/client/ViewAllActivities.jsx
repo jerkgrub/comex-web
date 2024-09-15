@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // Default Calendar CSS
 import './CustomCalendar.css'; // Custom CSS for enhanced styling
@@ -10,7 +11,7 @@ const ViewAllActivities = () => {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex w-scren min-h-[91.3vh] py-9 flex-col lg:flex-row gap-8">
             {/* Left side: List of Upcoming Activities */}
             <div className="w-full lg:w-1/2 p-6 bg-white rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">List of Upcoming Activities</h2>

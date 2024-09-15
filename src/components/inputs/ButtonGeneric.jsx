@@ -2,6 +2,7 @@ import React from "react";
 
 const ButtonGeneric = ({
   label,
+  style,
   disabled = false,
   icon: Icon,
   className = "",
@@ -17,6 +18,7 @@ const ButtonGeneric = ({
         disabled={disabled}
         onChange={onChange}
         onClick={onClick}
+        style={style}
         tabIndex={tabIndex}
         role={role}
       >
