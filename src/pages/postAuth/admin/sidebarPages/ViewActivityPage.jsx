@@ -20,7 +20,7 @@ const ViewActivityPage = () => {
           setError("Activity data not found");
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setError("Failed to fetch activity data");
       })
       .finally(() => {
@@ -42,7 +42,7 @@ const ViewActivityPage = () => {
 
   return (
     <div className="p-4 sm:p-8 bg-gray-50 min-h-screen">
-      {/* Top Section: Back Button on left, Edit Activity on right */}
+      {/* Top Section: Back Button on left */}
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={() => navigate(`/admin/activities`)}
@@ -52,13 +52,15 @@ const ViewActivityPage = () => {
         </button>
         <button
           onClick={() => navigate(`/admin/activities/${activityid}/edit`)}
-          className="btn px-4 py-2 bg-nucolor3 text-black rounded-lg hover:bg-blue-700"
+          className="px-4 py-2 bg-nucolor3 rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           Edit Activity
         </button>
       </div>
 
-      <h2 className="text-2xl sm:text-5xl font-extrabold text-gray-800 mb-6">Activity Details</h2>
+      <h2 className="text-2xl sm:text-5xl font-extrabold text-gray-800 mb-6">
+        Activity Details
+      </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 bg-white p-4 sm:p-8 rounded-lg shadow-lg">
         {/* Activity Information */}
@@ -68,6 +70,15 @@ const ViewActivityPage = () => {
             <Detail label="Description" value={activity.description} />
             <Detail label="Department" value={activity.department} />
             <Detail label="Type" value={activity.type} />
+            {/* Image Display */}
+            <div>
+              <p className="text-sm font-semibold text-gray-500">Activity Image:</p>
+              <img
+                src={activity.image || "https://via.placeholder.com/400"}
+                alt={activity.title}
+                className="w-full h-auto mt-2 rounded-lg shadow-sm"
+              />
+            </div>
           </div>
         </div>
 
@@ -96,7 +107,6 @@ const ViewActivityPage = () => {
             }
           />
         </div>
-        
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const activityController = require('../controllers/activity_controller');
 
-// insert routes here
+// Activity routes
 
 // 1. Create
 router.post('/api/activity/new', activityController.newActivity);
@@ -15,18 +15,17 @@ router.get('/api/activity/:id', activityController.findOneActivity);
 router.put('/api/activity/update/:id', activityController.updateActivity);
 
 // 4. Delete
-router.delete('/api/activity/delete/:id', activityController.deleteActivity); //DELETE
+router.delete('/api/activity/delete/:id', activityController.deleteActivity);
 
-// attendee section below ///////////////////////////////////////////////////////////////////////////////
+// Respondents section
 
-// create
-router.post('/api/activity/add/attendee/:id', activityController.addAttendee)
+// Add respondent
+router.post('/api/activity/add/respondent/:id', activityController.addRespondent);
 
-// read 
-router.get('/api/activity/get/attendee/:id', activityController.getAllAttendees)
+// Get all respondents
+router.get('/api/activity/get/respondents/:id', activityController.getAllRespondents);
 
-// delete
-router.delete('/api/activity/attendee/:activityId/:email', activityController.deleteAttendee);
-
+// Remove respondent
+router.delete('/api/activity/respondent/:activityId/:userId', activityController.removeRespondent);
 
 module.exports = router;

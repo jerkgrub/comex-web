@@ -15,7 +15,7 @@ const CreateActivityPage = () => {
     startDate: "",
     endDate: "",
     time: "",
-    image: null, // Added field for image
+    image: "https://images.gmanews.tv/webpics/2023/09/cleanupdrive(1)_2023_09_16_19_15_58.jpg",
     isActivated: true,
     isVoluntaryAndUnpaid: false,
     adminApproval: {
@@ -34,15 +34,10 @@ const CreateActivityPage = () => {
   };
 
   const handleCreateActivity = () => {
-    const formData = new FormData();
-    Object.entries(activity).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-
     axios
-      .post("http://localhost:8000/api/activity/new", formData, {
+      .post("http://localhost:8000/api/activity/new", activity, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       })
       .then(() => {
@@ -65,7 +60,7 @@ const CreateActivityPage = () => {
         </button>
         <button
           onClick={handleCreateActivity}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          className="px-4 py-2 bg-nucolor3 trounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           <Plus className="w-5 h-5" /> Create Activity
         </button>
@@ -161,6 +156,12 @@ const CreateActivityPage = () => {
             )}
             onChange={handleInputChange}
           />
+          <InputField
+            label="Image"
+            name="image"
+            value={activity.image}
+            onChange={handleInputChange}
+          />
         </div>
 
         <div className="mt-6">
@@ -182,15 +183,14 @@ const CreateActivityPage = () => {
           />
         </div>
 
-        <div className="mt-6">
-          {/* Image Upload */}
+        {/* <div className="mt-6">
           <InputField
             label="Upload Image"
             name="image"
             type="file"
             onChange={handleImageChange}
           />
-        </div>
+        </div> */}
 
         <div className="flex items-center gap-2 mt-6">
           <input

@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
+import { departmentItems } from "../../../../components/ItemOptions"; // Import department items
 
 const EditActivityPage = () => {
   const { activityid } = useParams();
@@ -12,9 +13,12 @@ const EditActivityPage = () => {
     department: "",
     type: "",
     organizer: "",
-    date: "",
+    startDate: "",
+    endDate: "",
     time: "",
+    image: "", // Image URL as a string
     isActivated: false,
+    isVoluntaryAndUnpaid: false,
     adminApproval: { isApproved: false }, // Ensure adminApproval is initialized
   });
   const [loading, setLoading] = useState(true);
@@ -25,7 +29,6 @@ const EditActivityPage = () => {
       .get(`http://localhost:8000/api/activity/${activityid}`)
       .then((response) => {
         if (response.data && response.data.Activity) {
-          // Ensure adminApproval exists in the response before setting it
           const activityData = response.data.Activity;
           if (!activityData.adminApproval) {
             activityData.adminApproval = { isApproved: false };
@@ -35,7 +38,7 @@ const EditActivityPage = () => {
           setError("Activity data not found");
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setError("Failed to fetch activity data");
       })
       .finally(() => {
@@ -79,7 +82,7 @@ const EditActivityPage = () => {
         </button>
         <button
           onClick={handleSaveChanges}
-          className="btn px-4 py-2 bg-nucolor3 text-black rounded-lg hover:bg-blue-700"
+          className="px-4 py-2 bg-nucolor3 text-black rounded-lg hover:bg-blue-700"
         >
           Save Changes
         </button>
@@ -97,27 +100,22 @@ const EditActivityPage = () => {
             value={activity.title}
             onChange={handleInputChange}
           />
-          <InputField
-            label="Description"
-            name="description"
-            value={activity.description}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-          <InputField
-            label="Department"
-            name="department"
-            value={activity.department}
-            onChange={handleInputChange}
-          />
           <SelectField
-            label="Type (Institutional or College Driven)"
+            label="Type"
             name="type"
             value={activity.type}
             options={[
               { value: "Institutional", label: "Institutional" },
               { value: "College Driven", label: "College Driven" },
+              { value: "Extension Services", label: "Extension Services" },
+              {
+                value: "Capacity-Building Services",
+                label: "Capacity-Building Services",
+              },
+              {
+                value: "External Participation",
+                label: "External Participation",
+              },
             ]}
             onChange={handleInputChange}
           />
@@ -130,12 +128,29 @@ const EditActivityPage = () => {
             onChange={handleInputChange}
           />
           <InputField
-            label="Date"
-            name="date"
-            type="date"
-            value={activity.date}
+            label="Description"
+            name="description"
+            value={activity.description}
             onChange={handleInputChange}
           />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          <InputField
+            label="Start Date"
+            name="startDate"
+            type="date"
+            value={activity.startDate}
+            onChange={handleInputChange}
+          />
+          <InputField
+            label="End Date"
+            name="endDate"
+            type="date"
+            value={activity.endDate}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <InputField
             label="Time"
             name="time"
@@ -143,8 +158,6 @@ const EditActivityPage = () => {
             value={activity.time}
             onChange={handleInputChange}
           />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -175,6 +188,36 @@ const EditActivityPage = () => {
             />
             <span>Activity Approved</span>
           </div>
+        </div>
+
+        {/* Department Dropdown */}
+        <div className="mt-6">
+          <SelectField
+            label="Department"
+            name="department"
+            value={activity.department}
+            options={departmentItems.filter(
+              (item) => item.value !== "All Departments"
+            )}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        {/* Image URL Input Field */}
+        <div className="mt-6">
+          <InputField
+            label="Activity Image URL"
+            name="image"
+            value={activity.image}
+            onChange={handleInputChange}
+          />
+          {activity.image && (
+            <img
+              src={activity.image}
+              alt="Activity"
+              className="mt-4 w-full h-auto rounded-lg shadow-md"
+            />
+          )}
         </div>
       </div>
 
@@ -210,7 +253,7 @@ const SelectField = ({ label, name, value, onChange, options }) => {
         onChange={onChange}
         className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
       >
-        <option value="">Select a type</option>
+        <option value="">Select an option</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

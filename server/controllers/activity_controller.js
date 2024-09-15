@@ -1,6 +1,6 @@
 const Activity = require("../models/Activity_model");
 
-// 1. Create
+// 1. Create new activity
 const newActivity = (req, res) => {
   try {
     Activity.create(req.body)
@@ -15,22 +15,23 @@ const newActivity = (req, res) => {
   }
 };
 
-// 2. Read
+// 2. Fetch all activities
 const findAllActivity = (req, res) => {
   Activity.find()
-    .then((allDaActivity) => {
-      res.json({ Activities: allDaActivity });
+    .then((allActivities) => {
+      res.json({ Activities: allActivities });
     })
     .catch((err) => {
       res.json({ message: "Something went wrong", error: err });
     });
 };
-// FIND BY ID
+
+// 3. Find one activity by ID
 const findOneActivity = (req, res) => {
   Activity.findById(req.params.id)
-    .then((Activity) => {
-      if (Activity) {
-        res.json({ Activity: Activity });
+    .then((activity) => {
+      if (activity) {
+        res.json({ Activity: activity });
       } else {
         res.status(404).json({ message: "Activity not found" });
       }
@@ -40,7 +41,7 @@ const findOneActivity = (req, res) => {
     });
 };
 
-// 3. Update
+// 4. Update an activity by ID
 const updateActivity = (req, res) => {
   Activity.findOneAndUpdate({ _id: req.params.id }, req.body, {
     new: true,
@@ -57,7 +58,7 @@ const updateActivity = (req, res) => {
     });
 };
 
-// 4. Delete
+// 5. Delete an activity by ID
 const deleteActivity = (req, res) => {
   Activity.findOneAndDelete({ _id: req.params.id })
     .then((deletedActivity) => {
@@ -72,38 +73,37 @@ const deleteActivity = (req, res) => {
     });
 };
 
-// ATTENDEES SECTION //////////////////////////////////////////////////////////////////////////////////
+// RESPONDENTS SECTION //////////////////////////////////////////////////////////////////////////////////
 
-// Create
-// Create
-const addAttendee = (req, res) => {
-  const ActivityId = req.params.id;
-  const newAttendee = req.body; // Expecting { at_email: "email", at_fname: "fname", at_lname: "lname", at_mnum: "mnum" }
+// Add a respondent to an activity
+const addRespondent = (req, res) => {
+  const activityId = req.params.id;
+  const { userId } = req.body; // Only the userId is passed
 
-  Activity.findById(ActivityId)
-    .then((Activity) => {
-      if (!Activity) {
+  Activity.findById(activityId)
+    .then((activity) => {
+      if (!activity) {
         return res.status(404).json({ message: "Activity not found" });
       }
 
-      // Check if the attendee with the provided email already exists
-      const existingAttendee = Activity.attendees.find(
-        (attendee) => attendee.at_email === newAttendee.at_email
+      // Check if the respondent with the provided userId already exists
+      const existingRespondent = activity.respondents.find(
+        (respondent) => respondent.userId === userId
       );
-      if (existingAttendee) {
+      if (existingRespondent) {
         return res
           .status(400)
-          .json({ message: "Attendee with the same email already exists" });
+          .json({ message: "Respondent with the same userId already exists" });
       }
 
-      // Add the new attendee
-      Activity.attendees.push(newAttendee);
-      return Activity.save();
+      // Add the new respondent
+      activity.respondents.push({ userId });
+      return activity.save();
     })
     .then((updatedActivity) => {
       res.json({
         updatedActivity: updatedActivity,
-        status: "Attendee added successfully",
+        status: "Respondent added successfully",
       });
     })
     .catch((err) => {
@@ -111,13 +111,12 @@ const addAttendee = (req, res) => {
     });
 };
 
-// Read
-// all attendees
-const getAllAttendees = (req, res) => {
+// Get all respondents of an activity
+const getAllRespondents = (req, res) => {
   Activity.findById(req.params.id)
-    .then((Activity) => {
-      if (Activity) {
-        res.json({ attendees: Activity.attendees });
+    .then((activity) => {
+      if (activity) {
+        res.json({ respondents: activity.respondents });
       } else {
         res.status(404).json({ message: "Activity not found" });
       }
@@ -127,26 +126,27 @@ const getAllAttendees = (req, res) => {
     });
 };
 
-// Delete
-const deleteAttendee = (req, res) => {
-  const ActivityId = req.params.ActivityId;
-  const attendeeEmail = req.params.email;
+// Remove a respondent from an activity
+const removeRespondent = (req, res) => {
+  const { activityId, userId } = req.params;
 
-  Activity.findById(ActivityId)
-    .then((Activity) => {
-      if (Activity) {
-        Activity.attendees = Activity.attendees.filter(
-          (attendee) => attendee.at_email !== attendeeEmail
-        );
-        return Activity.save();
-      } else {
-        res.status(404).json({ message: "Activity not found" });
+  Activity.findById(activityId)
+    .then((activity) => {
+      if (!activity) {
+        return res.status(404).json({ message: "Activity not found" });
       }
+
+      // Filter out the respondent by userId
+      activity.respondents = activity.respondents.filter(
+        (respondent) => respondent.userId !== userId
+      );
+
+      return activity.save();
     })
     .then((updatedActivity) => {
       res.json({
         updatedActivity: updatedActivity,
-        status: "Attendee deleted successfully",
+        status: "Respondent removed successfully",
       });
     })
     .catch((err) => {
@@ -162,8 +162,8 @@ module.exports = {
   updateActivity,
   deleteActivity,
 
-  // attendees
-  addAttendee,
-  getAllAttendees,
-  deleteAttendee,
+  // Respondents
+  addRespondent,
+  getAllRespondents,
+  removeRespondent,
 };
