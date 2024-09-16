@@ -31,17 +31,11 @@ const menuItemsByUserType = {
     { name: "Reports", link: "/coordinator/reports" },
   ],
   Faculty: [
-    { name: "Faculty Dashboard", link: "/faculty/dashboard" },
-    {
-      name: "Courses",
-      subItems: [
-        { name: "My Courses", link: "/faculty/my-courses" },
-        { name: "Assignments", link: "/faculty/assignments" },
-      ],
-    },
+    { name: "Home", link: "/client/home" },
+    { name: "About Us", link: "/client/about-us" },
     {
       name: "Application for Engagement Appraisal",
-      link: "/faculty/application-for-engagement-appraisal",
+      link: "/client/engagement-appraisals",
     },
   ],
   NTP: [

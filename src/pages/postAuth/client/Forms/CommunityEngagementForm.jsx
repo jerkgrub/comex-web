@@ -1,294 +1,192 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // To get user info
+import FetchUserData from '../../../../components/hooks/FetchUserData';
+import { ArrowLeft } from 'lucide-react'; // Arrow icon for back button
 
 const CommunityEngagementForm = () => {
+  const { activityid } = useParams(); // Get activityId from the URL
+  const navigate = useNavigate(); // For navigation
+  const user = FetchUserData(); // Fetch user data
+  const [activity, setActivity] = useState(null); // Store activity details
+  const [hasSubmitted, setHasSubmitted] = useState(false); // Track if the user has submitted before
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    department: "",
-    dateHired: "",
-    engagementTitle: "",
-    engagementType: "",
-    startDate: "",
-    endDate: "",
-    totalHours: "",
-    document: null,
-    reflection: "",
+    hoursRendered: '',
+    supportingDocuments: null, // This field will be ignored for now
+    facultyReflection: '',
   });
+  const [error, setError] = useState(''); // Error handling
 
-  const [message, setMessage] = useState("");
+  // Fetch the activity details and check if the user has already submitted the form
+  useEffect(() => {
+    // Fetch the activity details based on activityId
+    axios.get(`http://localhost:8000/api/activity/${activityid}`)
+      .then((response) => {
+        setActivity(response.data.Activity);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
-  };
+        // Check if the user has already submitted a form for this activity
+        if (user && user._id) {
+          axios.get(`http://localhost:8000/api/credit/activity/${activityid}`)
+            .then((creditResponse) => {
+              const userHasSubmitted = creditResponse.data.credits.some(
+                (credit) => credit.userId === user._id
+              );
+              if (userHasSubmitted) {
+                setHasSubmitted(true); // User has already submitted
+              }
+            })
+            .catch((error) => {
+              console.error('Error checking credit submission:', error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching activity:', error);
+        setError('Failed to fetch activity details.');
+      });
+  }, [activityid, user]);
 
-  const validateForm = () => {
-    // Validate name
-    const namePattern = /^[a-zA-Z]+( [a-zA-Z]+)*$/;
-    if (!namePattern.test(formData.name)) {
-      alert(
-        "Name format should be: First Name, Middle Name (if applicable), Last Name"
-      );
-      return false;
-    }
-
-    // Validate email
-    if (!formData.email.endsWith("@nu.edu.ph")) {
-      alert("Please use a National University email address");
-      return false;
-    }
-
-    // Validate mobile number
-    if (formData.mobile.length !== 11) {
-      alert("Mobile number should be 11 digits (e.g., 09123456789)");
-      return false;
-    }
-
-    // Validate date format
-    const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (
-      !datePattern.test(formData.dateHired) ||
-      !datePattern.test(formData.startDate) ||
-      !datePattern.test(formData.endDate)
-    ) {
-      alert("Date format should be MM/DD/YYYY");
-      return false;
-    }
-
-    // Validate hours
-    const totalHours = calculateTotalHours(
-      formData.startDate,
-      formData.endDate
-    );
-    if (totalHours < 78) {
-      setMessage(
-        "You have not reached the required 78 hours of volunteer work."
-      );
-      return false;
-    }
-
-    return true;
-  };
-
-  const calculateTotalHours = (startDate, endDate) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end - start);
-    const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
-    return diffHours;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      const totalHours = calculateTotalHours(
-        formData.startDate,
-        formData.endDate
-      );
-      setMessage(
-        `Thank you ${formData.name} for participating in ${formData.engagementTitle} for ${totalHours} hours. This ${formData.engagementType} will be rewarded by our office.`
-      );
+
+    if (!user || !user._id) {
+      setError('User not found. Please ensure you are logged in.');
+      return;
     }
+
+    // Create credit data without file upload for now
+    const creditData = {
+      userId: user._id, // Add userId from the fetched user
+      activityId: activityid, // Add the activityId
+      totalHoursRendered: formData.hoursRendered,
+      facultyReflection: formData.facultyReflection,
+    };
+
+    // Send POST request to create the new credit
+    axios.post('http://localhost:8000/api/credit/new', creditData)
+      .then(() => {
+        // Navigate to the "Form Submitted" page after successful submission
+        navigate('/client/form-submitted');
+      })
+      .catch((error) => {
+        console.error('Error submitting credit:', error);
+        setError('Failed to submit credit.');
+      });
   };
 
+  if (!activity) return <div>Loading activity details...</div>;
+
   return (
-    <div className="p-9 bg-nucolor2 text-nucolor flex-column">
+    <div className="max-w-3xl mx-auto my-10 p-6 bg-blue-100 rounded-lg shadow-lg relative">
+      
+      {/* Back Button */}
+      <button
+        className="absolute top-0 left-0 mt-4 ml-4 p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
+        onClick={() => navigate(-1)} // Go back to the previous page
+      >
+        <ArrowLeft className="w-6 h-6 text-gray-700" />
+      </button>
+
+      <h2 className="text-3xl font-bold mb-4 text-center">Activity Documentation</h2>
+      <p className="mb-8 text-lg text-center">
+        Upon accomplishing this section, the Community Extension Office will be able to document your community engagement and participation.
+      </p>
+
+      {error && <div className="text-red-600 mb-4">{error}</div>} {/* Display error if exists */}
+
       <form onSubmit={handleSubmit}>
+        
+        {/* Title (Pre-filled) */}
         <div className="mb-4">
-          <label>
-            1. Full Name (First Name, Middle Name, Last Name):
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <label className="block text-lg font-bold mb-2">Title of Community Engagement</label>
+          <input
+            type="text"
+            className="w-full p-2 border rounded-lg"
+            value={activity.title} // Pre-fill title
+            readOnly
+          />
         </div>
+
+        {/* Voluntary Service (Pre-filled) */}
         <div className="mb-4">
-          <label>
-            2. Email Address (NU Email):
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <small>National University email address only</small>
-          </label>
+          <label className="block text-lg font-bold mb-2">Is this Community Engagement voluntary and unpaid?</label>
+          <input
+            type="text"
+            className="w-full p-2 border rounded-lg"
+            value={activity.isVoluntaryAndUnpaid ? 'Yes' : 'No'} // Pre-fill voluntary service status
+            readOnly
+          />
         </div>
+
+        {/* Dates (Pre-filled) */}
         <div className="mb-4">
-          <label>
-            3. Mobile Number:
-            <input
-              type="text"
-              name="mobile"
-              value={formData.mobile}
-              onChange={handleChange}
-              required
-            />
-            <small>Should be 11 digits (e.g., 09123456789)</small>
-          </label>
+          <label className="block text-lg font-bold mb-2">Start Date</label>
+          <input
+            type="text"
+            className="w-full p-2 border rounded-lg"
+            value={activity.startDate} // Pre-fill start date
+            readOnly
+          />
         </div>
+
         <div className="mb-4">
-          <label>
-            4. Department:
-            <select
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Department</option>
-              <option value="College of Dentistry">College of Dentistry</option>
-              <option value="School of Optometry">School of Optometry</option>
-              <option value="School of Health Sciences">
-                School of Health Sciences
-              </option>
-              <option value="School of Accountancy and Management">
-                School of Accountancy and Management
-              </option>
-              <option value="School of Information Technology">
-                School of Information Technology
-              </option>
-              <option value="School of Arts and Sciences">
-                School of Arts and Sciences
-              </option>
-              <option value="School of Architecture">
-                School of Architecture
-              </option>
-              <option value="Senior High School Department">
-                Senior High School Department
-              </option>
-            </select>
-          </label>
+          <label className="block text-lg font-bold mb-2">End Date</label>
+          <input
+            type="text"
+            className="w-full p-2 border rounded-lg"
+            value={activity.endDate} // Pre-fill end date
+            readOnly
+          />
         </div>
+
+        {/* Hours Rendered */}
         <div className="mb-4">
-          <label>
-            5. Date Hired (MM/DD/YYYY):
-            <input
-              type="text"
-              name="dateHired"
-              value={formData.dateHired}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <label className="block text-lg font-bold mb-2">Total Hours Rendered</label>
+          <input
+            name="hoursRendered"
+            type="text"
+            className="w-full p-2 border rounded-lg"
+            value={formData.hoursRendered}
+            onChange={handleInputChange}
+            required
+          />
         </div>
+
+        {/* Supporting Documents (Disabled for now) */}
         <div className="mb-4">
-          <label>
-            6. Title of Community Engagement:
-            <input
-              type="text"
-              name="engagementTitle"
-              value={formData.engagementTitle}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <label className="block text-lg font-bold mb-2">Supporting Documents (disabled)</label>
+          <input
+            disabled
+            type="file"
+            className="w-full p-2 border rounded-lg"
+          />
         </div>
+
+        {/* Faculty Reflection */}
         <div className="mb-4">
-          <label>
-            7. Type of Community Engagement:
-            <select
-              name="engagementType"
-              value={formData.engagementType}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Type</option>
-              <option value="Institutional">Institutional</option>
-              <option value="College-Driven">College-Driven</option>
-              <option value="Extension Services">Extension Services</option>
-              <option value="Capacity-Building Services">
-                Capacity-Building Services
-              </option>
-              <option value="External Participation">
-                External Participation
-              </option>
-              <option value="UNSURE">UNSURE</option>
-            </select>
-          </label>
+          <label className="block text-lg font-bold mb-2">Faculty Reflection</label>
+          <textarea
+            name="facultyReflection"
+            className="w-full p-2 border rounded-lg"
+            value={formData.facultyReflection}
+            onChange={handleInputChange}
+            required
+          />
         </div>
-        <div className="mb-4">
-          <label>
-            8. Start Date of Community Engagement (MM/DD/YYYY):
-            <input
-              type="text"
-              name="startDate"
-              value={formData.startDate}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div className="mb-4">
-          <label>
-            9. End Date of Community Engagement (MM/DD/YYYY):
-            <input
-              type="text"
-              name="endDate"
-              value={formData.endDate}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div className="mb-4">
-          <label>
-            10. Total Number of Hours Rendered for this Community Engagement:
-            <input
-              type="number"
-              name="totalHours"
-              value={formData.totalHours}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div className="mb-4">
-          <label>
-            11. Document/File Upload (Non-anonymous question):
-            <input
-              type="file"
-              name="document"
-              onChange={handleChange}
-              required
-            />
-            <small>
-              Please attach any document from this community extension activity
-              that will serve as proof of your participation (Any of these:
-              attendance sheet, certificates, photo evidence/screenshot of the
-              event, meeting, extension activity, meeting highlights,
-              post-activity report)
-            </small>
-          </label>
-        </div>
-        <div className="mb-4">
-          <label>
-            12. Faculty Reflection:
-            <textarea
-              name="reflection"
-              value={formData.reflection}
-              onChange={handleChange}
-              required
-            ></textarea>
-            <small>
-              Please give us a glimpse of the community extension activity
-              conducted by sharing your reflection and personal realization.
-            </small>
-          </label>
-        </div>
-        <button className="bg-nucolor1 p-3 text-nucolor2" type="submit">
-          Submit
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="btn hover:bg-blue-700 text-black px-6 py-2 rounded-lg font-semibold"
+          disabled={hasSubmitted} // Disable if the user has already submitted
+        >
+          {hasSubmitted ? 'You Have Already Submitted' : 'Submit'}
         </button>
-        {message && <p>{message}</p>}
       </form>
     </div>
   );

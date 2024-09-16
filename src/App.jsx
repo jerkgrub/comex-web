@@ -50,6 +50,10 @@ import AboutUs from "./pages/postAuth/client/AboutUs";
 // Import the NotFound component
 import NotFound from "./components/NotFound";
 import ViewAllActivities from "./pages/postAuth/client/ViewAllActivities";
+import ViewOneActivity from "./pages/postAuth/client/ViewOneActivity";
+import RegisterActivityPage from "./pages/postAuth/client/RegisterActivityPage";
+import Appraisals from "./pages/postAuth/client/Appraisals";
+import FormSubmitted from "./pages/postAuth/client/forms/FormSubmitted";
 
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -174,12 +178,18 @@ function App() {
           >
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="comexforms" element={<ComexForms />} />
-           
+
             {/* manage activity */}
             <Route path="activities" element={<Activities />} />
             <Route path="create-activity" element={<CreateActivityPage />} />
-            <Route path="activities/:activityid" element={<ViewActivityPage />}/>
-            <Route path="activities/:activityid/edit" element={<EditActivityPage />}/>
+            <Route
+              path="activities/:activityid"
+              element={<ViewActivityPage />}
+            />
+            <Route
+              path="activities/:activityid/edit"
+              element={<EditActivityPage />}
+            />
 
             {/* manage users */}
             <Route path="users" element={<Users />} />
@@ -236,6 +246,56 @@ function App() {
               }
             />
             <Route
+              path="view-activities/:activityid"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <ViewOneActivity />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="engagement-appraisals"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <Appraisals />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="engagement-appraisals/community-engagement/:activityid"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <CommunityEngagementForm />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="view-activities/:activityid/register"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <RegisterActivityPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="form-submitted"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <FormSubmitted />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
               path="profile"
               element={
                 <>
@@ -276,7 +336,6 @@ function App() {
           </Route>
 
           {/* Forms */}
-          <Route path="/comform" element={<CommunityEngagementForm />} />
           <Route path="/studform" element={<StudentEngagementForm />} />
 
           {/* 404 Not Found Route */}

@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // Default Calendar CSS
 import "./CustomCalendar.css"; // Custom CSS for enhanced styling
 import { useFetchActivities, formatDate, formatTime } from "../../../components/hooks/useFetchActivities"; // Import custom hook
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const ViewAllActivities = () => {
   const [date, setDate] = useState(new Date());
@@ -31,36 +32,42 @@ const ViewAllActivities = () => {
           const formattedTime = formatTime(activity.time); // Format the time
 
           return (
-            <div key={activity._id} className="bg-white mb-6 p-3 border border-gray-200 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-row items-center gap-6">
-              <div className="w-40 h-auto">
-                <div className="w-full aspect-[4/3]">
-                  <img
-                    src={activity.image || "/path-to-default-image.jpg"}
-                    alt={activity.title}
-                    className="w-full h-full object-cover rounded-lg border-1 shadow-md"
-                  />
+            <Link
+              to={`/client/view-activities/${activity._id}`} // Link to the specific activity page
+              key={activity._id}
+              className="block bg-white mb-6 p-3 border border-gray-200 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"
+            >
+              <div className="flex flex-row items-center gap-6">
+                <div className="w-40 h-auto">
+                  <div className="w-full aspect-[4/3]">
+                    <img
+                      src={activity.image || "/path-to-default-image.jpg"}
+                      alt={activity.title}
+                      className="w-full h-full object-cover rounded-lg border-1 shadow-md"
+                    />
+                  </div>
+                </div>
+                <div className="text-center flex-shrink-0">
+                  {/* startDate */}
+                  <p className="text-2xl font-semibold text-indigo-500">{month}</p>
+                  <p className="text-5xl font-extrabold text-gray-900">{day}</p>
+                </div>
+                <div className="flex-grow">
+                  {/* type */}
+                  <p className="bg-indigo-200 text-indigo-800 px-4 py-1 rounded-full text-sm font-semibold tracking-wide inline-block">
+                    {activity.type.toUpperCase()}
+                  </p>
+                  {/* time */}
+                  <p className="text-sm text-gray-600 mt-3 font-medium">
+                    {formattedTime} {/* Display formatted time */}
+                  </p>
+                  {/* title */}
+                  <p className="text-lg font-bold text-gray-800 mt-1">
+                    {activity.title}
+                  </p>
                 </div>
               </div>
-              <div className="text-center flex-shrink-0">
-                {/* startDate */}
-                <p className="text-2xl font-semibold text-indigo-500">{month}</p>
-                <p className="text-5xl font-extrabold text-gray-900">{day}</p>
-              </div>
-              <div className="flex-grow">
-                {/* type */}
-                <p className="bg-indigo-200 text-indigo-800 px-4 py-1 rounded-full text-sm font-semibold tracking-wide inline-block">
-                  {activity.type.toUpperCase()}
-                </p>
-                {/* time */}
-                <p className="text-sm text-gray-600 mt-3 font-medium">
-                  {formattedTime} {/* Display formatted time */}
-                </p>
-                {/* title */}
-                <p className="text-lg font-bold text-gray-800 mt-1">
-                  {activity.title}
-                </p>
-              </div>
-            </div>
+            </Link>
           );
         })}
       </div>

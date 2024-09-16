@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, XCircle, Trash2 } from "lucide-react";
+import AdminAddRespondent from "../../../../components/AdminAddRespondent"; // Import the add respondent component
 
 const ViewActivityPage = () => {
   const { activityid } = useParams();
@@ -9,8 +10,12 @@ const ViewActivityPage = () => {
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [respondents, setRespondents] = useState([]); // To store respondents
+  const [removalError, setRemovalError] = useState(null); // For respondent removal errors
 
+  // Fetch activity details and respondents on page load
   useEffect(() => {
+    // Fetch activity details
     axios
       .get(`http://localhost:8000/api/activity/${activityid}`)
       .then((response) => {
@@ -22,11 +27,53 @@ const ViewActivityPage = () => {
       })
       .catch(() => {
         setError("Failed to fetch activity data");
+      });
+
+    // Fetch activity respondents and their user details
+    axios
+      .get(`http://localhost:8000/api/activity/get/respondents/${activityid}`)
+      .then((response) => {
+        if (response.data && response.data.respondents) {
+          const respondentIds = response.data.respondents.map(
+            (respondent) => respondent.userId
+          );
+          // Fetch user details for each respondent
+          Promise.all(
+            respondentIds.map((userId) =>
+              axios.get(`http://localhost:8000/api/users/${userId}`)
+            )
+          )
+            .then((userResponses) => {
+              const users = userResponses.map((res) => res.data.User);
+              setRespondents(users); // Set respondents with user data
+            })
+            .catch(() => {
+              setError("Failed to fetch respondent details");
+            });
+        } else {
+          setRespondents([]);
+        }
+      })
+      .catch(() => {
+        setError("Failed to fetch respondents");
       })
       .finally(() => {
         setLoading(false);
       });
   }, [activityid]);
+
+  // Remove a respondent
+  const handleRemoveRespondent = (userId) => {
+    axios
+      .delete(`http://localhost:8000/api/activity/respondent/${activityid}/${userId}`)
+      .then(() => {
+        setRespondents(respondents.filter((respondent) => respondent._id !== userId)); // Remove respondent from the list
+      })
+      .catch((error) => {
+        setRemovalError("Failed to remove respondent");
+        console.error("Error removing respondent:", error);
+      });
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -108,6 +155,45 @@ const ViewActivityPage = () => {
           />
         </div>
       </div>
+
+      {/* List of Respondents */}
+      <div className="mt-8">
+        <h3 className="text-2xl font-bold mb-4">Respondents ({respondents.length})</h3>
+        {respondents.length === 0 ? (
+          <p>No respondents have joined this activity yet.</p>
+        ) : (
+          <ul className="list-disc pl-5">
+            {respondents.map((respondent) => (
+              <li key={respondent._id} className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  {/* Avatar */}
+                  <img
+                    src={respondent.avatar || "https://via.placeholder.com/40"}
+                    alt={`${respondent.firstName} ${respondent.lastName}`}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div>
+                    <p>
+                      {respondent.firstName} {respondent.lastName} ({respondent.email})
+                    </p>
+                  </div>
+                </div>
+                {/* Remove Button */}
+                <button
+                  onClick={() => handleRemoveRespondent(respondent._id)}
+                  className="text-red-500 hover:text-red-700 flex items-center gap-1"
+                >
+                  <Trash2 className="w-4 h-4" /> Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {removalError && <p className="text-red-500 mt-2">{removalError}</p>}
+      </div>
+
+      {/* Add Respondent Section */}
+      <AdminAddRespondent activityId={activityid} />
     </div>
   );
 };

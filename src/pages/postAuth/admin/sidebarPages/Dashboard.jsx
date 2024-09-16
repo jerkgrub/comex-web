@@ -23,19 +23,19 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <DataCard
           title="NSTP Hardcopy Requests"
-          count={69}
+          count={0}
           icon={<FileText size={40} />}
           color="border-red-300"
         />
         <DataCard
           title="Pending Activities"
-          count={69}
+          count={0}
           icon={<CalendarClock size={40} />}
           color="border-[#E7DF94]"
         />
         <DataCard
           title="Pending Applications"
-          count={69}
+          count={0}
           icon={<ClipboardCheck size={40} />}
           color="border-green-300"
         />
