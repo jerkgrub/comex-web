@@ -9,7 +9,7 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
   const handleLogin = (event) => {
     event.preventDefault();
     Swal.fire({
-      scrollbarPadding: false,
+      //scrollbarPadding: false,
       title: "Logging in...",
       timer: 1000,
       timerProgressBar: true,

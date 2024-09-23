@@ -39,9 +39,10 @@ import PostAuthNavbar from "./components/navbar/PostAuthNavbar";
 import Profile from "./pages/postAuth/client/Profile";
 
 // Misc
-import CommunityEngagementForm from "./pages/postAuth/client/forms/CommunityEngagementForm";
-import StudentEngagementForm from "./pages/postAuth/client/forms/StudentEngagementForm";
 import ScrollToTop from "./components/hooks/ScrollToTop";
+import CommunityEngagementForm from "./pages/postAuth/client/Forms/CommunityEngagementForm";
+import StudentEngagementForm from "./pages/postAuth/client/Forms/StudentEngagementForm";
+import FormSubmitted from "./pages/postAuth/client/Forms/FormSubmitted";
 
 // Route protection
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -58,7 +59,6 @@ import ViewAllActivities from "./pages/postAuth/client/ViewAllActivities";
 import ViewOneActivity from "./pages/postAuth/client/ViewOneActivity";
 import RegisterActivityPage from "./pages/postAuth/client/RegisterActivityPage";
 import Appraisals from "./pages/postAuth/client/Appraisals";
-import FormSubmitted from "./pages/postAuth/client/forms/FormSubmitted";
 import ViewAppraisals from "./pages/postAuth/admin/ViewAppraisals";
 import ViewOneAppraisal from "./pages/postAuth/admin/ViewOneAppraisal";
 import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
@@ -73,6 +73,8 @@ function HeroPageWithNavbarAndFooter() {
     </>
   );
 }
+
+
 
 // Admin Layout
 function AdminLayout() {

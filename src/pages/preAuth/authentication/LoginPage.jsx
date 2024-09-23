@@ -27,12 +27,8 @@ const LoginPage = () => {
     setPasswordError(!e.target.value);
   };
 
-  const handleTest = () => {
-    showToast("success", "Registration complete!");
-  }
-
   return (
-    <div className="min-h-[91.3vh] py-9 bg-gradient-bg backdrop-blur-sm bg-cover bg-no-repeat p-3 flex justify-center items-center">
+    <div className="min-h-[91.3vh] py-9 bg-gradient-bg bg-cover bg-no-repeat p-3 flex justify-center items-center">
       <div className="bg-white2 sm:w-max flex flex-col w-full py-8 px-4 rounded-xl shadow-xl">
         <h1 className="text-2xl font-extrabold text-center mb-5">Log in</h1>
 
