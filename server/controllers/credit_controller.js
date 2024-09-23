@@ -112,10 +112,26 @@ const deleteCredit = (req, res) => {
     });
 };
 
+const findOneCredit = (req, res) => {
+  const { creditId } = req.params;
+
+  Credit.findById(creditId)
+    .then((credit) => {
+      if (!credit) {
+        return res.status(404).json({ message: 'Credit not found' });
+      }
+      res.json({ credit });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'Error fetching credit', error: err.message });
+    });
+};
+
 module.exports = {
   newCredit,
   findCreditsByActivity,
   findCreditsByUser,
   updateCredit,
   deleteCredit,
+  findOneCredit
 };

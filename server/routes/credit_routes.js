@@ -17,4 +17,7 @@ router.put("/api/credit/update/:creditId", creditController.updateCredit);
 // 5. Delete credit by ID
 router.delete("/api/credit/delete/:creditId", creditController.deleteCredit);
 
+// 6. Find One Credit
+router.get('/api/credit/:creditId', creditController.findOneCredit);
+
 module.exports = router;

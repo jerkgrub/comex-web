@@ -10,22 +10,24 @@ export const Home = () => {
     axios
       .get("http://localhost:8000/api/event/all")
       .then((response) => {
-        const formattedEvents = response.data.Events.map(event => {
+        const formattedEvents = response.data.Events.map((event) => {
           const date = new Date(event.event_date);
-          const formattedDate = date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+          const formattedDate = date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
-          const formattedTime = new Date(`1970-01-01T${event.event_time}Z`).toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true
+          const formattedTime = new Date(
+            `1970-01-01T${event.event_time}Z`
+          ).toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
           });
           return {
             ...event,
             event_date: formattedDate,
-            event_time: formattedTime
+            event_time: formattedTime,
           };
         });
         setEvents(formattedEvents);
@@ -38,12 +40,15 @@ export const Home = () => {
   const handleCardClick = (eventId) => {
     event.preventDefault();
     const userEmail = localStorage.getItem("userEmail");
-    
-    axios.get(`http://localhost:8000/api/event/get/attendee/${eventId}`)
-      .then(response => {
+
+    axios
+      .get(`http://localhost:8000/api/event/get/attendee/${eventId}`)
+      .then((response) => {
         const attendees = response.data.attendees;
-        const hasRegistered = attendees.some(attendee => attendee.at_email === userEmail);
-        
+        const hasRegistered = attendees.some(
+          (attendee) => attendee.at_email === userEmail
+        );
+
         if (hasRegistered) {
           Swal.fire(
             "Error!",
@@ -67,7 +72,8 @@ export const Home = () => {
 
               axios
                 .post(
-                  `http://localhost:8000/api/event/add/attendee/${eventId}`,userData
+                  `http://localhost:8000/api/event/add/attendee/${eventId}`,
+                  userData
                 )
                 .then(() => {
                   Swal.fire(
@@ -88,7 +94,7 @@ export const Home = () => {
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching attendees:", error);
         Swal.fire(
           "Error!",
@@ -106,7 +112,6 @@ export const Home = () => {
             src="https://media.assettype.com/tribune%2F2024-04%2F3dfc4787-bf5e-46ed-ae8e-bbbfa9af00bf%2Ffp22king2.jpg?w=1200&auto=format%2Ccompress&fit=max"
             alt="..."
           />
-
         </Carousel>
       </div>
 
@@ -132,7 +137,9 @@ export const Home = () => {
                   {event.event_title}
                 </h5>
                 <h1 className="">{`${event.event_date} - ${event.event_time}`}</h1>
-                <h3 className="text-base font-semibold">{event.event_organizer}</h3>
+                <h3 className="text-base font-semibold">
+                  {event.event_organizer}
+                </h3>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
                   {event.event_description}
                 </p>

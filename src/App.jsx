@@ -1,5 +1,3 @@
-// src/App.js
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,7 +8,14 @@ import { useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 
 import { Home } from "./pages/postAuth/client";
-import { ContactRound, Gauge, List, Shield, Ticket } from "lucide-react";
+import {
+  BookCopy,
+  ContactRound,
+  FolderKanban,
+  Gauge,
+  Shield,
+  Ticket,
+} from "lucide-react";
 
 import { Footer } from "./components/Footer";
 
@@ -54,6 +59,9 @@ import ViewOneActivity from "./pages/postAuth/client/ViewOneActivity";
 import RegisterActivityPage from "./pages/postAuth/client/RegisterActivityPage";
 import Appraisals from "./pages/postAuth/client/Appraisals";
 import FormSubmitted from "./pages/postAuth/client/forms/FormSubmitted";
+import ViewAppraisals from "./pages/postAuth/admin/ViewAppraisals";
+import ViewOneAppraisal from "./pages/postAuth/admin/ViewOneAppraisal";
+import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
 
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -90,16 +98,21 @@ function AdminLayout() {
           icon={<Ticket size={20} />}
           text={"Manage Activities"}
         />
+        <SidebarItem
+          to="/admin/evaluate-engagement-appraisals"
+          icon={<BookCopy size={20} />}
+          text={"Evaluate Engagement Appraisals"}
+        />
+        <SidebarItem
+          to="/admin/review-evaluation-forms"
+          icon={<FolderKanban size={20} />}
+          text={"Review Evaluation Forms"}
+        />
 
         <SidebarItem
           to="/admin/nstp"
           icon={<Shield size={20} />}
           text={"Manage NSTP"}
-        />
-        <SidebarItem
-          to="/admin/evaluation"
-          icon={<List size={20} />}
-          text={"Manage Evaluation"}
         />
       </Sidebar>
       <div
@@ -179,7 +192,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="comexforms" element={<ComexForms />} />
 
-            {/* manage activity */}
+            {/* manage activity section */}
             <Route path="activities" element={<Activities />} />
             <Route path="create-activity" element={<CreateActivityPage />} />
             <Route
@@ -190,6 +203,20 @@ function App() {
               path="activities/:activityid/edit"
               element={<EditActivityPage />}
             />
+            <Route
+              path="evaluate-engagement-appraisals"
+              element={<ViewAppraisals />}
+            />
+
+            {/* appraisals section*/}
+            <Route
+              path="engagement-appraisals/:activityid"
+              element={<ViewOneAppraisal />}
+            />
+            <Route
+              path="engagement-appraisals/credits/:creditid"
+              element={<ViewOneCredit />}
+            />
 
             {/* manage users */}
             <Route path="users" element={<Users />} />
@@ -197,6 +224,8 @@ function App() {
             <Route path="users/:userid" element={<ViewUserPage />} />
             <Route path="users/:userid/edit" element={<EditUserPage />} />
           </Route>
+
+          {/*  */}
 
           {/* Client Routes */}
           <Route
@@ -266,6 +295,26 @@ function App() {
               }
             />
             <Route
+              path="engagement-appraisals/blank"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <ViewOneAppraisal />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="engagement-appraisals/:activityid"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  <ViewOneAppraisal />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
               path="engagement-appraisals/community-engagement/:activityid"
               element={
                 <>
@@ -301,6 +350,36 @@ function App() {
                 <>
                   <PostAuthNavbar />
                   <Profile />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="profile/edit"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  {/* <ClientEditProfilePage /> */}
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="profile/view/achievements"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  {/* <ClientViewAchievementsPage /> */}
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="profile/view/achievements"
+              element={
+                <>
+                  <PostAuthNavbar />
+                  {/* <ClientPrintCertificatePage /> */}
                   <Footer />
                 </>
               }

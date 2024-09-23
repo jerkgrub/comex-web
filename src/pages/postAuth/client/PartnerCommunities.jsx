@@ -4,10 +4,9 @@ import { Link } from "react-router-dom";
 export const About = () => {
   return (
     <div>
-        <Link to="/contact" className="contactUs">
-          Contact Us
-        </Link>
+      <Link to="/contact" className="contactUs">
+        Contact Us
+      </Link>
     </div>
-  )
-
+  );
 };

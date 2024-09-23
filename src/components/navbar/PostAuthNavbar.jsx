@@ -33,10 +33,19 @@ const menuItemsByUserType = {
   Faculty: [
     { name: "Home", link: "/client/home" },
     { name: "About Us", link: "/client/about-us" },
+    { name: "Highlights", link: "/client/highlights" },
+    {
+      name: "Activities",
+      subItems: [
+        { name: "View Activities", link: "/client/view-activities" },
+        { name: "Evaluation Forms", link: "/student/evaluation-forms" },
+      ],
+    },
     {
       name: "Application for Engagement Appraisal",
       link: "/client/engagement-appraisals",
     },
+    
   ],
   NTP: [
     { name: "NTP Home", link: "/ntp/home" },

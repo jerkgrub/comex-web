@@ -153,3 +153,6 @@ const Activities = () => {
 };
 
 export default Activities;
+
+
+// college-driven + institutional = activities

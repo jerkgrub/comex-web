@@ -214,7 +214,7 @@ const AboutUs = () => {
                   Zoren Matthew M. Blardonny
                 </p>
                 <p className="text-gray-600 font-light">
-                  Director of Community Extension
+                  Coordinator of Community Extension
                 </p>
               </motion.div>
             </motion.div>
