@@ -74,8 +74,6 @@ function HeroPageWithNavbarAndFooter() {
   );
 }
 
-
-
 // Admin Layout
 function AdminLayout() {
   const [expanded, setExpanded] = useState(false);
