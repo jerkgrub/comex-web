@@ -150,7 +150,7 @@ function App() {
           {/* Pre Authentication */}
           <Route path="/" element={<HeroPageWithNavbarAndFooter />} />
           <Route
-            path="/login"
+            path="/login" 
             element={
               <>
                 <PreAuthNavbar />

@@ -3,29 +3,30 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'roboto-slab';
-  src: url('../public/fonts/roboto-slab/RobotoSlab-Regular.ttf') format('truetype');
+  font-family: "roboto-slab";
+  src: url("../public/fonts/roboto-slab/RobotoSlab-Regular.ttf")
+    format("truetype");
   font-weight: 400; /* Regular */
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'roboto';
-  src: url('../public/fonts/roboto/Roboto-Regular.ttf') format('truetype');
+  font-family: "roboto";
+  src: url("../public/fonts/roboto/Roboto-Regular.ttf") format("truetype");
   font-weight: 400; /* Regular */
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'roboto';
-  src: url('../public/fonts/roboto/Roboto-Bold.ttf') format('truetype');
+  font-family: "roboto";
+  src: url("../public/fonts/roboto/Roboto-Bold.ttf") format("truetype");
   font-weight: 700; /* Bold */
   font-style: bold;
 }
 
 @font-face {
-  font-family: 'roboto';
-  src: url('../public/fonts/roboto/Roboto-Light.ttf') format('truetype');
+  font-family: "roboto";
+  src: url("../public/fonts/roboto/Roboto-Light.ttf") format("truetype");
   font-weight: 300; /* Light */
   font-style: light;
 }
@@ -34,7 +35,7 @@
   body {
     /* background-color: #35408e; */
     background-color: #f9fafb;
-    font-family: 'roboto', sans-serif;
+    font-family: "roboto", sans-serif;
   }
 }
 
