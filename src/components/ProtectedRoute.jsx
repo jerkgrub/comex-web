@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import FetchUserData from "./hooks/FetchUserData";
+import LoadingPage from "../pages/LoadingPage";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const user = FetchUserData();
@@ -14,7 +15,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
   // Show loading indicator while fetching user data
   if (loading) {  
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   // Check if the user is logged in
