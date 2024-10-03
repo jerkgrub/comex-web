@@ -9,7 +9,7 @@ const FetchUserData = () => {
 
     if (signedEmail) {
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/email/${signedEmail}`);
+        const response = await axios.get(`https://comex-server.vercel.app/api/users/email/${signedEmail}`);
         const userData = response.data;
 
         // Update the state with the fetched user data

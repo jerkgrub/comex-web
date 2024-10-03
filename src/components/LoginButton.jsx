@@ -18,7 +18,7 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
       },
     }).then(() => {
       axios
-        .post("http://localhost:8000/api/login", { email, password })
+        .post("https://comex-server.vercel.app/api/login", { email, password })
         .then((response) => {
           const { token, user, message } = response.data;
           if (response.status === 200) {
