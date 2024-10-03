@@ -4,6 +4,7 @@ import "react-calendar/dist/Calendar.css"; // Default Calendar CSS
 import "./CustomCalendar.css"; // Custom CSS for enhanced styling
 import { useFetchActivities, formatDate, formatTime } from "../../../components/hooks/useFetchActivities"; // Import custom hook
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import LoadingPage from "../../LoadingPage";
 
 const ViewAllActivities = () => {
   const [date, setDate] = useState(new Date());
@@ -14,7 +15,7 @@ const ViewAllActivities = () => {
   };
 
   // Ensure that activities is defined and an array
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingPage/>;
   if (error) return <p>Error: {error}</p>;
   if (!activities || activities.length === 0) return <p>No activities found.</p>;
 

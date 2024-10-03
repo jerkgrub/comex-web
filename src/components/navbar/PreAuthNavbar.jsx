@@ -50,7 +50,7 @@ const PreAuthNavbar = () => {
       },
     }).then((result) => {
       axios
-        .post("http://localhost:8000/api/login", {
+        .post("https://comex-server.vercel.app/api/login", {
           email: email,
           password: password,
           usertype: usertype.toLowerCase(),

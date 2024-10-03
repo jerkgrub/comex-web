@@ -55,7 +55,7 @@ const UseRegister = ({
     };
 
     axios
-      .post("http://localhost:8000/api/users/new", newUser)
+      .post("https://comex-server.vercel.app/api/users/new", newUser)
       .then((response) => {
         if (
           response.status === 400 &&

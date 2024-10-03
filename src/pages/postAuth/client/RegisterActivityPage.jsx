@@ -19,7 +19,7 @@ const RegisterActivityPage = () => {
     if (user && user._id) {
       // Check if the user is already a respondent for the activity
       axios
-        .get(`http://localhost:8000/api/activity/${activityid}`)
+        .get(`https://comex-server.vercel.app/api/activity/${activityid}`)
         .then((response) => {
           if (response.data && response.data.Activity) {
             const activity = response.data.Activity;
@@ -73,7 +73,7 @@ const RegisterActivityPage = () => {
 
     // Send POST request to add the user as a respondent
     axios
-      .post(`http://localhost:8000/api/activity/add/respondent/${activityid}`, requestData)
+      .post(`https://comex-server.vercel.app/api/activity/add/respondent/${activityid}`, requestData)
       .then(() => {
         alert('Registration complete! You are now a respondent for this activity.');
         navigate(`/client/view-activities/`);

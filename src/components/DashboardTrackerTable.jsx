@@ -2,12 +2,13 @@ import React from "react";
 import ButtonGeneric from "./inputs/ButtonGeneric";
 import { ArrowDownToLine } from "lucide-react";
 import { useFetchActivities, formatDate, formatTime } from "../components/hooks/useFetchActivities"; // Assuming the hook is stored in this path
+import LoadingPage from "../pages/LoadingPage";
 
 const DashboardTrackerTable = () => {
   // Use the custom hook to fetch activities
   const { activities, loading, error } = useFetchActivities();
 
-  if (loading) return <p>Loading activities...</p>;
+  if (loading) return <LoadingPage/>;
   if (error) return <p>Error loading activities: {error}</p>;
   if (!activities || activities.length === 0) return <p>No activities found</p>;
 

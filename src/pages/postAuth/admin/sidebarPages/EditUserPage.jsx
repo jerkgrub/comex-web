@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
+import LoadingPage from "../../../LoadingPage";
 
 const EditUserPage = () => {
   const { userid } = useParams();
@@ -21,7 +22,7 @@ const EditUserPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/users/${userid}`)
+      .get(`https://comex-server.vercel.app/api/users/${userid}`)
       .then((response) => {
         if (response.data && response.data.User) {
           setUser(response.data.User);
@@ -44,7 +45,7 @@ const EditUserPage = () => {
 
   const handleSaveChanges = () => {
     axios
-      .put(`http://localhost:8000/api/users/update/${userid}`, user)
+      .put(`https://comex-server.vercel.app/api/users/update/${userid}`, user)
       .then(() => {
         navigate(`/admin/users/${userid}`);
       })
@@ -54,7 +55,7 @@ const EditUserPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingPage/>;
   }
 
   if (error) {

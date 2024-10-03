@@ -17,7 +17,7 @@ const ViewActivityPage = () => {
   useEffect(() => {
     // Fetch activity details
     axios
-      .get(`http://localhost:8000/api/activity/${activityid}`)
+      .get(`https://comex-server.vercel.app/api/activity/${activityid}`)
       .then((response) => {
         if (response.data && response.data.Activity) {
           setActivity(response.data.Activity);
@@ -31,7 +31,7 @@ const ViewActivityPage = () => {
 
     // Fetch activity respondents and their user details
     axios
-      .get(`http://localhost:8000/api/activity/get/respondents/${activityid}`)
+      .get(`https://comex-server.vercel.app/api/activity/get/respondents/${activityid}`)
       .then((response) => {
         if (response.data && response.data.respondents) {
           const respondentIds = response.data.respondents.map(
@@ -40,7 +40,7 @@ const ViewActivityPage = () => {
           // Fetch user details for each respondent
           Promise.all(
             respondentIds.map((userId) =>
-              axios.get(`http://localhost:8000/api/users/${userId}`)
+              axios.get(`https://comex-server.vercel.app/api/users/${userId}`)
             )
           )
             .then((userResponses) => {
@@ -65,7 +65,7 @@ const ViewActivityPage = () => {
   // Remove a respondent
   const handleRemoveRespondent = (userId) => {
     axios
-      .delete(`http://localhost:8000/api/activity/respondent/${activityid}/${userId}`)
+      .delete(`https://comex-server.vercel.app/api/activity/respondent/${activityid}/${userId}`)
       .then(() => {
         setRespondents(respondents.filter((respondent) => respondent._id !== userId)); // Remove respondent from the list
       })

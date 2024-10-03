@@ -8,7 +8,7 @@ export const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/event/all")
+      .get("https://comex-server.vercel.app/api/event/all")
       .then((response) => {
         const formattedEvents = response.data.Events.map((event) => {
           const date = new Date(event.event_date);
@@ -42,7 +42,7 @@ export const Home = () => {
     const userEmail = localStorage.getItem("userEmail");
 
     axios
-      .get(`http://localhost:8000/api/event/get/attendee/${eventId}`)
+      .get(`https://comex-server.vercel.app/api/event/get/attendee/${eventId}`)
       .then((response) => {
         const attendees = response.data.attendees;
         const hasRegistered = attendees.some(
@@ -72,7 +72,7 @@ export const Home = () => {
 
               axios
                 .post(
-                  `http://localhost:8000/api/event/add/attendee/${eventId}`,
+                  `https://comex-server.vercel.app/api/event/add/attendee/${eventId}`,
                   userData
                 )
                 .then(() => {

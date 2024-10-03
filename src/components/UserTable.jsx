@@ -8,7 +8,7 @@ const UserTable = ({ searchInput, filters }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/users/all")
+      .get("https://comex-server.vercel.app/api/users/all")
       .then((response) => {
         const data = response.data;
         if (data.Users && Array.isArray(data.Users)) {

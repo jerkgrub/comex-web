@@ -20,13 +20,13 @@ const CommunityEngagementForm = () => {
   // Fetch the activity details and check if the user has already submitted the form
   useEffect(() => {
     // Fetch the activity details based on activityId
-    axios.get(`http://localhost:8000/api/activity/${activityid}`)
+    axios.get(`https://comex-server.vercel.app/api/activity/${activityid}`)
       .then((response) => {
         setActivity(response.data.Activity);
 
         // Check if the user has already submitted a form for this activity
         if (user && user._id) {
-          axios.get(`http://localhost:8000/api/credit/activity/${activityid}`)
+          axios.get(`https://comex-server.vercel.app/api/credit/activity/${activityid}`)
             .then((creditResponse) => {
               const userHasSubmitted = creditResponse.data.credits.some(
                 (credit) => credit.userId === user._id
@@ -68,7 +68,7 @@ const CommunityEngagementForm = () => {
     };
 
     // Send POST request to create the new credit
-    axios.post('http://localhost:8000/api/credit/new', creditData)
+    axios.post('https://comex-server.vercel.app/api/credit/new', creditData)
       .then(() => {
         // Navigate to the "Form Submitted" page after successful submission
         navigate('/client/form-submitted');

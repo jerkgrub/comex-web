@@ -23,7 +23,7 @@ const Accounts = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/acc/all")
+    fetch("https://comex-server.vercel.app/api/acc/all")
       .then((response) => response.json())
       .then((data) => {
         if (data.Users && Array.isArray(data.Users)) {
@@ -51,7 +51,7 @@ const Accounts = () => {
   });
 
   const handleEditClick = (accountId) => {
-    fetch(`http://localhost:8000/api/acc/${accountId}`)
+    fetch(`https://comex-server.vercel.app/api/acc/${accountId}`)
       .then((response) => response.json())
       .then((data) => {
         setSelectedUser(data.User);
@@ -66,7 +66,7 @@ const Accounts = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:8000/api/acc/update/${selectedUser._id}`,
+        `https://comex-server.vercel.app/api/acc/update/${selectedUser._id}`,
         selectedUser
       )
       .then((response) => {
@@ -88,7 +88,7 @@ const Accounts = () => {
 
   const deleteUser = () => {
     axios
-      .delete(`http://localhost:8000/api/acc/delete/${selectedUser._id}`)
+      .delete(`https://comex-server.vercel.app/api/acc/delete/${selectedUser._id}`)
       .then((response) => {
         console.log(response.data);
         document.getElementById("modal_edit").close();
@@ -175,7 +175,7 @@ const Accounts = () => {
     };
 
     axios
-      .post("http://localhost:8000/api/acc/new", newAcc)
+      .post("https://comex-server.vercel.app/api/acc/new", newAcc)
       .then((response) => {
         console.log(response.data);
         if (response.data.error) {

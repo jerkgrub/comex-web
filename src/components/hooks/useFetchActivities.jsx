@@ -10,7 +10,7 @@ export const useFetchActivities = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/activity/all");
+        const response = await axios.get("https://comex-server.vercel.app/api/activity/all");
         console.log("API response data:", response.data); // Debugging log
 
         if (response.data && response.data.Activities) {

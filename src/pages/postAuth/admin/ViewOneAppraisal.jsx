@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingPage from '../../LoadingPage';
 
 const ViewOneAppraisal = () => {
   const { activityid } = useParams();
@@ -14,7 +15,7 @@ const ViewOneAppraisal = () => {
   // Function to fetch user details
   const fetchUserDetails = async (userId) => {
     try {
-      const userResponse = await axios.get(`http://localhost:8000/api/users/${userId}`);
+      const userResponse = await axios.get(`https://comex-server.vercel.app/api/users/${userId}`);
       return userResponse.data.User; // Assuming response contains a 'User' object with details like name
     } catch (error) {
       console.error('Error fetching user details:', error);
@@ -27,11 +28,11 @@ const ViewOneAppraisal = () => {
     const fetchActivityAndCredits = async () => {
       try {
         // Fetch activity data
-        const activityResponse = await axios.get(`http://localhost:8000/api/activity/${activityid}`);
+        const activityResponse = await axios.get(`https://comex-server.vercel.app/activity/${activityid}`);
         setActivity(activityResponse.data.Activity);
 
         // Fetch credits data
-        const creditsResponse = await axios.get(`http://localhost:8000/api/credit/activity/${activityid}`);
+        const creditsResponse = await axios.get(`https://comex-server.vercel.app/api/credit/activity/${activityid}`);
         const creditsData = creditsResponse.data.credits;
 
         // Fetch user details for each credit
@@ -56,7 +57,7 @@ const ViewOneAppraisal = () => {
     fetchActivityAndCredits();
   }, [activityid]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingPage/>;
   if (error) return <div className="text-red-600">{error}</div>;
 
   return (

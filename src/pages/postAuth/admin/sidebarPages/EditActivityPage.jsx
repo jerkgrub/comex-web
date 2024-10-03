@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
 import { departmentItems } from "../../../../components/ItemOptions"; // Import department items
+import LoadingPage from "../../../LoadingPage";
 
 const EditActivityPage = () => {
   const { activityid } = useParams();
@@ -26,7 +27,7 @@ const EditActivityPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/activity/${activityid}`)
+      .get(`https://comex-server.vercel.app/api/activity/${activityid}`)
       .then((response) => {
         if (response.data && response.data.Activity) {
           const activityData = response.data.Activity;
@@ -53,7 +54,7 @@ const EditActivityPage = () => {
 
   const handleSaveChanges = () => {
     axios
-      .put(`http://localhost:8000/api/activity/update/${activityid}`, activity)
+      .put(`https://comex-server.vercel.app/api/activity/update/${activityid}`, activity)
       .then(() => {
         navigate(`/admin/activities/${activityid}`);
       })
@@ -63,7 +64,7 @@ const EditActivityPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingPage/>;
   }
 
   if (error) {

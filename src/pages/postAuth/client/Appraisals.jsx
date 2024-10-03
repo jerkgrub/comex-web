@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, BookOpen, Settings, Layers, ExternalLink } from 'lucide-react';
 import { useFetchActivities }  from '../../../components/hooks/useFetchActivities'; 
+import LoadingPage from '../../LoadingPage';
 
 // Define card data with LucideReact icons
 const cardData = [
@@ -32,7 +33,7 @@ const Appraisals = () => {
     return matchesType && matchesSearch;
   });
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingPage/>;
   if (error) return <div>Error loading activities: {error}</div>;
 
   return (

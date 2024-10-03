@@ -8,7 +8,7 @@ const ActivityTable = ({ searchInput, filters }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/activity/all")
+      .get("https://comex-server.vercel.app/api/activity/all")
       .then((response) => {
         const data = response.data;
         if (data.Activities && Array.isArray(data.Activities)) {

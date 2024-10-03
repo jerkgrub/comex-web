@@ -14,7 +14,7 @@ const ViewOneCredit = () => {
     const fetchCreditDetails = async () => {
       try {
         console.log('Fetching credit details for credit ID:', creditid); // Log the credit ID to ensure it's correct
-        const response = await axios.get(`http://localhost:8000/api/credit/${creditid}`);
+        const response = await axios.get(`https://comex-server.vercel.app/api/credit/${creditid}`);
         console.log('Credit data:', response.data); // Log the response to see what is being fetched
         setCredit(response.data.credit);
         setLoading(false);

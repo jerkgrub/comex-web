@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { formatDate, formatTime } from '../../../components/hooks/useFetchActivities'; // Reuse your existing helper functions
 import FetchUserData from '../../../components/hooks/FetchUserData'; // Import user fetch hook
+import LoadingPage from '../../LoadingPage';
 
 const ViewOneActivity = () => {
   const { activityid } = useParams(); // Fetch the activity ID from the URL
@@ -17,7 +18,7 @@ const ViewOneActivity = () => {
   useEffect(() => {
     // Fetch the specific activity details based on activityid
     axios
-      .get(`http://localhost:8000/api/activity/${activityid}`)
+      .get(`https://comex-server.vercel.app/api/activity/${activityid}`)
       .then((response) => {
         if (response.data && response.data.Activity) {
           setActivity(response.data.Activity);
@@ -39,7 +40,7 @@ const ViewOneActivity = () => {
   }, [activityid, user._id]);
 
   if (loading) {
-    return <div>Loading activity details...</div>;
+    return <LoadingPage />;
   }
 
   if (error) {

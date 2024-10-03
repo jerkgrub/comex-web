@@ -12,7 +12,7 @@ const AdminAddRespondent = ({ activityId }) => {
   // Fetch all users
   useEffect(() => {
     axios
-      .get('http://localhost:8000/api/users/all')
+      .get('https://comex-server.vercel.app/users/all')
       .then((response) => {
         setUsers(response.data.Users);
         setFilteredUsers(response.data.Users); // Initialize filtered users with full list
@@ -48,7 +48,7 @@ const AdminAddRespondent = ({ activityId }) => {
     }
 
     axios
-      .post(`http://localhost:8000/api/activity/add/respondent/${activityId}`, {
+      .post(`https://comex-server.vercel.app/api/activity/add/respondent/${activityId}`, {
         userId,
       })
       .then((response) => {

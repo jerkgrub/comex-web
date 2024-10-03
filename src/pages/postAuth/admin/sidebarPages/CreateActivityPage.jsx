@@ -35,7 +35,7 @@ const CreateActivityPage = () => {
 
   const handleCreateActivity = () => {
     axios
-      .post("http://localhost:8000/api/activity/new", activity, {
+      .post("https://comex-server.vercel.app/api/activity/new", activity, {
         headers: {
           "Content-Type": "application/json",
         },
