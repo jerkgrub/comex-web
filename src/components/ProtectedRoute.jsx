@@ -8,29 +8,27 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (Object.keys(user).length !== 0) {
-      setLoading(false); // Stop loading when user data is fetched
+    // Stop loading when user data is fetched or if the user is not authenticated
+    if (Object.keys(user).length !== 0 || !localStorage.getItem("userEmail")) {
+      setLoading(false);
     }
   }, [user]);
 
   // Show loading indicator while fetching user data
-  if (loading) {  
+  if (loading) {
     return <LoadingPage />;
   }
 
   // Check if the user is logged in
   const isLoggedIn = Boolean(localStorage.getItem("userEmail"));
 
-  // Check if the user role is allowed
-  const isAllowed = allowedRoles.includes(user.usertype);
-
-  console.log("User role:", user.usertype); // Add this to check the user role
-  console.log("Allowed roles:", allowedRoles); // Add this to check the allowed roles
-  console.log("Is user allowed?", isAllowed); // Check if the user is allowed
-
+  // If the user is not logged in, redirect to login page
   if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
+
+  // Check if the user role is allowed
+  const isAllowed = allowedRoles.includes(user?.usertype);
 
   if (!isAllowed) {
     return <Navigate to="/not-authorized" />;
