@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 import { formConfig } from '../../../components/hooks/formConfig';
 import FormPage from '../../../components/forms/FormPage';
@@ -90,6 +91,12 @@ const RegisterActivityPage = () => {
 
   return (
     <div className="max-w-3xl mx-auto my-10">
+      <button
+        onClick={() => navigate('/client/view-activities')}
+        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
+      >
+        <ArrowLeft className="w-5 h-5" /> Back
+      </button>
       <FormPage
         formStep={formConfig[currentStep]}
         formData={formData}

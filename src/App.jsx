@@ -49,6 +49,7 @@ import ClientAppraisals from "./pages/postAuth/client/ClientAppraisals";
 import ViewAppraisals from "./pages/postAuth/admin/ViewAppraisals";
 import Admin_ViewOneAppraisal from "./pages/postAuth/admin/Admin_ViewOneAppraisal";
 import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
+import EngagementAppraisalPage from "./pages/postAuth/client/forms/EngagementAppraisalsPage";
 
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -107,11 +108,11 @@ function App() {
           <Route path="/admin/*" element={<ProtectedRoute allowedRoles={["Admin"]}><AdminLayout /></ProtectedRoute>}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="comexforms" element={<ComexForms />} />
-            <Route path="activities" element={<Activities />} />
-            <Route path="create-activity" element={<CreateActivityPage />} />
 
             {/* activities */}
+            <Route path="activities" element={<Activities />} />
             <Route path="activities/:activityid" element={<ViewActivityPage />} />
+            <Route path="create-activity" element={<CreateActivityPage />} />
             <Route path="activities/:activityid/edit" element={<EditActivityPage />} />
 
             {/* appraisals */}
@@ -131,7 +132,7 @@ function App() {
             <Route path="view-activities" element={<><PostAuthNavbar /><ClientViewAllActivities /><Footer /></>} />
             <Route path="view-activities/:activityid" element={<><PostAuthNavbar /><ClientViewOneActivity /><Footer /></>} />
             <Route path="engagement-appraisals" element={<><PostAuthNavbar /><ClientAppraisals /><Footer /></>} />
-            <Route path="engagement-appraisals/blank" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
+            <Route path="engagement-appraisals/blank" element={<><PostAuthNavbar /><EngagementAppraisalPage /><Footer /></>} />
             <Route path="engagement-appraisals/:activityid" element={<><PostAuthNavbar /><Admin_ViewOneAppraisal /><Footer /></>} />
             <Route path="engagement-appraisals/community-engagement/:activityid" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
             <Route path="view-activities/:activityid/register" element={<><PostAuthNavbar /><RegisterActivityPage /><Footer /></>} />
