@@ -5,7 +5,7 @@ import { formatDate, formatTime } from '../../../components/hooks/useFetchActivi
 import FetchUserData from '../../../components/hooks/FetchUserData'; // Import user fetch hook
 import LoadingPage from '../../LoadingPage';
 
-const ViewOneActivity = () => {
+const ClientViewOneActivity = () => {
   const { activityid } = useParams(); // Fetch the activity ID from the URL
   const navigate = useNavigate();
   const [activity, setActivity] = useState(null);
@@ -92,4 +92,4 @@ const ViewOneActivity = () => {
   );
 };
 
-export default ViewOneActivity;
+export default ClientViewOneActivity;

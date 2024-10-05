@@ -11,7 +11,7 @@ export const Services = () => {
           <p className="service-description">Description for Service 1</p>
         </div>
         <div className="service-card">
-          <h2 className="service-title">Service 2</h2>
+          <h2 className="service-title">Service 2</h2>  
           <p className="service-description">Description for Service 2</p>
         </div>
         <div className="service-card">

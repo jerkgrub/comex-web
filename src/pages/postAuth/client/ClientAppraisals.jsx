@@ -21,7 +21,7 @@ const ClientAppraisals = () => {
 
   const handleCardClick = (card) => {
     if (card.id === 3) {
-      navigate('/client/engagement-appraisals-blank/');
+      navigate('/client/engagement-appraisals/blank/');
     } else {
       setActiveFilter((prevFilter) => (prevFilter === card.filter ? null : card.filter));
     }
@@ -59,23 +59,6 @@ const ClientAppraisals = () => {
 
 
         {/* Display Filtered Activities */}
-        <div>
-          {filteredActivities.length > 0 ? (
-            <ul className="space-y-4">
-              {filteredActivities.map((activity) => (
-                <li
-                  key={activity._id}
-                  className="p-4 bg-gray-100 rounded-lg shadow hover:bg-gray-200 cursor-pointer"
-                  onClick={() => navigate(`/client/engagement-appraisals/community-engagement/${activity._id}`)} // Navigate with activityId
-                >
-                  {activity.title}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No activities found matching the search or filter criteria.</p>
-          )}
-        </div>
       </div>
     </div>
   );

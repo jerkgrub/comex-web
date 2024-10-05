@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingPage from '../../LoadingPage';
 
-const ViewOneAppraisal = () => {
+const Admin_ViewOneAppraisal = () => {
   const { activityid } = useParams();
   const [activity, setActivity] = useState(null);
   const [credits, setCredits] = useState([]);
@@ -108,4 +108,4 @@ const ViewOneAppraisal = () => {
   );
 };
 
-export default ViewOneAppraisal;
+export default Admin_ViewOneAppraisal;

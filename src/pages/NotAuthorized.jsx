@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const NotAuthorized = () => {
   const navigate = useNavigate();
 
-  const handleGoBack = () => {
+  const handleGoBack = () => { 
     navigate(-1); // This will navigate the user back to the previous page
   };
 

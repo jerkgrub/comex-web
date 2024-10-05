@@ -6,7 +6,7 @@ import { useFetchActivities, formatDate, formatTime } from "../../../components/
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import LoadingPage from "../../LoadingPage";
 
-const ViewAllActivities = () => {
+const ClientViewAllActivities = () => {
   const [date, setDate] = useState(new Date());
   const { activities, loading, error } = useFetchActivities(); // Use custom hook
 
@@ -89,4 +89,4 @@ const ViewAllActivities = () => {
   );
 };
 
-export default ViewAllActivities;
+export default ClientViewAllActivities;
