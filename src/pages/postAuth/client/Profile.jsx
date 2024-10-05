@@ -5,9 +5,7 @@ import ProfileInfoCardSigned from "../../../components/ProfileInfoCardSigned";
 
 const Profile = () => {
   const user = FetchUserData();
-
-  console.log(user.firstName);
-
+  
   return (
     <div className="min-h-[91.3vh] bg-gradient-bg3 bg-cover bg-no-repeat flex flex-col justify-start items-center py-16 gap-6">
       <ProfileInfoCardSigned />

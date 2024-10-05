@@ -70,7 +70,6 @@ const Accounts = () => {
         selectedUser
       )
       .then((response) => {
-        console.log(response.data);
         document.getElementById("modal_edit").close();
         setAccounts((prevAccounts) =>
           prevAccounts.map((account) =>
@@ -90,7 +89,6 @@ const Accounts = () => {
     axios
       .delete(`https://comex-server.vercel.app/api/acc/delete/${selectedUser._id}`)
       .then((response) => {
-        console.log(response.data);
         document.getElementById("modal_edit").close();
         setAccounts((prevAccounts) =>
           prevAccounts.filter((account) => account._id !== selectedUser._id)
@@ -157,7 +155,6 @@ const Accounts = () => {
 
   const addUser = (event) => {
     event.preventDefault();
-    console.log("choif");
     if (!validateForm()) {
       return;
     }
@@ -177,7 +174,6 @@ const Accounts = () => {
     axios
       .post("https://comex-server.vercel.app/api/acc/new", newAcc)
       .then((response) => {
-        console.log(response.data);
         if (response.data.error) {
           Swal.fire({
             title: "Error!",

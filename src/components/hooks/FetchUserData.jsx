@@ -14,7 +14,6 @@ const FetchUserData = () => {
 
         // Update the state with the fetched user data
         setUser(userData.User);
-        console.log("User data fetched:", userData);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

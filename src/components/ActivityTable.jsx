@@ -14,7 +14,6 @@ const ActivityTable = ({ searchInput, filters }) => {
         if (data.Activities && Array.isArray(data.Activities)) {
           setActivities(data.Activities);
           setFilteredActivities(data.Activities); // Initialize filtered activities
-          console.log("Activities:", data.Activities);
         } else {
           console.error("Expected an array but got:", data);
         }
@@ -25,7 +24,6 @@ const ActivityTable = ({ searchInput, filters }) => {
   }, []);
 
   useEffect(() => {
-    console.log("Filters:", filters);
 
     const filtered = activities.filter((activity) => {
       const matchesSearch = `${activity.title} ${activity.description}`

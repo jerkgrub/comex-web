@@ -29,7 +29,6 @@ const Activities = () => {
       ...prevFilters,
       [filterName]: value,
     }));
-    console.log(`Filter updated: ${filterName} = ${value}`);
   };
 
   const toggleAccountStatus = () => {

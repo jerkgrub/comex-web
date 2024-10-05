@@ -103,7 +103,6 @@ const PostAuthNavbar = () => {
             Swal.showLoading();
           },
         }).then(() => {
-          console.log("Logged out");
           localStorage.clear();
           showToast("success", "Signed out!");
           navigate("/");

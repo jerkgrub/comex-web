@@ -28,7 +28,6 @@ const Users = () => {
       ...prevFilters,
       [filterName]: value,
     }));
-    console.log(`Filter updated: ${filterName} = ${value}`);
   };
 
   const toggleAccountStatus = () => {

@@ -14,7 +14,6 @@ const UserTable = ({ searchInput, filters }) => {
         if (data.Users && Array.isArray(data.Users)) {
           setUsers(data.Users);
           setFilteredUsers(data.Users); // Initialize filtered users
-          console.log("Users:", data.Users);
         } else {
           console.error("Expected an array but got:", data);
         }
@@ -25,7 +24,6 @@ const UserTable = ({ searchInput, filters }) => {
   }, []);
 
   useEffect(() => {
-    console.log("Filters:", filters);
     // Filter users based on search input, user type, department, and account status
     const filtered = users.filter((user) => {
       const matchesSearch = `${user.firstName} ${user.lastName} ${user.email}`

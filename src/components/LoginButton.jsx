@@ -19,7 +19,6 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
     try {
       const response = await axios.post("https://comex-server.vercel.app/api/login", { email, password });
       const end = performance.now();
-      console.log(`Login API call took ${end - start} ms`);
   
       const { token, user, message } = response.data;
       if (response.status === 200) {
