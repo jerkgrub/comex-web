@@ -14,7 +14,7 @@ export default {
         'roboto-slab': ['"roboto-slab"', 'serif'],
       },
       boxShadow: {
-        'right-thick': '5px 0 5px -3px rgba(0, 0, 0, 0.1), 5px 0 20px -5px rgba(0, 0, 0, 0.1)',
+        'right-thick': '5px 0 5px -3px rgba(0, 0, 0, 0.1), 5px 0 20px -5px rgba(0, 0, 0, 0.1)', //
       },
       backgroundImage: theme => ({
         'gradient-bg': "linear-gradient(rgba(24, 29, 63, 0.8), rgba(44 43 37 / 0.87)), url('https://i.imgur.com/e7zxcst.png')",
