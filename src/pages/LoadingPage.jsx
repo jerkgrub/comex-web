@@ -12,7 +12,7 @@ const LoadingPage = () => {
       <section {...containerProps} className="mb-4">
         {indicatorEl} {/* Displays the loading spinner */}
       </section>
-      <h2 className="text-black text-2xl font-bold animate-pulse">Loading...</h2>
+      {/* <h2 className="text-black text-2xl font-bold animate-pulse">Loading...</h2> */}
     </div>
   );
 };
