@@ -13,7 +13,7 @@ const cardData = [
   // { id: 5, title: 'External Participation', icon: <ExternalLink className='w-14 h-14' />, filter: 'external' }
 ];
 
-const Appraisals = () => {
+const ClientAppraisals = () => {
   const navigate = useNavigate();
   const { activities, loading, error } = useFetchActivities();
   const [searchTerm, setSearchTerm] = useState('');
@@ -81,4 +81,4 @@ const Appraisals = () => {
   );
 };
 
-export default Appraisals;
+export default ClientAppraisals;

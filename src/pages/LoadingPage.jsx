@@ -1,10 +1,10 @@
-import React from 'react';
-import { useLoading, Puff } from '@agney/react-loading';
+import React from "react";
+import { useLoading, ThreeDots } from "@agney/react-loading";
 
 const LoadingPage = () => {
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Puff width="50" />,
+    indicator: <ThreeDots width="50" />,
   });
 
   return (

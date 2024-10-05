@@ -58,7 +58,7 @@ import NotFound from "./components/NotFound";
 import ViewAllActivities from "./pages/postAuth/client/ViewAllActivities";
 import ViewOneActivity from "./pages/postAuth/client/ViewOneActivity";
 import RegisterActivityPage from "./pages/postAuth/client/RegisterActivityPage";
-import Appraisals from "./pages/postAuth/client/Appraisals";
+import ClientAppraisals from "./pages/postAuth/client/ClientAppraisals";
 import ViewAppraisals from "./pages/postAuth/admin/ViewAppraisals";
 import ViewOneAppraisal from "./pages/postAuth/admin/ViewOneAppraisal";
 import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
@@ -289,7 +289,7 @@ function App() {
               element={
                 <>
                   <PostAuthNavbar />
-                  <Appraisals />
+                  <ClientAppraisals/>
                   <Footer />
                 </>
               }
