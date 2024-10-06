@@ -1,21 +1,22 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+// src/FetchUserData.jsx
+import { useState, useEffect } from 'react';
+import api from '../../api'; // Import the custom Axios instance
 
 const FetchUserData = () => {
-  const [user, setUser] = useState({}); // Reverting back to the original empty object state
+  const [user, setUser] = useState({});
 
   const fetchUserData = async () => {
-    const signedEmail = localStorage.getItem("userEmail");
+    const signedEmail = localStorage.getItem('userEmail');
 
     if (signedEmail) {
       try {
-        const response = await axios.get(`https://comex-server.vercel.app/api/users/email/${signedEmail}`);
+        // Use the custom `api` instance for API calls
+        const response = await api.get(`/users/email/${signedEmail}`);
         const userData = response.data;
 
-        // Update the state with the fetched user data
         setUser(userData.User);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
       }
     }
   };
@@ -24,7 +25,7 @@ const FetchUserData = () => {
     fetchUserData();
   }, []);
 
-  return user; // Return only the user object
+  return user;
 };
 
 export default FetchUserData;

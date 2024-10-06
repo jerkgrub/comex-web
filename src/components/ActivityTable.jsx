@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 import ActivityTableMap from "./ActivityTableMap";
 
 const ActivityTable = ({ searchInput, filters }) => {
@@ -7,8 +7,8 @@ const ActivityTable = ({ searchInput, filters }) => {
   const [filteredActivities, setFilteredActivities] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("https://comex-server.vercel.app/api/activity/all")
+    api
+      .get("/activity/all")
       .then((response) => {
         const data = response.data;
         if (data.Activities && Array.isArray(data.Activities)) {

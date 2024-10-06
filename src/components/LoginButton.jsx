@@ -1,6 +1,7 @@
+// LoginButton.jsx
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios";
+import api from "../api"; // Import the custom Axios instance
 import { showToast } from "./Toast";
 
 const LoginButton = ({ email, password, setUser, disabled = false }) => {
@@ -15,19 +16,25 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
         Swal.showLoading();
       },
     });
-  
+
     try {
-      const response = await axios.post("https://comex-server.vercel.app/api/login", { email, password });
+      // Use the custom `api` instance for the login request
+      const response = await api.post("/login", { email, password });
       const end = performance.now();
-  
+
       const { token, user, message } = response.data;
       if (response.status === 200) {
+        // Store the token and user information in localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("userEmail", user.email);
         localStorage.setItem("userUsertype", user.usertype);
-  
+
+        // Optionally, update the custom Axios instance if needed
+        // This is not necessary if your interceptor reads from localStorage
+        // api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
         setUser({ email, token });
-  
+
         const successMessages = {
           "Successfully logged in as Admin": "/admin/dashboard",
           "Successfully logged in as Student": "/client/home",
@@ -35,7 +42,7 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
           "Successfully logged in as Comex Coordinator": "/client/home",
           "Successfully logged in as Faculty": "/client/home",
         };
-  
+
         const path = successMessages[message];
         if (path) {
           showToast("success", "Logged in!");
@@ -59,7 +66,6 @@ const LoginButton = ({ email, password, setUser, disabled = false }) => {
       });
     }
   };
-  
 
   return (
     <button
