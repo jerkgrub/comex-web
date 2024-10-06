@@ -19,11 +19,11 @@ Check out the live version here: [comexconnect.org](https://comexconnect.org)
 ## 💻 Tech Stack
 
 #### 1. **Frontend**: 
-React + Vite, Tailwind CSS
+- React + Vite, Tailwind CSS
 #### 2. **Backend**: 
-Node.js, Express, MongoDB
+- Node.js, Express, MongoDB
 #### 3. **Deployment**: 
-Vercel
+- Vercel
 
 ---
 
