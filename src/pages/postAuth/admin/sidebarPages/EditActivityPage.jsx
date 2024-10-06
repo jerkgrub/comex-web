@@ -72,7 +72,7 @@ const EditActivityPage = () => {
   }
 
   return (
-    <div className="p-4 sm:p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 sm:p-8  min-h-screen">
       {/* Top Section: Back Button on left, Save Changes on right */}
       <div className="flex justify-between items-center mb-6">
         <button

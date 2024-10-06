@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import api from "../../../../api"; // Updated to use the `api` instance
 import { ArrowLeft, CheckCircle, XCircle, Trash2 } from "lucide-react";
 import AdminAddRespondent from "../../../../components/AdminAddRespondent"; // Import the add respondent component
+import LoadingPage from "../../../LoadingPage"; // Import the loading page component
 
 const ViewActivityPage = () => {
   const { activityid } = useParams();
@@ -76,7 +77,7 @@ const ViewActivityPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (error) {
@@ -84,11 +85,11 @@ const ViewActivityPage = () => {
   }
 
   if (!activity) {
-    return <div>No activity data available</div>;
+    return <LoadingPage />;
   }
 
   return (
-    <div className="p-4 sm:p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 sm:p-8 min-h-screen">
       {/* Top Section: Back Button on left */}
       <div className="flex justify-between items-center mb-6">
         <button

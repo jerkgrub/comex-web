@@ -48,7 +48,7 @@ const ClientViewOneActivity = () => {
   }
 
   if (!activity) {
-    return <div>No activity details available.</div>;
+    return <LoadingPage />;
   }
 
   const { month, day } = formatDate(activity.startDate);

@@ -41,7 +41,7 @@ const Activities = () => {
 
   return (
     <>
-      <div className="bg-gray-200  flex p-6 sm:p-12 justify-start w-full h-full">
+      <div className="bg-gray-200  flex p-6 sm:p-12 justify-start w-full h-screen">
         <div className="bg-gray-200  w-full">
           {/* 1st section */}
           <div className="text-2xl sm:text-4xl  mb-3 font-bold">

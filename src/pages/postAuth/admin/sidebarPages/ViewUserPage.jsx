@@ -42,7 +42,7 @@ const ViewUserPage = () => {
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-8 min-h-screen"> 
       {/* Top Section: Back Button on left, Edit Profile on right */}
       <div className="flex justify-between items-center mb-6">
         <button

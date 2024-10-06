@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "./../pages/LoadingPage";
 
 const ActivityTableMap = ({ activities }) => {
   const navigate = useNavigate();
@@ -31,19 +32,19 @@ const ActivityTableMap = ({ activities }) => {
               >
                 View Activity
               </button>
-              <button
+              {/* <button
                 className="btn btn-ghost btn-xs"
                 onClick={() => handleEditActivity(activity)}
               >
                 Edit Activity
-              </button>
+              </button> */}
             </th>
           </tr>
         ))
       ) : (
         <tr>
           <td colSpan="5" className="text-center">
-            No activities found.
+            <LoadingPage />
           </td>
         </tr>
       )}
