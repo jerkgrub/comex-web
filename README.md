@@ -1,6 +1,6 @@
 # 📌 COMEX CONNECT (Web Version)
 
-![COMEX CONNECT Logo](https://i.imgur.com/tTSwZZn.png) <!-- Add a relevant logo or image -->
+<img src="https://national-u.edu.ph/wp-content/uploads/2021/11/building_NU_MOA.jpg" alt="COMEX CONNECT Logo" width="300"/>
 
 A web application designed to enhance the workflow and management of NU MoA’s Community Extension Brigade activities, ensuring efficiency and seamless communication within the community.
 
