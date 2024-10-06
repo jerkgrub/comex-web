@@ -110,14 +110,16 @@ export function SidebarItem({ icon, text, to }) {
   };
 
   return (
-    <li
-      className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${
-        active
-          ? "bg-gradient-to-tr from-nucolor4 to-nucolor4 text-white"
-          : "hover:bg-nucolor6 text-gray-400 transition duration-200"
-      }`}
-    >
-      <Link to={to} className="flex items-center w-full" onClick={handleClick}>
+    <li>
+      <Link
+        to={to}
+        onClick={handleClick}
+        className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${
+          active
+            ? "bg-gradient-to-tr from-nucolor4 to-nucolor4 text-white"
+            : "hover:bg-nucolor6 text-gray-400 transition duration-200"
+        }`}
+      >
         {icon}
         <span
           className={`overflow-hidden transition-all ${
