@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserContext } from "../UserContext";
-import axios from "axios";
+import api from "../../api"; // Updated to use the `api` instance
 
 import ccLogo from "../images/ccLogo.png";
 import ComexConnectHeader from "./ComexConnectHeader";
@@ -11,7 +11,6 @@ import ComexConnectHeader from "./ComexConnectHeader";
 // add items here
 const menuItems = [
   { name: "Home", link: "/ " },
-  // { name: 'Events', link: '/client/home' },
   {
     name: "About Us", link: "/about-us",
   },
@@ -30,12 +29,10 @@ const PreAuthNavbar = () => {
   const buttonRegister = () => {
     navigate("/register");
   };
-  // for navbar options
+
   const item_btn = (link) => {
     navigate(link);
   };
-
-  //
 
   const login_btn = (event) => {
     event.preventDefault();
@@ -49,8 +46,8 @@ const PreAuthNavbar = () => {
         Swal.showLoading();
       },
     }).then((result) => {
-      axios
-        .post("https://comex-server.vercel.app/api/login", {
+      api
+        .post("/login", {
           email: email,
           password: password,
           usertype: usertype.toLowerCase(),
@@ -157,14 +154,11 @@ const PreAuthNavbar = () => {
               ))}
             </ul>
           </div>
-          <ComexConnectHeader/>
-          {/* <a className="btn btn-ghost text-xl">COMsX CONNECT</a> */}
+          <ComexConnectHeader />
         </div>
 
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {/* put map here */}
-
             {menuItems.map((item, index) => (
               <div key={index} className="dropdown">
                 <div
@@ -205,8 +199,6 @@ const PreAuthNavbar = () => {
         </div>
 
         <div className="navbar-end gap-1">
-          
-          {/* login button */}
           <div className="">
             <div className="dropdown dropdown-end">
               <div
@@ -219,7 +211,6 @@ const PreAuthNavbar = () => {
             </div>
           </div>
 
-          {/* Sign up */}
           <div className=" ">
             <div className="dropdown dropdown-end">
               <div
@@ -231,12 +222,10 @@ const PreAuthNavbar = () => {
               </div>
             </div>
           </div>
-          
         </div>
       </div>
 
-      <div className="pt-20">
-      </div>
+      <div className="pt-20"></div>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../../../api"; // Updated to use the `api` instance
 import { ArrowLeft, Plus } from "lucide-react";
 import { departmentItems } from "../../../../components/ItemOptions"; // Import department items
 
@@ -15,7 +15,8 @@ const CreateActivityPage = () => {
     startDate: "",
     endDate: "",
     time: "",
-    image: "https://images.gmanews.tv/webpics/2023/09/cleanupdrive(1)_2023_09_16_19_15_58.jpg",
+    image:
+      "https://images.gmanews.tv/webpics/2023/09/cleanupdrive(1)_2023_09_16_19_15_58.jpg",
     isActivated: true,
     isVoluntaryAndUnpaid: false,
     adminApproval: {
@@ -34,8 +35,8 @@ const CreateActivityPage = () => {
   };
 
   const handleCreateActivity = () => {
-    axios
-      .post("https://comex-server.vercel.app/api/activity/new", activity, {
+    api
+      .post("/activity/new", activity, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -182,15 +183,6 @@ const CreateActivityPage = () => {
             }
           />
         </div>
-
-        {/* <div className="mt-6">
-          <InputField
-            label="Upload Image"
-            name="image"
-            type="file"
-            onChange={handleImageChange}
-          />
-        </div> */}
 
         <div className="flex items-center gap-2 mt-6">
           <input

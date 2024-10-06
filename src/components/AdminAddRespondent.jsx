@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api'; // Updated to use the `api` instance
 
 const AdminAddRespondent = ({ activityId }) => {
   const [users, setUsers] = useState([]);
@@ -11,8 +11,8 @@ const AdminAddRespondent = ({ activityId }) => {
 
   // Fetch all users
   useEffect(() => {
-    axios
-      .get('https://comex-server.vercel.app/users/all')
+    api
+      .get('/users/all') // Using the `api` instance
       .then((response) => {
         setUsers(response.data.Users);
         setFilteredUsers(response.data.Users); // Initialize filtered users with full list
@@ -47,8 +47,8 @@ const AdminAddRespondent = ({ activityId }) => {
       return;
     }
 
-    axios
-      .post(`https://comex-server.vercel.app/api/activity/add/respondent/${activityId}`, {
+    api
+      .post(`/activity/add/respondent/${activityId}`, {
         userId,
       })
       .then((response) => {

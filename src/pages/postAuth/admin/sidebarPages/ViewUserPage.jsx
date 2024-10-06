@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../../../api"; // Updated to use the `api` instance
 import { Mail, Phone, IdCard, Briefcase, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
 import LoadingPage from "../../../LoadingPage";
 
@@ -12,8 +12,8 @@ const ViewUserPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`https://comex-server.vercel.app/api/users/${userid}`)
+    api
+      .get(`/users/${userid}`) // Updated to use the `api` instance
       .then((response) => {
         if (response.data && response.data.User) {
           setUser(response.data.User);
@@ -30,7 +30,7 @@ const ViewUserPage = () => {
   }, [userid]);
 
   if (loading) {
-    return <LoadingPage/>;
+    return <LoadingPage />;
   }
 
   if (error) {

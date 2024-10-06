@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // To get user info
+import api from '../../../../api'; // Updated to use the `api` instance
 import FetchUserData from '../../../../components/hooks/FetchUserData';
 import { ArrowLeft } from 'lucide-react'; // Arrow icon for back button
 
@@ -20,13 +20,13 @@ const CommunityEngagementForm = () => {
   // Fetch the activity details and check if the user has already submitted the form
   useEffect(() => {
     // Fetch the activity details based on activityId
-    axios.get(`https://comex-server.vercel.app/api/activity/${activityid}`)
+    api.get(`/activity/${activityid}`)
       .then((response) => {
         setActivity(response.data.Activity);
 
         // Check if the user has already submitted a form for this activity
         if (user && user._id) {
-          axios.get(`https://comex-server.vercel.app/api/credit/activity/${activityid}`)
+          api.get(`/credit/activity/${activityid}`)
             .then((creditResponse) => {
               const userHasSubmitted = creditResponse.data.credits.some(
                 (credit) => credit.userId === user._id
@@ -68,7 +68,7 @@ const CommunityEngagementForm = () => {
     };
 
     // Send POST request to create the new credit
-    axios.post('https://comex-server.vercel.app/api/credit/new', creditData)
+    api.post('/credit/new', creditData)
       .then(() => {
         // Navigate to the "Form Submitted" page after successful submission
         navigate('/client/form-submitted');

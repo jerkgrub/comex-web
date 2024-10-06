@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../../../api"; // Updated to use the `api` instance
 import { ArrowLeft } from "lucide-react";
 import { departmentItems } from "../../../../components/ItemOptions"; // Import department items
 import LoadingPage from "../../../LoadingPage";
@@ -26,8 +26,8 @@ const EditActivityPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`https://comex-server.vercel.app/api/activity/${activityid}`)
+    api
+      .get(`/activity/${activityid}`) // Updated to use the `api` instance
       .then((response) => {
         if (response.data && response.data.Activity) {
           const activityData = response.data.Activity;
@@ -53,8 +53,8 @@ const EditActivityPage = () => {
   };
 
   const handleSaveChanges = () => {
-    axios
-      .put(`https://comex-server.vercel.app/api/activity/update/${activityid}`, activity)
+    api
+      .put(`/activity/update/${activityid}`, activity) // Updated to use the `api` instance
       .then(() => {
         navigate(`/admin/activities/${activityid}`);
       })
@@ -64,7 +64,7 @@ const EditActivityPage = () => {
   };
 
   if (loading) {
-    return <LoadingPage/>;
+    return <LoadingPage />;
   }
 
   if (error) {

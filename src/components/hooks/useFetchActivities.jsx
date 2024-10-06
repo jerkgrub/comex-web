@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../api"; // Updated to use the `api` instance
 
 // Custom hook to fetch activities
 export const useFetchActivities = () => {
@@ -10,7 +10,7 @@ export const useFetchActivities = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await axios.get("https://comex-server.vercel.app/api/activity/all");
+        const response = await api.get("/activity/all"); // Using the `api` instance
 
         if (response.data && response.data.Activities) {
           setActivities(response.data.Activities);

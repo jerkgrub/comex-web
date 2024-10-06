@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api"; // Updated to use the `api` instance
 import UserTableMap from "./UserTableMap";
 
 const UserTable = ({ searchInput, filters }) => {
@@ -7,8 +7,8 @@ const UserTable = ({ searchInput, filters }) => {
   const [filteredUsers, setFilteredUsers] = useState([]); // State for filtered users
 
   useEffect(() => {
-    axios
-      .get("https://comex-server.vercel.app/api/users/all")
+    api
+      .get("/users/all") // Using the `api` instance
       .then((response) => {
         const data = response.data;
         if (data.Users && Array.isArray(data.Users)) {
@@ -29,17 +29,25 @@ const UserTable = ({ searchInput, filters }) => {
       const matchesSearch = `${user.firstName} ${user.lastName} ${user.email}`
         .toLowerCase()
         .includes(searchInput.toLowerCase());
-      const matchesUserType = filters.userType === "All Usertypes" || filters.userType === ""
-        ? true
-        : user.usertype === filters.userType;
-      const matchesDepartment = filters.department === "All Departments" || filters.department === ""
-        ? true
-        : user.department === filters.department;
-      const matchesAccountStatus = filters.accountStatus === "Activated"
-        ? user.isActivated
-        : !user.isActivated;
+      const matchesUserType =
+        filters.userType === "All Usertypes" || filters.userType === ""
+          ? true
+          : user.usertype === filters.userType;
+      const matchesDepartment =
+        filters.department === "All Departments" || filters.department === ""
+          ? true
+          : user.department === filters.department;
+      const matchesAccountStatus =
+        filters.accountStatus === "Activated"
+          ? user.isActivated
+          : !user.isActivated;
 
-      return matchesSearch && matchesUserType && matchesDepartment && matchesAccountStatus;
+      return (
+        matchesSearch &&
+        matchesUserType &&
+        matchesDepartment &&
+        matchesAccountStatus
+      );
     });
     setFilteredUsers(filtered);
   }, [searchInput, filters, users]);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../api'; // Updated to use the `api` instance
 import { formConfig } from '../../../components/hooks/formConfig';
 import FormPage from '../../../components/forms/FormPage';
 import FormNavigation from '../../../components/forms/FormNavigation';
@@ -19,8 +19,8 @@ const RegisterActivityPage = () => {
   useEffect(() => {
     if (user && user._id) {
       // Check if the user is already a respondent for the activity
-      axios
-        .get(`https://comex-server.vercel.app/api/activity/${activityid}`)
+      api
+        .get(`/activity/${activityid}`) // Updated to use the `api` instance
         .then((response) => {
           if (response.data && response.data.Activity) {
             const activity = response.data.Activity;
@@ -73,8 +73,8 @@ const RegisterActivityPage = () => {
     };
 
     // Send POST request to add the user as a respondent
-    axios
-      .post(`https://comex-server.vercel.app/api/activity/add/respondent/${activityid}`, requestData)
+    api
+      .post(`/activity/add/respondent/${activityid}`, requestData) // Updated to use the `api` instance
       .then(() => {
         alert('Registration complete! You are now a respondent for this activity.');
         navigate(`/client/view-activities/`);

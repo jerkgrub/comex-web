@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../api"; // Updated to use the `api` instance
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { showToast } from "../Toast";
@@ -41,7 +41,8 @@ const UseRegister = ({
 
     const newUser = {
       isActivated: true,
-      avatar: "https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg", // Set default avatar
+      avatar:
+        "https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg", // Set default avatar
       usertype,
       firstName,
       middleName,
@@ -54,8 +55,8 @@ const UseRegister = ({
       dateHired,
     };
 
-    axios
-      .post("https://comex-server.vercel.app/api/users/new", newUser)
+    api
+      .post("/users/new", newUser) // Updated to use the `api` instance
       .then((response) => {
         if (
           response.status === 400 &&

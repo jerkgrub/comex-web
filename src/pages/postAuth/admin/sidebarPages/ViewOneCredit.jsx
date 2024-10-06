@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../../api'; // Updated to use the `api` instance
 
 const ViewOneCredit = () => {
   const { creditid } = useParams(); // Retrieve credit ID from the URL params
@@ -13,7 +13,7 @@ const ViewOneCredit = () => {
   useEffect(() => {
     const fetchCreditDetails = async () => {
       try {
-        const response = await axios.get(`https://comex-server.vercel.app/api/credit/${creditid}`);
+        const response = await api.get(`/credit/${creditid}`); // Updated to use the `api` instance
         setCredit(response.data.credit);
         setLoading(false);
       } catch (error) {

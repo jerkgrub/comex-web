@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../../../api"; // Updated to use the `api` instance
 import { ArrowLeft, CheckCircle, XCircle, Trash2 } from "lucide-react";
 import AdminAddRespondent from "../../../../components/AdminAddRespondent"; // Import the add respondent component
 
@@ -16,8 +16,8 @@ const ViewActivityPage = () => {
   // Fetch activity details and respondents on page load
   useEffect(() => {
     // Fetch activity details
-    axios
-      .get(`https://comex-server.vercel.app/api/activity/${activityid}`)
+    api
+      .get(`/activity/${activityid}`) // Updated to use the `api` instance
       .then((response) => {
         if (response.data && response.data.Activity) {
           setActivity(response.data.Activity);
@@ -30,8 +30,8 @@ const ViewActivityPage = () => {
       });
 
     // Fetch activity respondents and their user details
-    axios
-      .get(`https://comex-server.vercel.app/api/activity/get/respondents/${activityid}`)
+    api
+      .get(`/activity/get/respondents/${activityid}`) // Updated to use the `api` instance
       .then((response) => {
         if (response.data && response.data.respondents) {
           const respondentIds = response.data.respondents.map(
@@ -40,7 +40,7 @@ const ViewActivityPage = () => {
           // Fetch user details for each respondent
           Promise.all(
             respondentIds.map((userId) =>
-              axios.get(`https://comex-server.vercel.app/api/users/${userId}`)
+              api.get(`/users/${userId}`) // Updated to use the `api` instance
             )
           )
             .then((userResponses) => {
@@ -64,8 +64,8 @@ const ViewActivityPage = () => {
 
   // Remove a respondent
   const handleRemoveRespondent = (userId) => {
-    axios
-      .delete(`https://comex-server.vercel.app/api/activity/respondent/${activityid}/${userId}`)
+    api
+      .delete(`/activity/respondent/${activityid}/${userId}`) // Updated to use the `api` instance
       .then(() => {
         setRespondents(respondents.filter((respondent) => respondent._id !== userId)); // Remove respondent from the list
       })

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../api'; // Updated to use the `api` instance
 import { formatDate, formatTime } from '../../../components/hooks/useFetchActivities'; // Reuse your existing helper functions
 import FetchUserData from '../../../components/hooks/FetchUserData'; // Import user fetch hook
 import LoadingPage from '../../LoadingPage';
@@ -17,8 +17,8 @@ const ClientViewOneActivity = () => {
 
   useEffect(() => {
     // Fetch the specific activity details based on activityid
-    axios
-      .get(`https://comex-server.vercel.app/api/activity/${activityid}`)
+    api
+      .get(`/activity/${activityid}`) // Updated to use the `api` instance
       .then((response) => {
         if (response.data && response.data.Activity) {
           setActivity(response.data.Activity);

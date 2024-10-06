@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Carousel, Card } from "flowbite-react";
-import axios from "axios";
+import api from "../../../api"; // Updated to use the `api` instance
 import Swal from "sweetalert2";
 
 export const Home = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("https://comex-server.vercel.app/api/event/all")
+    api
+      .get("/event/all") // Updated to use the `api` instance
       .then((response) => {
         const formattedEvents = response.data.Events.map((event) => {
           const date = new Date(event.event_date);
@@ -41,8 +41,8 @@ export const Home = () => {
     event.preventDefault();
     const userEmail = localStorage.getItem("userEmail");
 
-    axios
-      .get(`https://comex-server.vercel.app/api/event/get/attendee/${eventId}`)
+    api
+      .get(`/event/get/attendee/${eventId}`) // Updated to use the `api` instance
       .then((response) => {
         const attendees = response.data.attendees;
         const hasRegistered = attendees.some(
@@ -70,11 +70,8 @@ export const Home = () => {
                 at_email: userEmail,
               };
 
-              axios
-                .post(
-                  `https://comex-server.vercel.app/api/event/add/attendee/${eventId}`,
-                  userData
-                )
+              api
+                .post(`/event/add/attendee/${eventId}`, userData) // Updated to use the `api` instance
                 .then(() => {
                   Swal.fire(
                     "Success!",
