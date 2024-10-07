@@ -162,6 +162,7 @@ const RegisterComponent = () => {
         <div className="w-full">
           <TextInput
             disabled={isIdDisabled}
+            placeholder="2XXX-1XXXX"
             label="ID Number"
             value={idNumber}
             maxLength={11}

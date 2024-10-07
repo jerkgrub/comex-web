@@ -52,11 +52,13 @@ const UseFormValidation = () => {
         if (!value) error = "Department is required";
         break;
 
-      case "idNumber":
-        if (!value) error = "ID Number is required";
-        else if (!/^\d{11}$/.test(value))
-          error = "ID Number must be 11 digits";
-        break;
+        case "idNumber":
+          if (!value) {
+            error = "ID Number is required";
+          } else if (!/^\d{4}-\d{6}$/.test(value)) {
+            error = "ID Number must follow the format 2XXX-1XXXX";
+          }
+          break;
 
       case "firstName":
         if (!value) error = "First name is required";
