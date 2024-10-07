@@ -2,9 +2,16 @@ import { useEffect, useState } from "react";
 import { Carousel, Card } from "flowbite-react";
 import api from "../../../api"; // Updated to use the `api` instance
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
+
+  const handleSeeAll = (event) => {
+    event.preventDefault();
+    navigate("/client/view-activities");
+  }
 
   useEffect(() => {
     api
@@ -114,8 +121,8 @@ export const Home = () => {
 
       <div className="bg- flex flex-col">
         <div className="bg- flex flex-row mb-6">
-          <div className="text-3xl font-bold">Upcoming Events</div>
-          <button className="text-lg text-blue ml-auto font-normal">
+          <div className="text-3xl font-bold">Upcoming Activities</div>
+          <button onClick={handleSeeAll} className="text-lg text-blue ml-auto font-normal">
             See All
           </button>
         </div>
