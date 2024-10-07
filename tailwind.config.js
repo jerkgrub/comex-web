@@ -10,6 +10,9 @@ export default {
   ],
   theme: {
     extend: {
+      // overflow: {
+      //   'scroll-y': 'scroll',
+      // },
       fontFamily: {
         'roboto-slab': ['"roboto-slab"', 'serif'],
       },

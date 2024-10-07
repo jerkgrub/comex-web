@@ -175,6 +175,7 @@ const RegisterComponent = () => {
         </div>
         <div className="w-full">
           <MobileNumberInput
+          placeholder="9XXXXXXXXX"
             label="Mobile Number"
             type="tel"
             value={mobileNumber}
