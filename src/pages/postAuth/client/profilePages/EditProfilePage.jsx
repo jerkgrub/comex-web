@@ -10,13 +10,13 @@ const EditProfilePage = () => {
   const navigate = useNavigate();
   const userData = FetchUserData(); // Fetch the logged-in user's data
   const [user, setUser] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    idNumber: '',
-    mobileNumber: '',
-    department: '',
-    email: '',
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    idNumber: "",
+    mobileNumber: "",
+    department: "",
+    email: "",
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +24,9 @@ const EditProfilePage = () => {
   // Update state with user data when it is fetched
   useEffect(() => {
     if (Object.keys(userData).length > 0) {
-      setUser(userData);
+      // Exclude the password field from user data
+      const { password, ...userWithoutPassword } = userData;
+      setUser(userWithoutPassword);
       setLoading(false);
     }
   }, [userData]);
@@ -35,8 +37,10 @@ const EditProfilePage = () => {
   };
 
   const handleSaveChanges = () => {
+    // Exclude the password field before sending to backend
+    const { password, ...userWithoutPassword } = user;
     api
-      .put(`/users/update/${user._id}`, user) // Update the logged-in user's data
+      .put(`/users/update/${user._id}`, userWithoutPassword) // Update the logged-in user's data
       .then(() => {
         showToast("success", "Profile updated successfully!");
         navigate(`/client/profile`);
@@ -88,19 +92,54 @@ const EditProfilePage = () => {
         <div className="col-span-2">
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <InputField label="First Name" name="firstName" value={user.firstName} onChange={handleInputChange} />
-              <InputField label="Middle Name" name="middleName" value={user.middleName} onChange={handleInputChange} />
-              <InputField label="Last Name" name="lastName" value={user.lastName} onChange={handleInputChange} />
+              <InputField
+                label="First Name"
+                name="firstName"
+                value={user.firstName}
+                onChange={handleInputChange}
+              />
+              <InputField
+                label="Middle Name"
+                name="middleName"
+                value={user.middleName}
+                onChange={handleInputChange}
+              />
+              <InputField
+                label="Last Name"
+                name="lastName"
+                value={user.lastName}
+                onChange={handleInputChange}
+              />
             </div>
             <div>
-              <InputField label="ID Number" name="idNumber" value={user.idNumber} onChange={handleInputChange} />
-              <InputField label="Mobile Number" name="mobileNumber" value={user.mobileNumber} onChange={handleInputChange} />
-              <InputField label="Department" name="department" value={user.department} onChange={handleInputChange} />
+              <InputField
+                label="ID Number"
+                name="idNumber"
+                value={user.idNumber}
+                onChange={handleInputChange}
+              />
+              <InputField
+                label="Mobile Number"
+                name="mobileNumber"
+                value={user.mobileNumber}
+                onChange={handleInputChange}
+              />
+              <InputField
+                label="Department"
+                name="department"
+                value={user.department}
+                onChange={handleInputChange}
+              />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-6 mt-6">
-            <InputField label="Email" name="email" value={user.email} onChange={handleInputChange} />
+            <InputField
+              label="Email"
+              name="email"
+              value={user.email}
+              onChange={handleInputChange}
+            />
           </div>
         </div>
       </div>
