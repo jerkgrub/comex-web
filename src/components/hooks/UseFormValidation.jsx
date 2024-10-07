@@ -40,8 +40,8 @@ const UseFormValidation = () => {
 
       case "mobileNumber":
         if (!value) error = "Mobile Number is required";
-        else if (!/^\d{11}$/.test(value))
-          error = "Mobile number must be 11 digits";
+        else if (!/^\d{10}$/.test(value))
+          error = "Mobile number must be 10 digits";
         break;
 
       case "usertype":
@@ -54,6 +54,8 @@ const UseFormValidation = () => {
 
       case "idNumber":
         if (!value) error = "ID Number is required";
+        else if (!/^\d{11}$/.test(value))
+          error = "ID Number must be 11 digits";
         break;
 
       case "firstName":
@@ -66,6 +68,10 @@ const UseFormValidation = () => {
 
       case "lastName":
         if (!value) error = "Last name is required";
+        break;
+
+      case "dateHired":
+        if (!value) error = "Date Hired is required";
         break;
 
       default:

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import api from "../../../../api"; // Updated to use the `api` instance
 import { ArrowLeft } from "lucide-react";
 import LoadingPage from "../../../LoadingPage";
+import { showToast } from "../../../../components/Toast";
 
 const EditUserPage = () => {
   const { userid } = useParams();
@@ -47,6 +48,7 @@ const EditUserPage = () => {
     api
       .put(`/users/update/${userid}`, user) // Updated to use the `api` instance
       .then(() => {
+        showToast("success", "Changes saved!");
         navigate(`/admin/users/${userid}`);
       })
       .catch(() => {

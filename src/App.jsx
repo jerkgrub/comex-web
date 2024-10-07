@@ -132,7 +132,7 @@ function App() {
             <Route path="view-activities" element={<><PostAuthNavbar /><ClientViewAllActivities /><Footer /></>} />
             <Route path="view-activities/:activityid" element={<><PostAuthNavbar /><ClientViewOneActivity /><Footer /></>} />
             <Route path="engagement-appraisals" element={<><PostAuthNavbar /><ClientAppraisals /><Footer /></>} />
-            <Route path="engagement-appraisals/blank" element={<><PostAuthNavbar /><EngagementAppraisalPage /><Footer /></>} />
+            <Route path="engagement-appraisals/:title" element={<><PostAuthNavbar /><EngagementAppraisalPage /><Footer /></>} />
             <Route path="engagement-appraisals/:activityid" element={<><PostAuthNavbar /><Admin_ViewOneAppraisal /><Footer /></>} />
             <Route path="engagement-appraisals/community-engagement/:activityid" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
             <Route path="view-activities/:activityid/register" element={<><PostAuthNavbar /><RegisterActivityPage /><Footer /></>} />

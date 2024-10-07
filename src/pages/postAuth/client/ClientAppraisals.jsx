@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileText, BookOpen, Settings, Layers, ExternalLink } from 'lucide-react';
-import { useFetchActivities }  from '../../../components/hooks/useFetchActivities'; 
+import { Settings, Layers } from 'lucide-react';
+import { useFetchActivities } from '../../../components/hooks/useFetchActivities'; 
 import LoadingPage from '../../LoadingPage';
 
-// Define card data with LucideReact icons
+// Define card data with LucideReact icons and routes
 const cardData = [
-  // { id: 1, title: 'Evaluation for Institutional Activities', icon: <FileText className='w-14 h-14' />, filter: 'institutional' },
-  // { id: 2, title: 'College-Driven', icon: <BookOpen className='w-14 h-14'/>, filter: 'college' },
-  { id: 3, title: 'Extension Services', icon: <Settings className='w-14 h-14' />, filter: 'extension' },
-  { id: 4, title: 'Capacity Building', icon: <Layers className='w-14 h-14' />, filter: 'capacity' },
-  // { id: 5, title: 'External Participation', icon: <ExternalLink className='w-14 h-14' />, filter: 'external' }
+  { id: 1, title: 'Extension Services', icon: <Settings className='w-14 h-14' />, filter: 'extension', route: '/client/engagement-appraisals/Extension%20Services' },
+  { id: 2, title: 'Capacity Building', icon: <Layers className='w-14 h-14' />, filter: 'capacity', route: '/client/engagement-appraisals/Capacity%20Building' },
 ];
 
 const ClientAppraisals = () => {
@@ -20,20 +17,14 @@ const ClientAppraisals = () => {
   const [activeFilter, setActiveFilter] = useState(null); 
 
   const handleCardClick = (card) => {
-    if (card.id === 3) {
-      navigate('/client/engagement-appraisals/blank/');
+    if (card.route) {
+      navigate(card.route);  // Navigate to the route with title as a URL parameter
     } else {
       setActiveFilter((prevFilter) => (prevFilter === card.filter ? null : card.filter));
     }
   };
 
-  const filteredActivities = activities.filter((activity) => {
-    const matchesType = activeFilter ? activity.type.toLowerCase().includes(activeFilter) : true;
-    const matchesSearch = activity.title.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesType && matchesSearch;
-  });
-
-  if (loading) return <LoadingPage/>;
+  if (loading) return <LoadingPage />;
   if (error) return <div>Error loading activities: {error}</div>;
 
   return (
@@ -57,8 +48,6 @@ const ClientAppraisals = () => {
           ))}
         </div>
 
-
-        {/* Display Filtered Activities */}
       </div>
     </div>
   );

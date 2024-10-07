@@ -10,8 +10,6 @@ import UserTypeOptions from "./inputs/UserTypeOptions";
 import DepartmentOptions from "./inputs/DepartmentOptions";
 import UseRegister from "./hooks/UseRegister";
 import UseFormValidation from "./hooks/UseFormValidation";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // Import datepicker styles
 
 const RegisterComponent = () => {
   const [usertype, setUsertype] = useState("");
@@ -25,11 +23,11 @@ const RegisterComponent = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [dateHired, setDateHired] = useState(null); // Add state for the date
+  const [dateHired, setDateHired] = useState("");
   const [isIdDisabled, setIsIdDisabled] = useState(true);
   const [isDateHiredDisabled, setIsDateHiredDisabled] = useState(true);
 
-  const { errors, validateField, validateForm } = UseFormValidation(); // Use the hook
+  const { errors, validateField, validateForm } = UseFormValidation();
   const { handleRegister } = UseRegister({
     usertype,
     firstName,
@@ -55,9 +53,11 @@ const RegisterComponent = () => {
       // Enable ID Number and disable Date Hired for students
       setIsIdDisabled(false);
       setIsDateHiredDisabled(true);
+      setDateHired(""); // Clear dateHired when disabled
     } else {
       // Disable ID Number and enable Date Hired for others
       setIsIdDisabled(true);
+      setIdNumber(""); // Clear idNumber when disabled
       setIsDateHiredDisabled(false);
     }
   }, [usertype]);
@@ -77,7 +77,6 @@ const RegisterComponent = () => {
       dateHired,
     };
 
-    // Include disabled status when validating the form
     const disabledFields = {
       idNumber: isIdDisabled,
       dateHired: isDateHiredDisabled,
@@ -91,7 +90,21 @@ const RegisterComponent = () => {
   };
 
   const handleCheckboxChange = (e) => {
-    setIsChecked(e.target.checked);
+    if (typeof e === "boolean") {
+      setIsChecked(e);
+    } else {
+      setIsChecked(e.target.checked);
+    }
+  };
+
+  // New function to handle accepting terms from the modal
+  const handleAcceptTerms = () => {
+    setIsChecked(true);
+  };
+
+  // New function to handle declining terms from the modal
+  const handleDeclineTerms = () => {
+    setIsChecked(false);
   };
 
   return (
@@ -154,9 +167,9 @@ const RegisterComponent = () => {
             maxLength={11}
             onChange={(e) => {
               setIdNumber(e.target.value);
-              validateField("idNumber", e.target.value, {}, isIdDisabled); // Pass isIdDisabled
+              validateField("idNumber", e.target.value, {}, isIdDisabled);
             }}
-            error={!!errors.idNumber && !isIdDisabled} // Show error only if not disabled
+            error={!!errors.idNumber && !isIdDisabled}
             errorMessage={errors.idNumber}
           />
         </div>
@@ -181,23 +194,16 @@ const RegisterComponent = () => {
           <label className="mb-1 pl-1 font-semibold">Date Hired</label>
           <input
             type="date"
-            value={dateHired}
+            value={dateHired || ""}
             disabled={isDateHiredDisabled}
+            onChange={(e) => {
+              setDateHired(e.target.value);
+              validateField("dateHired", e.target.value, {}, isDateHiredDisabled);
+            }}
             className={`input input-bordered w-full ${
               errors.dateHired && !isDateHiredDisabled ? "border-red-500" : ""
             }`}
-          >
-            {/* <DatePicker
-              disabled={isDateHiredDisabled}
-              selected={dateHired}
-              value={dateHired}
-              type="date"
-              onChange={(date) => setDateHired(date)}
-              dateFormat="MMMM d, yyyy"
-              className="w-full border-none outline-none focus:border-none input"
-              placeholderText="Select Date"
-            /> */}
-          </input>
+          />
           {errors.dateHired && !isDateHiredDisabled && (
             <p className="pl-1 text-red-500 text-sm mt-1">
               * {errors.dateHired}
@@ -262,6 +268,8 @@ const RegisterComponent = () => {
         <TermsOfService
           isChecked={isChecked}
           handleCheckboxChange={handleCheckboxChange}
+          handleAcceptTerms={handleAcceptTerms}
+          handleDeclineTerms={handleDeclineTerms} // Pass the new function
         />
       </div>
 

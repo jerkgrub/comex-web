@@ -4,6 +4,7 @@ import api from "../../../../api"; // Updated to use the `api` instance
 import { ArrowLeft } from "lucide-react";
 import { departmentItems } from "../../../../components/ItemOptions"; // Import department items
 import LoadingPage from "../../../LoadingPage";
+import { showToast } from "../../../../components/Toast";
 
 const EditActivityPage = () => {
   const { activityid } = useParams();
@@ -56,6 +57,7 @@ const EditActivityPage = () => {
     api
       .put(`/activity/update/${activityid}`, activity) // Updated to use the `api` instance
       .then(() => {
+        showToast("success", "Changes saved!");
         navigate(`/admin/activities/${activityid}`);
       })
       .catch(() => {

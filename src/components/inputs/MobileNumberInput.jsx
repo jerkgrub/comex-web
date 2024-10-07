@@ -14,7 +14,7 @@ const MobileNumberInput = ({
     const { value } = e.target;
     
     // Limit the value to 11 digits
-    if (value.length <= 11) {
+    if (value.length <= 10) {
       onChange(e); // Only call onChange if the value is within the limit
     }
   };
