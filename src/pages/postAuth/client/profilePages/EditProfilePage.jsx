@@ -56,7 +56,7 @@ const EditProfilePage = () => {
       department,
       email,
     };
-
+  
     if (validateForm(fields)) {
       const updatedUser = {
         firstName,
@@ -67,13 +67,28 @@ const EditProfilePage = () => {
         department,
         email,
       };
+  
       api
-        .put(`/users/update/${userData._id}`, updatedUser) // Update the logged-in user's data
-        .then(() => {
+        .put(`/users/update/${userData._id}`, updatedUser)
+        .then((response) => {
+          // Assuming response.data.updatedUser contains the updated user data
+          const updatedUserData = response.data.updatedUser;
+  
+          // Update local state with the updated user data
+          setFirstName(updatedUserData.firstName);
+          setMiddleName(updatedUserData.middleName);
+          setLastName(updatedUserData.lastName);
+          setIdNumber(updatedUserData.idNumber);
+          setMobileNumber(updatedUserData.mobileNumber);
+          setDepartment(updatedUserData.department);
+          setEmail(updatedUserData.email);
+          setUsertype(updatedUserData.usertype);
+  
           showToast("success", "Profile updated successfully!");
           navigate(`/client/profile`);
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error("API error:", error); // Log any errors
           setError("Failed to update profile data.");
         });
     } else {

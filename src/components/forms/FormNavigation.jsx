@@ -17,7 +17,7 @@ const FormNavigation = ({ currentStep, totalSteps, onNext, onBack }) => {
         onClick={onNext}
         className="btn bg-nucolor3 hover:bg-blue-700 font-bold py-2 px-4 rounded-lg"
       >
-        {currentStep + 1 === totalSteps ? "Register" : "Next"}
+        {currentStep + 1 === totalSteps ? "Submit" : "Next"}
       </button>
     </div>
   );
