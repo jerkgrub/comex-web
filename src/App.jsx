@@ -10,6 +10,8 @@ import { Home } from "./pages/postAuth/client";
 import { BookCopy, ContactRound, FolderKanban, Gauge, Shield, Ticket } from "lucide-react";
 import { Footer } from "./components/Footer";
 
+import EngagementAppraisalsPage from "./pages/postAuth/client/forms/EngagementAppraisalsPage";
+
 // Pre Authentication
 import PreAuthNavbar from "./components/navbar/PreAuthNavbar";
 import HeroPage from "./pages/preAuth/HeroPage";
@@ -49,7 +51,7 @@ import ClientAppraisals from "./pages/postAuth/client/ClientAppraisals";
 import ViewAppraisals from "./pages/postAuth/admin/ViewAppraisals";
 import Admin_ViewOneAppraisal from "./pages/postAuth/admin/Admin_ViewOneAppraisal";
 import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
-import EngagementAppraisalPage from "./pages/postAuth/client/forms/EngagementAppraisalsPage";
+import EditProfilePage from "./pages/postAuth/client/profilePages/EditProfilePage";
 
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -108,16 +110,16 @@ function App() {
           <Route path="/admin/*" element={<ProtectedRoute allowedRoles={["Admin"]}><AdminLayout /></ProtectedRoute>}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="comexforms" element={<ComexForms />} />
+            <Route path="activities" element={<Activities />} />
+            <Route path="create-activity" element={<CreateActivityPage />} />
 
             {/* activities */}
-            <Route path="activities" element={<Activities />} />
             <Route path="activities/:activityid" element={<ViewActivityPage />} />
-            <Route path="create-activity" element={<CreateActivityPage />} />
             <Route path="activities/:activityid/edit" element={<EditActivityPage />} />
 
             {/* appraisals */}
             <Route path="evaluate-engagement-appraisals" element={<ViewAppraisals />} />
-            <Route path="engagement-appraisals/:activityid" element={<Admin_ViewOneAppraisal />} />
+            <Route path="engagement-appraisals/:activityid" element={<EngagementAppraisalsPage/>} />
             <Route path="engagement-appraisals/credits/:creditid" element={<ViewOneCredit />} />
             <Route path="users" element={<Users />} />
             <Route path="create-user" element={<CreateUserPage />} />
@@ -132,12 +134,13 @@ function App() {
             <Route path="view-activities" element={<><PostAuthNavbar /><ClientViewAllActivities /><Footer /></>} />
             <Route path="view-activities/:activityid" element={<><PostAuthNavbar /><ClientViewOneActivity /><Footer /></>} />
             <Route path="engagement-appraisals" element={<><PostAuthNavbar /><ClientAppraisals /><Footer /></>} />
-            <Route path="engagement-appraisals/:title" element={<><PostAuthNavbar /><EngagementAppraisalPage /><Footer /></>} />
-            <Route path="engagement-appraisals/:activityid" element={<><PostAuthNavbar /><Admin_ViewOneAppraisal /><Footer /></>} />
+            <Route path="engagement-appraisals/blank" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
+            <Route path="engagement-appraisals/:title" element={<><PostAuthNavbar /><EngagementAppraisalsPage /><Footer /></>} />
             <Route path="engagement-appraisals/community-engagement/:activityid" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
             <Route path="view-activities/:activityid/register" element={<><PostAuthNavbar /><RegisterActivityPage /><Footer /></>} />
             <Route path="form-submitted" element={<><PostAuthNavbar /><FormSubmitted /><Footer /></>} />
             <Route path="profile" element={<><PostAuthNavbar /><Profile /><Footer /></>} />
+            <Route path="profile/edit" element={<><PostAuthNavbar /><EditProfilePage /><Footer /></>} />
             <Route path="highlights" element={<><PostAuthNavbar /><Highlights /><Footer /></>} />
           </Route>
 

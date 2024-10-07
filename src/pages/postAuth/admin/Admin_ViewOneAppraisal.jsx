@@ -29,20 +29,25 @@ const Admin_ViewOneAppraisal = () => {
       try {
         // Fetch activity data
         const activityResponse = await api.get(`/activity/${activityid}`); // Updated to use the `api` instance
+        if (!activityResponse.data.Activity) {
+          throw new Error('Activity not found');
+        }
         setActivity(activityResponse.data.Activity);
 
         // Fetch credits data
         const creditsResponse = await api.get(`/credit/activity/${activityid}`); // Updated to use the `api` instance
-        const creditsData = creditsResponse.data.credits;
+        const creditsData = creditsResponse.data.credits || [];
 
-        // Fetch user details for each credit
+        // Fetch user details for each credit in parallel
         const usersMap = {};
-        for (const credit of creditsData) {
+        const userDetailsPromises = creditsData.map(async (credit) => {
           if (!usersMap[credit.userId]) {
             const userDetails = await fetchUserDetails(credit.userId);
             usersMap[credit.userId] = `${userDetails.firstName} ${userDetails.lastName}`;
           }
-        }
+        });
+
+        await Promise.all(userDetailsPromises);
 
         setUserDetails(usersMap);
         setCredits(creditsData);
@@ -54,7 +59,12 @@ const Admin_ViewOneAppraisal = () => {
       }
     };
 
-    fetchActivityAndCredits();
+    if (activityid) {
+      fetchActivityAndCredits();
+    } else {
+      setError('Activity ID is missing.');
+      setLoading(false);
+    }
   }, [activityid]);
 
   if (loading) return <LoadingPage />;

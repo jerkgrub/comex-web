@@ -66,6 +66,10 @@ export default {
       },
     }
   },
+  daisyui: {
+    themes: ['light'],  // Forces DaisyUI to always use light mode
+    darkTheme: 'light', // Ensures that even if dark mode is selected, light mode is used
+  },
   plugins: [
     require('daisyui'),
     flowbite.plugin(),

@@ -21,7 +21,7 @@ const TermsOfService = ({ isChecked, handleCheckboxChange }) => {
           type="checkbox"
           className="checkbox mr-2"
           checked={isChecked}
-          onChange={(e) => handleCheckboxChange(e.target.checked)}
+          onChange={e => handleCheckboxChange(e.target.checked)}
         />
         <div>
           <h2>
@@ -43,19 +43,22 @@ const TermsOfService = ({ isChecked, handleCheckboxChange }) => {
         <Modal.Header>Terms of Service</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              Welcome to Comex Connect! By using our services, you agree to comply with our Terms of Service.
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-justify">
+              Welcome to COMEX CONNECT, a web application developed to assist and manage the
+              activities and needs of the NU MoA Comex Brigade, an organization that partners with
+              communities to help other communities. By using our services, you agree to comply with
+              and be bound by the following terms and conditions.
             </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            Welcome to COMEX CONNECT, a web application developed to assist and manage the activities and needs of the NU MoA Comex Brigade, an organization that partners with communities to help other communities. By using our services, you agree to comply with and be bound by the following terms and conditions.
-
-Please read the Terms of Service carefully. If you do not agree to these terms, please refrain from using COMEX CONNECT.
+            <p className='text-justify italic text-nucolor3'>
+            Please read the Terms of Service carefully. If you do not agree to these terms, please refrain from using COMEX CONNECT.
             </p>
             {/* Add more sections as needed */}
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button color="dark" onClick={handleAccept}>I accept</Button>
+          <Button color="dark" onClick={handleAccept}>
+            I accept
+          </Button>
           <Button color="gray" onClick={handleDecline}>
             Decline
           </Button>
