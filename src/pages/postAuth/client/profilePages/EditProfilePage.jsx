@@ -1,53 +1,84 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../../../../api"; // Updated to use the `api` instance
+import api from "../../../../api"; // Adjust the path as needed
 import { ArrowLeft } from "lucide-react";
 import LoadingPage from "../../../LoadingPage";
 import { showToast } from "../../../../components/Toast";
-import FetchUserData from "../../../../components/hooks/FetchUserData"; // Import FetchUserData hook
+import FetchUserData from "../../../../components/hooks/FetchUserData";
+
+// Import validation and input components
+import UseFormValidation from "../../../../components/hooks/UseFormValidation"; // Adjust the path
+import TextInput from "../../../../components/inputs/TextInput";
+import SelectInput from "../../../../components/inputs/SelectInput";
+import DepartmentOptions from "../../../../components/inputs/DepartmentOptions";
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
   const userData = FetchUserData(); // Fetch the logged-in user's data
-  const [user, setUser] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    idNumber: "",
-    mobileNumber: "",
-    department: "",
-    email: "",
-  });
+
+  // State variables for form fields
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [idNumber, setIdNumber] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [department, setDepartment] = useState("");
+  const [email, setEmail] = useState("");
+  const [usertype, setUsertype] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Import form validation hook
+  const { errors, validateField, validateForm } = UseFormValidation();
 
   // Update state with user data when it is fetched
   useEffect(() => {
     if (Object.keys(userData).length > 0) {
-      // Exclude the password field from user data
-      const { password, ...userWithoutPassword } = userData;
-      setUser(userWithoutPassword);
+      setFirstName(userData.firstName || "");
+      setMiddleName(userData.middleName || "");
+      setLastName(userData.lastName || "");
+      setIdNumber(userData.idNumber || "");
+      setMobileNumber(userData.mobileNumber || "");
+      setDepartment(userData.department || "");
+      setEmail(userData.email || "");
+      setUsertype(userData.usertype || "");
       setLoading(false);
     }
   }, [userData]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  };
-
   const handleSaveChanges = () => {
-    // Exclude the password field before sending to backend
-    const { password, ...userWithoutPassword } = user;
-    api
-      .put(`/users/update/${user._id}`, userWithoutPassword) // Update the logged-in user's data
-      .then(() => {
-        showToast("success", "Profile updated successfully!");
-        navigate(`/client/profile`);
-      })
-      .catch(() => {
-        setError("Failed to update profile data.");
-      });
+    const fields = {
+      firstName,
+      middleName,
+      lastName,
+      idNumber,
+      mobileNumber,
+      department,
+      email,
+    };
+
+    if (validateForm(fields)) {
+      const updatedUser = {
+        firstName,
+        middleName,
+        lastName,
+        idNumber,
+        mobileNumber,
+        department,
+        email,
+      };
+      api
+        .put(`/users/update/${userData._id}`, updatedUser) // Update the logged-in user's data
+        .then(() => {
+          showToast("success", "Profile updated successfully!");
+          navigate(`/client/profile`);
+        })
+        .catch(() => {
+          setError("Failed to update profile data.");
+        });
+    } else {
+      showToast("error", "Please correct the errors in the form.");
+    }
   };
 
   if (loading) {
@@ -79,86 +110,102 @@ const EditProfilePage = () => {
       <h2 className="text-5xl font-extrabold text-gray-800 mb-6">Edit Profile</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-lg shadow-lg">
-        {/* Avatar */}
+        {/* Avatar and Usertype */}
         <div className="flex flex-col items-center border-r border-gray-200 pr-6">
           <img
-            src={user.avatar || "/default-avatar.png"}
+            src={userData.avatar || "/default-avatar.png"}
             alt="User Avatar"
             className="h-48 w-48 rounded-full border-4 border-gray-300 shadow-md mb-4"
           />
+          <p className="text-2xl font-semibold text-gray-700">
+            {usertype || "N/A"}
+          </p>
         </div>
 
         {/* User Form */}
         <div className="col-span-2">
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <InputField
+              <TextInput
                 label="First Name"
-                name="firstName"
-                value={user.firstName}
-                onChange={handleInputChange}
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                  validateField("firstName", e.target.value);
+                }}
+                error={!!errors.firstName}
+                errorMessage={errors.firstName}
               />
-              <InputField
+              <TextInput
                 label="Middle Name"
-                name="middleName"
-                value={user.middleName}
-                onChange={handleInputChange}
+                value={middleName}
+                onChange={(e) => {
+                  setMiddleName(e.target.value);
+                  validateField("middleName", e.target.value);
+                }}
+                error={!!errors.middleName}
+                errorMessage={errors.middleName}
               />
-              <InputField
+              <TextInput
                 label="Last Name"
-                name="lastName"
-                value={user.lastName}
-                onChange={handleInputChange}
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                  validateField("lastName", e.target.value);
+                }}
+                error={!!errors.lastName}
+                errorMessage={errors.lastName}
               />
             </div>
             <div>
-              <InputField
+              <TextInput
                 label="ID Number"
-                name="idNumber"
-                value={user.idNumber}
-                onChange={handleInputChange}
+                value={idNumber}
+                onChange={(e) => {
+                  setIdNumber(e.target.value);
+                  validateField("idNumber", e.target.value);
+                }}
+                error={!!errors.idNumber}
+                errorMessage={errors.idNumber}
               />
-              <InputField
+              <TextInput
                 label="Mobile Number"
-                name="mobileNumber"
-                value={user.mobileNumber}
-                onChange={handleInputChange}
+                value={mobileNumber}
+                onChange={(e) => {
+                  setMobileNumber(e.target.value);
+                  validateField("mobileNumber", e.target.value);
+                }}
+                error={!!errors.mobileNumber}
+                errorMessage={errors.mobileNumber}
               />
-              <InputField
+              <SelectInput
                 label="Department"
-                name="department"
-                value={user.department}
-                onChange={handleInputChange}
+                value={department}
+                onChange={(e) => {
+                  setDepartment(e.target.value);
+                  validateField("department", e.target.value);
+                }}
+                options={DepartmentOptions()}
+                error={!!errors.department}
+                errorMessage={errors.department}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-6 mt-6">
-            <InputField
+            <TextInput
               label="Email"
-              name="email"
-              value={user.email}
-              onChange={handleInputChange}
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                validateField("email", e.target.value);
+              }}
+              error={!!errors.email}
+              errorMessage={errors.email}
             />
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-// Reusable Input Field Component
-const InputField = ({ label, name, value, onChange }) => {
-  return (
-    <div className="mb-4">
-      <label className="text-sm font-semibold text-gray-500">{label}:</label>
-      <input
-        type="text"
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
-      />
     </div>
   );
 };
