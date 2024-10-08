@@ -4,18 +4,30 @@ import LoadingPage from "./../pages/LoadingPage";
 const ActivityTableMap = ({ activities }) => {
   const navigate = useNavigate();
 
+  // Check if activities are being loaded or if they're empty
+  console.log("Rendering ActivityTableMap with activities:", activities);
+
   const handleViewActivity = (activity) => {
-    navigate(`/admin/activities/${activity._id}`); // Navigate to the ViewActivityPage
+    console.log("Navigating to view activity:", activity);
+    navigate(`/admin/activities/${activity._id}`);
   };
 
-  const handleEditActivity = (activity) => {
-    navigate(`/admin/activities/${activity._id}/edit`); // Navigate to the EditActivityPage
-  };
+  if (!activities || activities.length === 0) {
+    console.log("Activities are still loading or empty.");
+    return (
+      <tr>
+        <td colSpan="5" className="text-center">
+          <LoadingPage />
+        </td>
+      </tr>
+    );
+  }
 
   return (
     <>
-      {activities.length > 0 ? (
-        activities.map((activity, index) => (
+      {activities.map((activity, index) => {
+        console.log("Mapping activity:", activity);
+        return (
           <tr className="hover:bg-gray-100 cursor-pointer" key={index}>
             <th>
               <label>
@@ -32,22 +44,10 @@ const ActivityTableMap = ({ activities }) => {
               >
                 View Activity
               </button>
-              {/* <button
-                className="btn btn-ghost btn-xs"
-                onClick={() => handleEditActivity(activity)}
-              >
-                Edit Activity
-              </button> */}
             </th>
           </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan="5" className="text-center">
-            <LoadingPage />
-          </td>
-        </tr>
-      )}
+        );
+      })}
     </>
   );
 };

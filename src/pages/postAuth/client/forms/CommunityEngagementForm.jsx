@@ -82,7 +82,7 @@ const CommunityEngagementForm = () => {
   if (!activity) return <div>Loading activity details...</div>;
 
   return (
-    <div className="max-w-3xl mx-auto my-10 p-6 bg-blue-100 rounded-lg shadow-lg relative">
+    <div className="w-screen max-w-3xl mx-auto my-10 p-6 bg-blue-100 rounded-lg shadow-lg relative">
       
       {/* Back Button */}
       <button

@@ -4,6 +4,7 @@ import api from '../../../api'; // Updated to use the `api` instance
 import { formatDate, formatTime } from '../../../components/hooks/useFetchActivities'; // Reuse your existing helper functions
 import FetchUserData from '../../../components/hooks/FetchUserData'; // Import user fetch hook
 import LoadingPage from '../../LoadingPage';
+import { ArrowLeft } from 'lucide-react';
 
 const ClientViewOneActivity = () => {
   const { activityid } = useParams(); // Fetch the activity ID from the URL
@@ -56,6 +57,12 @@ const ClientViewOneActivity = () => {
 
   return (
     <div className="p-6 max-w-5xl mx-auto bg-white shadow-md rounded-lg">
+      <button
+        onClick={() => navigate("/client/view-activities")}
+        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
+      >
+        <ArrowLeft className="w-5 h-5" /> Back
+      </button>
       <div className="flex flex-col items-center gap-6">
         {/* Activity Image */}
         <img
@@ -80,7 +87,7 @@ const ClientViewOneActivity = () => {
         </div>
 
         {/* Register Button */}
-        <button
+        <button 
           onClick={() => navigate(`/client/view-activities/${activityid}/register`)}
           className="btn bg-nucolor3 hover:bg-blue-700  px-6 py-2 rounded-lg font-semibold"
           disabled={isRegistered} // Disable if the user is already registered

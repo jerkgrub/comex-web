@@ -1,32 +1,33 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import api from "../../../../api"; // Adjust the path as needed
-import { ArrowLeft } from "lucide-react";
-import LoadingPage from "../../../LoadingPage";
-import { showToast } from "../../../../components/Toast";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import api from '../../../../api'; // Adjust the path as needed
+import { ArrowLeft } from 'lucide-react';
+import LoadingPage from '../../../LoadingPage';
+import { showToast } from '../../../../components/Toast';
 
 // Import validation and input components
-import UseFormValidation from "../../../../components/hooks/UseFormValidation"; // Adjust the path
-import TextInput from "../../../../components/inputs/TextInput";
-import SelectInput from "../../../../components/inputs/SelectInput";
-import DepartmentOptions from "../../../../components/inputs/DepartmentOptions";
-import UserTypeOptions from "../../../../components/inputs/UserTypeOptions";
+import UseFormValidation from '../../../../components/hooks/UseFormValidation'; // Adjust the path
+import TextInput from '../../../../components/inputs/TextInput';
+import SelectInput from '../../../../components/inputs/SelectInput';
+import DepartmentOptions from '../../../../components/inputs/DepartmentOptions';
+import UserTypeOptions from '../../../../components/inputs/UserTypeOptions';
 
 const EditUserPage = () => {
   const { userid } = useParams();
   const navigate = useNavigate();
 
   // State variables for form fields
-  const [usertype, setUsertype] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [idNumber, setIdNumber] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [department, setDepartment] = useState("");
-  const [email, setEmail] = useState("");
+  const [avatar, setAvatar] = useState(''); // Added avatar state
+  const [usertype, setUsertype] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [idNumber, setIdNumber] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [department, setDepartment] = useState('');
+  const [email, setEmail] = useState('');
   const [isActivated, setIsActivated] = useState(false);
-  const [dateHired, setDateHired] = useState("");
+  const [dateHired, setDateHired] = useState('');
   const [isIdDisabled, setIsIdDisabled] = useState(true);
   const [isDateHiredDisabled, setIsDateHiredDisabled] = useState(true);
 
@@ -39,21 +40,23 @@ const EditUserPage = () => {
   useEffect(() => {
     api
       .get(`/users/${userid}`) // Fetch user data
-      .then((response) => {
+      .then(response => {
         if (response.data && response.data.User) {
           const userData = response.data.User;
-          setUsertype(userData.usertype || "");
-          setFirstName(userData.firstName || "");
-          setMiddleName(userData.middleName || "");
-          setLastName(userData.lastName || "");
-          setIdNumber(userData.idNumber || "");
-          setMobileNumber(userData.mobileNumber || userData.mobile || "");
-          setDepartment(userData.department || "");
-          setEmail(userData.email || "");
+          setAvatar(userData.avatar || ''); // Set avatar state
+          setUsertype(userData.usertype || '');
+          setFirstName(userData.firstName || '');
+          setMiddleName(userData.middleName || '');
+          setLastName(userData.lastName || '');
+          setIdNumber(userData.idNumber || '');
+          setMobileNumber(userData.mobileNumber || userData.mobile || '');
+          setDepartment(userData.department || '');
+          setEmail(userData.email || '');
           setIsActivated(userData.isActivated || false);
-          setDateHired(userData.dateHired || "");
+          setDateHired(userData.dateHired || '');
+
           // Set the fields' disabled state based on usertype
-          if (userData.usertype === "Student") {
+          if (userData.usertype === 'Student') {
             setIsIdDisabled(false);
             setIsDateHiredDisabled(true);
           } else {
@@ -61,11 +64,11 @@ const EditUserPage = () => {
             setIsDateHiredDisabled(false);
           }
         } else {
-          setError("User data not found");
+          setError('User data not found');
         }
       })
-      .catch((error) => {
-        setError("Failed to fetch user data");
+      .catch(error => {
+        setError('Failed to fetch user data');
       })
       .finally(() => {
         setLoading(false);
@@ -78,21 +81,22 @@ const EditUserPage = () => {
       // If no usertype is selected, disable both fields
       setIsIdDisabled(true);
       setIsDateHiredDisabled(true);
-    } else if (usertype === "Student") {
+    } else if (usertype === 'Student') {
       // Enable ID Number and disable Date Hired for students
       setIsIdDisabled(false);
       setIsDateHiredDisabled(true);
-      setDateHired(""); // Clear dateHired when disabled
+      setDateHired(''); // Clear dateHired when disabled
     } else {
       // Disable ID Number and enable Date Hired for others
       setIsIdDisabled(true);
       setIsDateHiredDisabled(false);
-      setIdNumber(""); // Clear idNumber when disabled
+      setIdNumber(''); // Clear idNumber when disabled
     }
   }, [usertype]);
 
   const handleSaveChanges = () => {
     const fields = {
+      avatar, // Added avatar field here
       usertype,
       firstName,
       middleName,
@@ -101,17 +105,18 @@ const EditUserPage = () => {
       mobileNumber,
       department,
       email,
-      dateHired,
+      dateHired
     };
 
     const disabledFields = {
       idNumber: isIdDisabled,
-      dateHired: isDateHiredDisabled,
+      dateHired: isDateHiredDisabled
     };
 
     if (validateForm(fields, disabledFields)) {
       // Map mobileNumber to mobile if backend expects 'mobile'
       const updatedUser = {
+        avatar,
         usertype,
         firstName,
         middleName,
@@ -121,22 +126,22 @@ const EditUserPage = () => {
         department,
         email,
         isActivated,
-        dateHired,
+        dateHired
       };
 
-      console.log("Updated User Data:", updatedUser); // For debugging
+      console.log('Updated User Data:', updatedUser); // For debugging
 
       api
         .put(`/users/update/${userid}`, updatedUser)
         .then(() => {
-          showToast("success", "Changes saved!");
+          showToast('success', 'Changes saved!');
           navigate(`/admin/users/${userid}`);
         })
         .catch(() => {
-          setError("Failed to update user data");
+          setError('Failed to update user data');
         });
     } else {
-      showToast("error", "Please correct the errors in the form.");
+      showToast('error', 'Please correct the errors in the form.');
     }
   };
 
@@ -172,16 +177,16 @@ const EditUserPage = () => {
         {/* Avatar and User Type */}
         <div className="flex flex-col items-center border-r border-gray-200 pr-6">
           <img
-            src={userData.avatar || "/default-avatar.png"}
+            src={avatar || '/default-avatar.png'} // Use avatar from user data or fallback to a default avatar
             alt="User Avatar"
             className="h-48 w-48 rounded-full border-4 border-gray-300 shadow-md mb-4"
           />
           <SelectInput
             label="Usertype"
             value={usertype}
-            onChange={(e) => {
+            onChange={e => {
               setUsertype(e.target.value);
-              validateField("usertype", e.target.value);
+              validateField('usertype', e.target.value);
             }}
             options={UserTypeOptions()}
             error={!!errors.usertype}
@@ -196,9 +201,9 @@ const EditUserPage = () => {
               <TextInput
                 label="First Name"
                 value={firstName}
-                onChange={(e) => {
+                onChange={e => {
                   setFirstName(e.target.value);
-                  validateField("firstName", e.target.value);
+                  validateField('firstName', e.target.value);
                 }}
                 error={!!errors.firstName}
                 errorMessage={errors.firstName}
@@ -206,9 +211,9 @@ const EditUserPage = () => {
               <TextInput
                 label="Middle Name"
                 value={middleName}
-                onChange={(e) => {
+                onChange={e => {
                   setMiddleName(e.target.value);
-                  validateField("middleName", e.target.value);
+                  validateField('middleName', e.target.value);
                 }}
                 error={!!errors.middleName}
                 errorMessage={errors.middleName}
@@ -216,9 +221,9 @@ const EditUserPage = () => {
               <TextInput
                 label="Last Name"
                 value={lastName}
-                onChange={(e) => {
+                onChange={e => {
                   setLastName(e.target.value);
-                  validateField("lastName", e.target.value);
+                  validateField('lastName', e.target.value);
                 }}
                 error={!!errors.lastName}
                 errorMessage={errors.lastName}
@@ -229,9 +234,9 @@ const EditUserPage = () => {
                 label="ID Number"
                 value={idNumber}
                 disabled={isIdDisabled}
-                onChange={(e) => {
+                onChange={e => {
                   setIdNumber(e.target.value);
-                  validateField("idNumber", e.target.value, {}, isIdDisabled);
+                  validateField('idNumber', e.target.value, {}, isIdDisabled);
                 }}
                 error={!!errors.idNumber && !isIdDisabled}
                 errorMessage={errors.idNumber}
@@ -239,9 +244,9 @@ const EditUserPage = () => {
               <TextInput
                 label="Mobile Number"
                 value={mobileNumber}
-                onChange={(e) => {
+                onChange={e => {
                   setMobileNumber(e.target.value);
-                  validateField("mobileNumber", e.target.value);
+                  validateField('mobileNumber', e.target.value);
                 }}
                 error={!!errors.mobileNumber}
                 errorMessage={errors.mobileNumber}
@@ -249,9 +254,9 @@ const EditUserPage = () => {
               <SelectInput
                 label="Department"
                 value={department}
-                onChange={(e) => {
+                onChange={e => {
                   setDepartment(e.target.value);
-                  validateField("department", e.target.value);
+                  validateField('department', e.target.value);
                 }}
                 options={DepartmentOptions()}
                 error={!!errors.department}
@@ -264,9 +269,9 @@ const EditUserPage = () => {
             <TextInput
               label="Email"
               value={email}
-              onChange={(e) => {
+              onChange={e => {
                 setEmail(e.target.value);
-                validateField("email", e.target.value);
+                validateField('email', e.target.value);
               }}
               error={!!errors.email}
               errorMessage={errors.email}
@@ -277,20 +282,18 @@ const EditUserPage = () => {
               <label className="mb-1 pl-1 font-semibold">Date Hired</label>
               <input
                 type="date"
-                value={dateHired || ""}
+                value={dateHired || ''}
                 disabled={isDateHiredDisabled}
-                onChange={(e) => {
+                onChange={e => {
                   setDateHired(e.target.value);
-                  validateField("dateHired", e.target.value, {}, isDateHiredDisabled);
+                  validateField('dateHired', e.target.value, {}, isDateHiredDisabled);
                 }}
                 className={`input input-bordered w-full ${
-                  errors.dateHired && !isDateHiredDisabled ? "border-red-500" : ""
+                  errors.dateHired && !isDateHiredDisabled ? 'border-red-500' : ''
                 }`}
               />
               {errors.dateHired && !isDateHiredDisabled && (
-                <p className="pl-1 text-red-500 text-sm mt-1">
-                  * {errors.dateHired}
-                </p>
+                <p className="pl-1 text-red-500 text-sm mt-1">* {errors.dateHired}</p>
               )}
             </div>
 
@@ -301,7 +304,7 @@ const EditUserPage = () => {
                 className="checkbox checkbox-success"
                 name="isActivated"
                 checked={isActivated}
-                onChange={(e) => setIsActivated(e.target.checked)}
+                onChange={e => setIsActivated(e.target.checked)}
               />
               <span>Account Activated</span>
             </div>

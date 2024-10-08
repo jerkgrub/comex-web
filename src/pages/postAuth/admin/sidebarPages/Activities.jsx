@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Power, PowerOff, UsersRound, School } from "lucide-react";
 import ButtonGeneric from "../../../../components/inputs/ButtonGeneric";
@@ -7,17 +7,18 @@ import DropdownGeneric from "../../../../components/inputs/DropdownGeneric";
 import ActivityTable from "../../../../components/ActivityTable";
 import {
   departmentItems,
-  activityTypeItems, // For Institutional or College Driven
+  activityTypeItems,
 } from "../../../../components/ItemOptions";
 
 const Activities = () => {
-  const [searchInput, setSearchInput] = useState(""); // State for search input
+  const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState({
     department: "",
-    activityType: "", // New filter for activity type
-    accountStatus: "Activated", // Filter for activated/deactivated
+    activityType: "",
+    accountStatus: "Activated",
+    isApproved: true,
   });
-  const [activeTab, setActiveTab] = useState("approved"); // Tab state
+  const [activeTab, setActiveTab] = useState("approved");
   const navigate = useNavigate();
 
   const handleCreateActivityButton = () => {
@@ -35,16 +36,25 @@ const Activities = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       accountStatus:
-        prevFilters.accountStatus === "Activated" ? "Deactivated" : "Activated",
+        prevFilters.accountStatus === "Activated"
+          ? "Deactivated"
+          : "Activated",
     }));
   };
 
+  useEffect(() => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      isApproved: activeTab === "approved",
+    }));
+  }, [activeTab]);
+
   return (
     <>
-      <div className="bg-gray-200  flex p-6 sm:p-12 justify-start w-full h-screen">
-        <div className="bg-gray-200  w-full">
+      <div className="bg-gray-200 flex p-6 sm:p-12 justify-start w-full h-screen">
+        <div className="bg-gray-200 w-full">
           {/* 1st section */}
-          <div className="text-2xl sm:text-4xl  mb-3 font-bold">
+          <div className="text-2xl sm:text-4xl mb-3 font-bold">
             MANAGE ACTIVITIES
           </div>
 
@@ -131,19 +141,11 @@ const Activities = () => {
           </div>
 
           {/* 3rd section */}
-          {/* Pass the search input and filters to ActivityTable as props */}
           <div className="mt-4">
-            {activeTab === "approved" ? (
-              <ActivityTable
-                searchInput={searchInput}
-                filters={{ ...filters, isApproved: true }} // Filter for approved activities
-              />
-            ) : (
-              <ActivityTable
-                searchInput={searchInput}
-                filters={{ ...filters, isApproved: false }} // Filter for pending activities
-              />
-            )}
+            <ActivityTable
+              searchInput={searchInput}
+              filters={filters}
+            />
           </div>
         </div>
       </div>
@@ -152,6 +154,3 @@ const Activities = () => {
 };
 
 export default Activities;
-
-
-// college-driven + institutional = activities
