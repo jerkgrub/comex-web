@@ -18,6 +18,7 @@ import HeroPage from "./pages/preAuth/HeroPage";
 import RegisterPage from "./pages/preAuth/authentication/RegisterPage";
 import LoginPage from "./pages/preAuth/authentication/LoginPage";
 import Users from "./pages/postAuth/admin/sidebarPages/Users";
+import ForgotPasswordPage from "./pages/preAuth/ForgotPasswordPage";
 
 // Post Authentication {Admin}
 import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
@@ -105,6 +106,7 @@ function App() {
           <Route path="/login" element={<><PreAuthNavbar /><LoginPage /><Footer /></>} />
           <Route path="/register" element={<><PreAuthNavbar /><RegisterPage /><Footer /></>} />
           <Route path="about-us" element={<><PreAuthNavbar /><AboutUs /><Footer /></>} />
+          <Route path="forgotpassword" element={<><PreAuthNavbar /><ForgotPasswordPage /><Footer /></>} />
 
           {/* Admin Routes */}
           <Route path="/admin/*" element={<ProtectedRoute allowedRoles={["Admin"]}><AdminLayout /></ProtectedRoute>}>
