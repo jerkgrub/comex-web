@@ -56,7 +56,7 @@ import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
 import EditProfilePage from "./pages/postAuth/client/profilePages/EditProfilePage";
 import ViewAchievementsPage from "./pages/postAuth/client/profilePages/ViewAchievementsPage";
 import ViewParticipatedActivitiesPage from "./pages/postAuth/client/profilePages/ViewParticipatedActivitiesPage";
-
+//
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
   return (
