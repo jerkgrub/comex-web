@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings, Layers } from 'lucide-react';
+import { Settings, Layers, School, GraduationCap, Earth } from 'lucide-react';
 import { useFetchActivities } from '../../../components/hooks/useFetchActivities'; 
 import LoadingPage from '../../LoadingPage';
 
 // Define card data with LucideReact icons and routes
 const cardData = [
-  { id: 1, title: 'Extension Services', icon: <Settings className='w-14 h-14' />, filter: 'extension', route: '/client/engagement-appraisals/Extension%20Services' },
-  { id: 2, title: 'Capacity Building', icon: <Layers className='w-14 h-14' />, filter: 'capacity', route: '/client/engagement-appraisals/Capacity%20Building' },
+  { id: 1, title: 'Institutional', icon: <School className='w-14 h-14' />, filter: 'extension', route: '/client/engagement-appraisals/' },
+  { id: 2, title: 'College-Driven', icon: <GraduationCap className='w-14 h-14' />, filter: 'capacity', route: '/client/engagement-appraisals/College%20Driven' },
+  { id: 3, title: 'Extension Services', icon: <Earth className='w-14 h-14' />, filter: 'capacity', route: '/client/engagement-appraisals/Extension%20Services' },
+  { id: 4, title: 'Capacity-Building Services', icon: <Layers className='w-14 h-14' />, filter: 'capacity', route: '/client/engagement-appraisals/Capacity%20Building' },
 ];
 
 const ClientAppraisals = () => {

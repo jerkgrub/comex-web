@@ -19,6 +19,7 @@ import RegisterPage from "./pages/preAuth/authentication/RegisterPage";
 import LoginPage from "./pages/preAuth/authentication/LoginPage";
 import Users from "./pages/postAuth/admin/sidebarPages/Users";
 import ForgotPasswordPage from "./pages/preAuth/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/preAuth/ResetPasswordPage";
 
 // Post Authentication {Admin}
 import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
@@ -53,6 +54,8 @@ import ViewAppraisals from "./pages/postAuth/admin/ViewAppraisals";
 import Admin_ViewOneAppraisal from "./pages/postAuth/admin/Admin_ViewOneAppraisal";
 import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
 import EditProfilePage from "./pages/postAuth/client/profilePages/EditProfilePage";
+import ViewAchievementsPage from "./pages/postAuth/client/profilePages/ViewAchievementsPage";
+import ViewParticipatedActivitiesPage from "./pages/postAuth/client/profilePages/ViewParticipatedActivitiesPage";
 
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -102,6 +105,7 @@ function App() {
         <ScrollToTop />
         <Routes>
           {/* Pre Authentication */}
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/" element={<HeroPageWithNavbarAndFooter />} />
           <Route path="/login" element={<><PreAuthNavbar /><LoginPage /><Footer /></>} />
           <Route path="/register" element={<><PreAuthNavbar /><RegisterPage /><Footer /></>} />
@@ -144,6 +148,8 @@ function App() {
             <Route path="form-submitted" element={<><PostAuthNavbar /><FormSubmitted /><Footer /></>} />
             <Route path="profile" element={<><PostAuthNavbar /><Profile /><Footer /></>} />
             <Route path="profile/edit" element={<><PostAuthNavbar /><EditProfilePage /><Footer /></>} />
+            <Route path="profile/view-participated-activities" element={<><PostAuthNavbar /><ViewParticipatedActivitiesPage /><Footer /></>} />
+            <Route path="profile/view-achievements" element={<><PostAuthNavbar /><ViewAchievementsPage /><Footer /></>} />
             <Route path="highlights" element={<><PostAuthNavbar /><Highlights /><Footer /></>} />
           </Route>
 

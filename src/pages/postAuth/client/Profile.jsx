@@ -20,6 +20,10 @@ const Profile = () => {
     navigate("/client/profile/edit");
   };
 
+  const handleCertificates = () => {
+    navigate("/client/profile/view-achievements");
+  };
+
   return (
     <div className="min-h-[91.3vh] bg-gradient-bg3 bg-cover bg-no-repeat flex flex-col justify-start items-center py-16 gap-6">
       <ProfileInfoCardSigned />
@@ -53,10 +57,12 @@ const Profile = () => {
             label="View Participated Activities"
             icon={Handshake}
             className="bg-white2 w-full"
+            onClick={() => navigate("/client/profile/view-participated-activities")}
           />
           <ButtonGeneric
             label="Download Certificates"
             icon={FileBadge}
+            onClick={handleCertificates}
             className="bg-white2 w-full "
           />
         </div>
