@@ -79,7 +79,7 @@ const UseFormValidation = () => {
           const today = new Date();
           const selectedDate = new Date(value);
           if (selectedDate > today) {
-            error = "Date Hired cannot be in the future";
+            error = "Date hired cannot be in the future";
           }
         }
         break;
