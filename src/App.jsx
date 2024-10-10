@@ -106,7 +106,7 @@ function App() {
         <ScrollToTop />
         <Routes>
           {/* Pre Authentication */}
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/reset-password" element={<><PreAuthNavbar/><ResetPasswordPage /><Footer/></>} />
           <Route path="/" element={<HeroPageWithNavbarAndFooter />} />
           <Route path="/login" element={<><PreAuthNavbar /><LoginPage /><Footer /></>} />
           <Route path="/register" element={<><PreAuthNavbar /><RegisterPage /><Footer /></>} />
