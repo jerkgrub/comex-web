@@ -52,13 +52,13 @@ const UseFormValidation = () => {
         if (!value) error = "Department is required";
         break;
 
-        case "idNumber":
-          if (!value) {
-            error = "ID Number is required";
-          } else if (!/^\d{4}-\d{6}$/.test(value)) {
-            error = "ID Number must follow the format 2XXX-1XXXX";
-          }
-          break;
+      case "idNumber":
+        if (!value) {
+          error = "ID Number is required";
+        } else if (!/^\d{4}-\d{6}$/.test(value)) {
+          error = "ID Number must follow the format 2XXX-1XXXX";
+        }
+        break;
 
       case "firstName":
         if (!value) error = "First name is required";
@@ -73,7 +73,15 @@ const UseFormValidation = () => {
         break;
 
       case "dateHired":
-        if (!value) error = "Date Hired is required";
+        if (!value) {
+          error = "Date Hired is required";
+        } else {
+          const today = new Date();
+          const selectedDate = new Date(value);
+          if (selectedDate > today) {
+            error = "Date Hired cannot be in the future";
+          }
+        }
         break;
 
       default:
