@@ -10,7 +10,7 @@ const ButtonRegister = ({ isChecked, onClick }) => {
         }`}
         disabled={!isChecked}
       >
-        Register
+        Sign Up
       </button>
     </div>
   );

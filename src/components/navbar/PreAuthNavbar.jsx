@@ -218,7 +218,7 @@ const PreAuthNavbar = () => {
                 className="font-normal text-sm btn btn-ghost bg-nucolor3 hover:bg-[#9d8124] text-black  tracking-widest cursor-pointer"
                 onClick={buttonRegister}
               >
-                Register
+                Sign Up
               </div>
             </div>
           </div>

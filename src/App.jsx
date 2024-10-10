@@ -7,7 +7,7 @@ import {
 import { useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 import { Home } from "./pages/postAuth/client";
-import { BookCopy, ContactRound, FolderKanban, Gauge, Shield, Ticket } from "lucide-react";
+import { BookCopy, ContactRound, FolderKanban, Gauge, Hourglass, Shield, Ticket } from "lucide-react";
 import { Footer } from "./components/Footer";
 
 import EngagementAppraisalsPage from "./pages/postAuth/client/forms/EngagementAppraisalsPage";
@@ -76,6 +76,7 @@ function AdminLayout() {
       <Sidebar>
         <SidebarItem to="/admin/dashboard" icon={<Gauge size={20} />} text="Dashboard" active />
         <SidebarItem to="/admin/users" icon={<ContactRound size={20} />} text="Manage Users" />
+        <SidebarItem to="/admin/spez" icon={<Hourglass size={20} />} text="Manage SPEZ" />
         <SidebarItem to="/admin/activities" icon={<Ticket size={20} />} text="Manage Activities" />
         <SidebarItem to="/admin/evaluate-engagement-appraisals" icon={<BookCopy size={20} />} text="Evaluate Engagement Appraisals" />
         <SidebarItem to="/admin/review-evaluation-forms" icon={<FolderKanban size={20} />} text="Review Evaluation Forms" />

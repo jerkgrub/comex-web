@@ -1,35 +1,38 @@
+// EditUserPage.jsx
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import api from '../../../../api'; // Adjust the path as needed
 import { ArrowLeft } from 'lucide-react';
+import api from '../../../../api'; // Adjust the path as needed
 import LoadingPage from '../../../LoadingPage';
 import { showToast } from '../../../../components/Toast';
+import EditValidationForms from '../../../../components/forms/EditValidationForms';
 
-// Import validation and input components
+// Import validation and form components
 import UseFormValidation from '../../../../components/hooks/UseFormValidation'; // Adjust the path
-import TextInput from '../../../../components/inputs/TextInput';
-import SelectInput from '../../../../components/inputs/SelectInput';
-import DepartmentOptions from '../../../../components/inputs/DepartmentOptions';
-import UserTypeOptions from '../../../../components/inputs/UserTypeOptions';
 
 const EditUserPage = () => {
   const { userid } = useParams();
   const navigate = useNavigate();
 
   // State variables for form fields
-  const [avatar, setAvatar] = useState(''); // Added avatar state
-  const [usertype, setUsertype] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [middleName, setMiddleName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [idNumber, setIdNumber] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [department, setDepartment] = useState('');
-  const [email, setEmail] = useState('');
-  const [isActivated, setIsActivated] = useState(false);
-  const [dateHired, setDateHired] = useState('');
-  const [isIdDisabled, setIsIdDisabled] = useState(true);
-  const [isDateHiredDisabled, setIsDateHiredDisabled] = useState(true);
+  const [formData, setFormData] = useState({
+    avatar: '',
+    usertype: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    idNumber: '',
+    mobileNumber: '',
+    department: '',
+    email: '',
+    isActivated: false,
+    dateHired: '',
+  });
+
+  const [disabledFields, setDisabledFields] = useState({
+    isIdDisabled: true,
+    isDateHiredDisabled: true,
+  });
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,125 +40,114 @@ const EditUserPage = () => {
   // Import form validation hook
   const { errors, validateField, validateForm } = UseFormValidation();
 
+  // Fetch user data on mount
   useEffect(() => {
     api
-      .get(`/users/${userid}`) // Fetch user data
+      .get(`/users/${userid}`)
       .then(response => {
-        if (response.data && response.data.User) {
+        if (response.data?.User) {
           const userData = response.data.User;
-          setAvatar(userData.avatar || ''); // Set avatar state
-          setUsertype(userData.usertype || '');
-          setFirstName(userData.firstName || '');
-          setMiddleName(userData.middleName || '');
-          setLastName(userData.lastName || '');
-          setIdNumber(userData.idNumber || '');
-          setMobileNumber(userData.mobileNumber || userData.mobile || '');
-          setDepartment(userData.department || '');
-          setEmail(userData.email || '');
-          setIsActivated(userData.isActivated || false);
-          setDateHired(userData.dateHired || '');
+          setFormData({
+            avatar: userData.avatar || '',
+            usertype: userData.usertype || '',
+            firstName: userData.firstName || '',
+            middleName: userData.middleName || '',
+            lastName: userData.lastName || '',
+            idNumber: userData.idNumber || '',
+            mobileNumber: userData.mobileNumber || userData.mobile || '',
+            department: userData.department || '',
+            email: userData.email || '',
+            isActivated: userData.isActivated || false,
+            dateHired: userData.dateHired || '',
+          });
 
-          // Set the fields' disabled state based on usertype
+          // Set disabled fields based on usertype
           if (userData.usertype === 'Student') {
-            setIsIdDisabled(false);
-            setIsDateHiredDisabled(true);
+            setDisabledFields({ isIdDisabled: false, isDateHiredDisabled: true });
           } else {
-            setIsIdDisabled(true);
-            setIsDateHiredDisabled(false);
+            setDisabledFields({ isIdDisabled: true, isDateHiredDisabled: false });
           }
         } else {
           setError('User data not found');
         }
       })
-      .catch(error => {
-        setError('Failed to fetch user data');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .catch(() => setError('Failed to fetch user data'))
+      .finally(() => setLoading(false));
   }, [userid]);
 
-  // Effect to handle enabling/disabling fields based on usertype
-  useEffect(() => {
-    if (!usertype) {
-      // If no usertype is selected, disable both fields
-      setIsIdDisabled(true);
-      setIsDateHiredDisabled(true);
-    } else if (usertype === 'Student') {
-      // Enable ID Number and disable Date Hired for students
-      setIsIdDisabled(false);
-      setIsDateHiredDisabled(true);
-      setDateHired(''); // Clear dateHired when disabled
-    } else {
-      // Disable ID Number and enable Date Hired for others
-      setIsIdDisabled(true);
-      setIsDateHiredDisabled(false);
-      setIdNumber(''); // Clear idNumber when disabled
+  // Handle avatar file change
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formDataAvatar = new FormData();
+      formDataAvatar.append('avatar', file);
+
+      api.put(`/users/upload-avatar/${userid}`, formDataAvatar, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+        .then(response => {
+          if (response.data?.avatarUrl) {
+            setFormData(prev => ({ ...prev, avatar: response.data.avatarUrl }));
+            showToast('success', 'Avatar updated successfully');
+          } else {
+            showToast('error', 'Failed to get updated avatar URL');
+          }
+        })
+        .catch(() => showToast('error', 'Failed to upload avatar'));
     }
-  }, [usertype]);
+  };
 
+  // Handle usertype changes to enable/disable fields
+  useEffect(() => {
+    const { usertype } = formData;
+    if (!usertype) {
+      setDisabledFields({ isIdDisabled: true, isDateHiredDisabled: true });
+    } else if (usertype === 'Student') {
+      setDisabledFields({ isIdDisabled: false, isDateHiredDisabled: true });
+      setFormData(prev => ({ ...prev, dateHired: '' }));
+    } else {
+      setDisabledFields({ isIdDisabled: true, isDateHiredDisabled: false });
+      setFormData(prev => ({ ...prev, idNumber: '' }));
+    }
+  }, [formData.usertype]);
+
+  // Handle input changes
+  const handleChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    validateField(field, value, {}, disabledFields[`is${field.charAt(0).toUpperCase() + field.slice(1)}Disabled`]);
+  };
+
+  // Save changes handler
   const handleSaveChanges = () => {
-    const fields = {
-      avatar, // Added avatar field here
-      usertype,
-      firstName,
-      middleName,
-      lastName,
-      idNumber,
-      mobileNumber,
-      department,
-      email,
-      dateHired
+    const fieldsToValidate = { ...formData };
+    const fieldsDisabled = {
+      idNumber: disabledFields.isIdDisabled,
+      dateHired: disabledFields.isDateHiredDisabled,
     };
 
-    const disabledFields = {
-      idNumber: isIdDisabled,
-      dateHired: isDateHiredDisabled
-    };
-
-    if (validateForm(fields, disabledFields)) {
-      // Map mobileNumber to mobile if backend expects 'mobile'
+    if (validateForm(fieldsToValidate, fieldsDisabled)) {
       const updatedUser = {
-        avatar,
-        usertype,
-        firstName,
-        middleName,
-        lastName,
-        idNumber,
-        mobile: mobileNumber, // Adjusted field name
-        department,
-        email,
-        isActivated,
-        dateHired
+        ...formData,
+        mobile: formData.mobileNumber, // Adjust field name for backend
       };
 
-      console.log('Updated User Data:', updatedUser); // For debugging
-
-      api
-        .put(`/users/update/${userid}`, updatedUser)
+      api.put(`/users/update/${userid}`, updatedUser)
         .then(() => {
           showToast('success', 'Changes saved!');
           navigate(`/admin/users/${userid}`);
         })
-        .catch(() => {
-          setError('Failed to update user data');
-        });
+        .catch(() => setError('Failed to update user data'));
     } else {
       showToast('error', 'Please correct the errors in the form.');
     }
   };
 
-  if (loading) {
-    return <LoadingPage />;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <LoadingPage />;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="p-8 min-h-screen">
-      {/* Top Section: Back Button on left, Save Changes on right */}
+      {/* Top Section: Back Button and Save Changes */}
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={() => navigate(`/admin/users`)}
@@ -171,146 +163,25 @@ const EditUserPage = () => {
         </button>
       </div>
 
-      <h2 className="text-5xl font-extrabold text-gray-800 mb-6">Edit User</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-lg shadow-lg">
-        {/* Avatar and User Type */}
-        <div className="flex flex-col items-center border-r border-gray-200 pr-6">
-          <img
-            src={avatar || '/default-avatar.png'} // Use avatar from user data or fallback to a default avatar
-            alt="User Avatar"
-            className="h-48 w-48 rounded-full border-4 border-gray-300 shadow-md mb-4"
-          />
-          <SelectInput
-            label="Usertype"
-            value={usertype}
-            onChange={e => {
-              setUsertype(e.target.value);
-              validateField('usertype', e.target.value);
-            }}
-            options={UserTypeOptions()}
-            error={!!errors.usertype}
-            errorMessage={errors.usertype}
-          />
-        </div>
-
-        {/* User Form */}
-        <div className="col-span-2">
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <TextInput
-                label="First Name"
-                value={firstName}
-                onChange={e => {
-                  setFirstName(e.target.value);
-                  validateField('firstName', e.target.value);
-                }}
-                error={!!errors.firstName}
-                errorMessage={errors.firstName}
-              />
-              <TextInput
-                label="Middle Name"
-                value={middleName}
-                onChange={e => {
-                  setMiddleName(e.target.value);
-                  validateField('middleName', e.target.value);
-                }}
-                error={!!errors.middleName}
-                errorMessage={errors.middleName}
-              />
-              <TextInput
-                label="Last Name"
-                value={lastName}
-                onChange={e => {
-                  setLastName(e.target.value);
-                  validateField('lastName', e.target.value);
-                }}
-                error={!!errors.lastName}
-                errorMessage={errors.lastName}
-              />
-            </div>
-            <div>
-              <TextInput
-                label="ID Number"
-                value={idNumber}
-                disabled={isIdDisabled}
-                onChange={e => {
-                  setIdNumber(e.target.value);
-                  validateField('idNumber', e.target.value, {}, isIdDisabled);
-                }}
-                error={!!errors.idNumber && !isIdDisabled}
-                errorMessage={errors.idNumber}
-              />
-              <TextInput
-                label="Mobile Number"
-                value={mobileNumber}
-                onChange={e => {
-                  setMobileNumber(e.target.value);
-                  validateField('mobileNumber', e.target.value);
-                }}
-                error={!!errors.mobileNumber}
-                errorMessage={errors.mobileNumber}
-              />
-              <SelectInput
-                label="Department"
-                value={department}
-                onChange={e => {
-                  setDepartment(e.target.value);
-                  validateField('department', e.target.value);
-                }}
-                options={DepartmentOptions()}
-                error={!!errors.department}
-                errorMessage={errors.department}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-6 mt-6">
-            <TextInput
-              label="Email"
-              value={email}
-              onChange={e => {
-                setEmail(e.target.value);
-                validateField('email', e.target.value);
-              }}
-              error={!!errors.email}
-              errorMessage={errors.email}
-            />
-
-            {/* Date Hired */}
-            <div className="mb-4">
-              <label className="mb-1 pl-1 font-semibold">Date Hired</label>
-              <input
-                type="date"
-                value={dateHired || ''}
-                disabled={isDateHiredDisabled}
-                onChange={e => {
-                  setDateHired(e.target.value);
-                  validateField('dateHired', e.target.value, {}, isDateHiredDisabled);
-                }}
-                className={`input input-bordered w-full ${
-                  errors.dateHired && !isDateHiredDisabled ? 'border-red-500' : ''
-                }`}
-              />
-              {errors.dateHired && !isDateHiredDisabled && (
-                <p className="pl-1 text-red-500 text-sm mt-1">* {errors.dateHired}</p>
-              )}
-            </div>
-
-            {/* Account Activation */}
-            <div className="flex items-center gap-2 mt-4">
-              <input
-                type="checkbox"
-                className="checkbox checkbox-success"
-                name="isActivated"
-                checked={isActivated}
-                onChange={e => setIsActivated(e.target.checked)}
-              />
-              <span>Account Activated</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Form Component */}
+      <EditValidationForms
+        {...formData}
+        handleAvatarChange={handleAvatarChange}
+        setUsertype={(value) => handleChange('usertype', value)}
+        setFirstName={(value) => handleChange('firstName', value)}
+        setMiddleName={(value) => handleChange('middleName', value)}
+        setLastName={(value) => handleChange('lastName', value)}
+        setIdNumber={(value) => handleChange('idNumber', value)}
+        setMobileNumber={(value) => handleChange('mobileNumber', value)}
+        setDepartment={(value) => handleChange('department', value)}
+        setEmail={(value) => handleChange('email', value)}
+        setDateHired={(value) => handleChange('dateHired', value)}
+        setIsActivated={(value) => setFormData(prev => ({ ...prev, isActivated: value }))}
+        isIdDisabled={disabledFields.isIdDisabled}
+        isDateHiredDisabled={disabledFields.isDateHiredDisabled}
+        errors={errors}
+        validateField={validateField}
+      />
     </div>
   );
 };
