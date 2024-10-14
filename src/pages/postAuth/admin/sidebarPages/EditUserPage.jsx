@@ -37,6 +37,10 @@ const EditUserPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // State for avatar upload
+  const [selectedAvatarFile, setSelectedAvatarFile] = useState(null);
+  const [isAvatarSaving, setIsAvatarSaving] = useState(false);
+
   // Import form validation hook
   const { errors, validateField, validateForm } = UseFormValidation();
 
@@ -79,8 +83,16 @@ const EditUserPage = () => {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setSelectedAvatarFile(file);
+    }
+  };
+
+  // Handle saving the avatar
+  const handleSaveAvatar = () => {
+    if (selectedAvatarFile) {
+      setIsAvatarSaving(true);
       const formDataAvatar = new FormData();
-      formDataAvatar.append('avatar', file);
+      formDataAvatar.append('avatar', selectedAvatarFile);
 
       api.put(`/users/upload-avatar/${userid}`, formDataAvatar, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -89,11 +101,15 @@ const EditUserPage = () => {
           if (response.data?.avatarUrl) {
             setFormData(prev => ({ ...prev, avatar: response.data.avatarUrl }));
             showToast('success', 'Avatar updated successfully');
+            setSelectedAvatarFile(null); // Clear the selected file
           } else {
             showToast('error', 'Failed to get updated avatar URL');
           }
         })
-        .catch(() => showToast('error', 'Failed to upload avatar'));
+        .catch(() => showToast('error', 'Failed to upload avatar'))
+        .finally(() => {
+          setIsAvatarSaving(false);
+        });
     }
   };
 
@@ -114,7 +130,12 @@ const EditUserPage = () => {
   // Handle input changes
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    validateField(field, value, {}, disabledFields[`is${field.charAt(0).toUpperCase() + field.slice(1)}Disabled`]);
+    validateField(
+      field,
+      value,
+      {},
+      disabledFields[`is${field.charAt(0).toUpperCase() + field.slice(1)}Disabled`]
+    );
   };
 
   // Save changes handler
@@ -167,6 +188,9 @@ const EditUserPage = () => {
       <EditValidationForms
         {...formData}
         handleAvatarChange={handleAvatarChange}
+        handleSaveAvatar={handleSaveAvatar}
+        selectedAvatarFile={selectedAvatarFile}
+        isAvatarSaving={isAvatarSaving}
         setUsertype={(value) => handleChange('usertype', value)}
         setFirstName={(value) => handleChange('firstName', value)}
         setMiddleName={(value) => handleChange('middleName', value)}

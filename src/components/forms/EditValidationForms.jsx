@@ -8,6 +8,9 @@ import UserTypeOptions from '../../components/inputs/UserTypeOptions';
 const EditValidationForms = ({
   avatar,
   handleAvatarChange,
+  handleSaveAvatar,
+  selectedAvatarFile,
+  isAvatarSaving,
   usertype,
   setUsertype,
   firstName,
@@ -42,14 +45,43 @@ const EditValidationForms = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-lg shadow-lg">
         {/* Avatar and User Type */}
         <div className="flex flex-col items-center border-r border-gray-200 pr-6">
-          <input type="file" onChange={handleAvatarChange} />
-          <img
-            src={avatar || '/default-avatar.png'}
-            alt="User Avatar"
-            className="h-48 w-48 rounded-full border-4 border-gray-300 shadow-md mb-4"
-          />
+          <div className="mb-4 flex flex-col items-center">
+            <img
+              src={avatar || '/default-avatar.png'}
+              alt="User Avatar"
+              className="h-48 w-48 rounded-full border-4 border-gray-300 shadow-md mb-4 object-cover"
+            />
+            <div className="w-full flex flex-col items-center">
+              <label className="w-full">
+                <input
+                  type="file"
+                  onChange={handleAvatarChange}
+                  accept="image/*"
+                  className="hidden"
+                />
+                <div className="btn w-full px-4 py-2 bg-gray-200 text-black rounded-lg hover:bg-gray-300 cursor-pointer text-center">
+                  Choose File
+                </div>
+              </label>
+              {selectedAvatarFile && (
+                <p className="mt-2 text-sm text-gray-600 text-center">
+                  Selected file: {selectedAvatarFile.name}
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={handleSaveAvatar}
+                disabled={!selectedAvatarFile || isAvatarSaving}
+                className={`btn mt-4 w-full px-4 py-2 bg-nucolor3 text-black rounded-lg hover:bg-blue-700 ${
+                  (!selectedAvatarFile || isAvatarSaving) && 'opacity-50 cursor-not-allowed'
+                }`}
+              >
+                {isAvatarSaving ? 'Saving...' : 'Save Avatar'}
+              </button>
+            </div>
+          </div>
           <SelectInput
-            label="Usertype"
+            label="User Type"
             value={usertype}
             onChange={e => {
               setUsertype(e.target.value);
@@ -63,7 +95,7 @@ const EditValidationForms = ({
 
         {/* User Form */}
         <div className="col-span-2">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <TextInput
                 label="First Name"
@@ -132,7 +164,7 @@ const EditValidationForms = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <TextInput
               label="Email"
               value={email}
