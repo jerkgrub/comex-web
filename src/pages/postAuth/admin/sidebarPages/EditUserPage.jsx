@@ -150,6 +150,7 @@ const EditUserPage = () => {
       const updatedUser = {
         ...formData,
         mobile: formData.mobileNumber, // Adjust field name for backend
+        dateHired: !disabledFields.isDateHiredDisabled ? formData.dateHired : '', // Ensure dateHired is passed correctly
       };
 
       api.put(`/users/update/${userid}`, updatedUser)
