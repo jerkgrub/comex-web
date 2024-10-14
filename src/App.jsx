@@ -7,7 +7,7 @@ import {
 import { useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 import { Home } from "./pages/postAuth/client";
-import { BookCopy, ContactRound, FolderKanban, Gauge, Hourglass, Shield, Ticket } from "lucide-react";
+import { BookCopy, ContactRound, FolderKanban, Gauge, Hourglass, Shield, Ticket, Zap } from "lucide-react";
 import { Footer } from "./components/Footer";
 
 import EngagementAppraisalsPage from "./pages/postAuth/client/forms/EngagementAppraisalsPage";
@@ -56,6 +56,7 @@ import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
 import EditProfilePage from "./pages/postAuth/client/profilePages/EditProfilePage";
 import ViewAchievementsPage from "./pages/postAuth/client/profilePages/ViewAchievementsPage";
 import ViewParticipatedActivitiesPage from "./pages/postAuth/client/profilePages/ViewParticipatedActivitiesPage";
+import AutoCertPage from "./pages/postAuth/admin/sidebarPages/AutoCertPage";
 //
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -81,6 +82,7 @@ function AdminLayout() {
         <SidebarItem to="/admin/evaluate-engagement-appraisals" icon={<BookCopy size={20} />} text="Evaluate Engagement Appraisals" />
         <SidebarItem to="/admin/review-evaluation-forms" icon={<FolderKanban size={20} />} text="Review Evaluation Forms" />
         <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text="Manage NSTP" />
+        <SidebarItem to="/admin/autocert" icon={<Zap size={20} />} text="AutoCert" />
       </Sidebar>
       <div className={`flex-grow transition-all duration-200 ${expanded ? "ml-64" : "ml-16"} p-4`}>
         <Outlet />
@@ -119,6 +121,7 @@ function App() {
             <Route path="comexforms" element={<ComexForms />} />
             <Route path="activities" element={<Activities />} />
             <Route path="create-activity" element={<CreateActivityPage />} />
+            <Route path="autocert" element={<AutoCertPage />} />
 
             {/* activities */}
             <Route path="activities/:activityid" element={<ViewActivityPage />} />
