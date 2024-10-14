@@ -36,7 +36,7 @@ const HeroPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          Error
+          Unlock your Community Impact!
         </motion.p>
 
         {/* Subheading */}
@@ -47,7 +47,7 @@ const HeroPage = () => {
           animate="visible"
           custom={0.2}
         >
-          Error
+          Welcome to COMEX CONNECT!
         </motion.p>
 
         {/* Hot Air Balloon Image */}
