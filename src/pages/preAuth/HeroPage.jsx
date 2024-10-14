@@ -47,7 +47,7 @@ const HeroPage = () => {
           animate="visible"
           custom={0.2}
         >
-          Welcome to Comex Connect!
+          Error
         </motion.p>
 
         {/* Hot Air Balloon Image */}
