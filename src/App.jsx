@@ -82,7 +82,7 @@ function AdminLayout() {
       <Sidebar>
         <SidebarItem to="/admin/dashboard" icon={<Gauge size={20} />} text="Dashboard" active />
         <SidebarItem to="/admin/users" icon={<ContactRound size={20} />} text="Manage Users" />
-        <SidebarItem to="/admin/spez" icon={<Hourglass size={20} />} text="Manage SPEZ" />
+        {/* <SidebarItem to="/admin/spez" icon={<Hourglass size={20} />} text="Manage SPEZ" /> */}
         <SidebarItem to="/admin/activities" icon={<Earth size={20} />} text="Manage Activities" />
         <SidebarItem to="/admin/review-evaluation-forms" icon={<FolderKanban size={20} />} text="Review Evaluation Forms" />
         <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text="Manage NSTP" />
