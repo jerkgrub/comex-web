@@ -6,7 +6,7 @@ const FormNavigation = ({ currentStep, totalSteps, onNext, onBack }) => {
       <button
         onClick={onBack}
         disabled={currentStep === 0}
-        className={`btn bg-nucolor3 hover:bg-gray-400 font-bold py-2 px-4 rounded-lg ${
+        className={`btn bg-nucolor3 hover:bg-nucolor2 font-bold py-2 px-4 rounded-lg ${
           currentStep === 0 ? "cursor-not-allowed opacity-50" : ""
         }`}
       >
@@ -15,7 +15,7 @@ const FormNavigation = ({ currentStep, totalSteps, onNext, onBack }) => {
 
       <button
         onClick={onNext}
-        className="btn bg-nucolor3 hover:bg-blue-700 font-bold py-2 px-4 rounded-lg"
+        className="btn bg-nucolor3 hover:bg-nucolor2 font-bold py-2 px-4 rounded-lg"
       >
         {currentStep + 1 === totalSteps ? "Submit" : "Next"}
       </button>
