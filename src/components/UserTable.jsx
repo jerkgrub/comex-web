@@ -53,14 +53,14 @@ const UserTable = ({ searchInput, filters }) => {
   }, [searchInput, filters, users]);
 
   return (
-    <div className="mt-6 card bg-white max-w max-h shadow-xl">
+    <div className="mt-6 card bg-white max-w max-h ">
       <div className="overflow-x-auto">
         <table className="table">
           <thead className="select-none">
             <tr>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  {/* <input type="checkbox" className="checkbox" /> */}
                 </label>
               </th>
               <th>Name</th>

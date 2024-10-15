@@ -18,7 +18,7 @@ const UserTableMap = ({ users }) => {
           <tr className="hover:bg-gray-100 cursor-pointer" key={index}>
             <th>
               <label>
-                <input type="checkbox" className="checkbox" />
+                {/* <input type="checkbox" className="checkbox" /> */}
               </label>
             </th>
             <td>
