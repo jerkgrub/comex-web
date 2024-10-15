@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // Default Calendar CSS
 import "./CustomCalendar.css"; // Custom CSS for enhanced styling
@@ -14,15 +14,35 @@ const ClientViewAllActivities = () => {
     setDate(newDate);
   };
 
+  // Get current month and year
+  const currentDate = new Date();
+  const currentMonth = currentDate.toLocaleString("default", { month: "long" });
+  const currentYear = currentDate.getFullYear();
+
+  // Lock calendar to current month by setting minDate and maxDate
+  const firstDayOfMonth = new Date(currentYear, currentDate.getMonth(), 1);
+  const lastDayOfMonth = new Date(currentYear, currentDate.getMonth() + 1, 0);
+
+  // Prepare a set of dates that have activities for quick lookup
+  const eventDates = useMemo(() => {
+    if (!activities) return new Set();
+    return new Set(
+      activities.map((activity) =>
+        new Date(activity.startDate).toDateString()
+      )
+    );
+  }, [activities]);
+
   // Ensure that activities is defined and an array
-  if (loading) return <LoadingPage/>;
-  if (error) return <p>Error: {error}</p>;
-  if (!activities || activities.length === 0) return <p>No activities found.</p>;
+  if (loading) return <LoadingPage />;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
+  if (!activities || activities.length === 0)
+    return <p className="text-gray-700">No activities found.</p>;
 
   return (
-    <div className="flex w-full min-h-[91.3vh] py-9 px-4 flex-col lg:flex-row gap-8 bg-gray-200">
+    <div className="flex w-full min-h-screen py-9 px-4 flex-col lg:flex-row gap-8 bg-gray-200">
       {/* Left side: List of Upcoming Activities */}
-      <div className="w-full lg:w-1/2 p-6 rounded-lg">
+      <div className="w-full lg:w-1/2 p-6 rounded-lg  ">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
           List of Upcoming Activities
         </h2>
@@ -36,7 +56,7 @@ const ClientViewAllActivities = () => {
             <Link
               to={`/client/view-activities/${activity._id}`} // Link to the specific activity page
               key={activity._id}
-              className="block bg-white mb-6 p-3 border border-gray-200 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"
+              className="block bg-white mb-6 p-3 border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300"
             >
               <div className="flex flex-row items-center gap-6">
                 <div className="w-40 h-auto">
@@ -44,14 +64,18 @@ const ClientViewAllActivities = () => {
                     <img
                       src={activity.image || "/path-to-default-image.jpg"}
                       alt={activity.title}
-                      className="w-full h-full object-cover rounded-lg border-1 shadow-md"
+                      className="w-full h-full object-cover rounded-lg border border-gray-300 shadow-sm"
                     />
                   </div>
                 </div>
                 <div className="text-center flex-shrink-0">
                   {/* startDate */}
-                  <p className="text-2xl font-semibold text-indigo-500">{month}</p>
-                  <p className="text-5xl font-extrabold text-gray-900">{day}</p>
+                  <p className="text-2xl font-semibold text-indigo-500">
+                    {month}
+                  </p>
+                  <p className="text-5xl font-extrabold text-gray-900">
+                    {day}
+                  </p>
                 </div>
                 <div className="flex-grow">
                   {/* type */}
@@ -74,14 +98,27 @@ const ClientViewAllActivities = () => {
       </div>
 
       {/* Right side: Calendar */}
-      <div className="w-full lg:w-1/2 p-6 ">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">February 2024</h2>
+      <div className="w-full lg:w-1/2 p-6 rounded-lg">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          {currentMonth} {currentYear}
+        </h2>
         <div className="p-4 rounded-lg">
           <Calendar
             onChange={onChange}
             value={date}
             className="clean-calendar"
             showNavigation={false}
+            minDate={firstDayOfMonth}
+            maxDate={lastDayOfMonth}
+            tileClassName={({ date, view }) => {
+              if (view === "month") {
+                const dateStr = date.toDateString();
+                if (eventDates.has(dateStr)) {
+                  return "event-date";
+                }
+              }
+              return null;
+            }}
           />
         </div>
       </div>

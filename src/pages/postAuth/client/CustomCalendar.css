@@ -72,7 +72,7 @@
 /* Current day (today) */
 .react-calendar__tile--now {
     background-color: #edf2f7;
-    border: 2px solid #2b6cb0;
+    border: 2px solid #588abe;
     font-weight: 600;
 }
 
@@ -87,6 +87,19 @@
 .react-calendar__tile--disabled {
     color: #cbd5e0;
     background-color: #f7fafc;
+}
+
+/* Event indicator: Add a blue dot for dates that have events */
+.clean-calendar .event-date::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background-color: #8a471e; /* Blue dot to indicate events */
+    border-radius: 50%;
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Transition for hover and interactive elements */
