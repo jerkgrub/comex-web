@@ -1,45 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Layers, School, GraduationCap, Earth, Building } from 'lucide-react';
+import { Layers, GraduationCap, Earth, Building } from 'lucide-react';
+import api from '../../../api';
+import Skeleton from 'react-loading-skeleton';
 
-// Define card data with LucideReact icons and routes
+// Define the card data with appraisal types and routes
 const cardData = [
   {
     id: 1,
     title: 'Institutional',
     icon: <Building className="w-14 h-14 text-[#d1d5db]" />,
-    route: '/client/engagement-appraisals-institutional'
+    type: 'Institutional', // Type to be passed as URL param
   },
   {
     id: 2,
     title: 'College-Driven',
     icon: <GraduationCap className="w-14 h-14 text-[#d1d5db]" />,
-    route: '/client/engagement-appraisals/College%20Driven'
+    type: 'College Driven', // Type to be passed as URL param
   },
   {
     id: 3,
     title: 'Extension Services',
     icon: <Earth className="w-14 h-14 text-[#d1d5db]" />,
-    route: '/client/engagement-appraisals/Extension%20Services'
+    type: 'Extension Services',
   },
   {
     id: 4,
-    title: 'Capacity-Building Services',
+    title: 'Capacity Building',
     icon: <Layers className="w-14 h-14 text-[#d1d5db]" />,
-    route: '/client/engagement-appraisals/Capacity%20Building'
+    type: 'Capacity Building',
   }
 ];
 
 const ViewAppraisals = () => {
   const navigate = useNavigate();
-  const [activeFilter, setActiveFilter] = useState(null);
+  const [counts, setCounts] = useState({});
 
-  const handleCardClick = card => {
-    if (card.route) {
-      navigate(card.route); // Navigate to the route
-    } else {
-      setActiveFilter(prevFilter => (prevFilter === card.filter ? null : card.filter));
-    }
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        // Fetch counts for each card type
+        const promises = cardData.map(card =>
+          api.get(`/credit/pending/${card.type}/count`),
+        );
+
+        const results = await Promise.all(promises);
+        const newCounts = {};
+        results.forEach((response, index) => {
+          newCounts[cardData[index].id] = response.data.count;
+        });
+
+        setCounts(newCounts);
+      } catch (error) {
+        console.error('Failed to fetch counts:', error);
+      }
+    };
+
+    fetchCounts();
+  }, []);
+
+  // Navigate to the route with the appropriate appraisal type
+  const handleCardClick = (card) => {
+    navigate(`/admin/review-evaluation-forms/${card.type}`);
   };
 
   return (
@@ -54,18 +76,18 @@ const ViewAppraisals = () => {
           {cardData.map(card => (
             <div
               key={card.id}
-              className={`gap-3 bg-gradient-to-br from-[#2b3476] to-[#525db3] text-white flex flex-col items-center justify-center p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105 cursor-pointer ${
-                activeFilter === card.filter ? 'ring-4 ring-[#336699]' : ''
-              }`}
+              className="gap-3 bg-gradient-to-br from-[#2b3476] to-[#525db3] text-white flex flex-col items-center justify-center p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105 cursor-pointer"
               onClick={() => handleCardClick(card)}
             >
-              <div className='flex flex-row'>
+              <div className="flex flex-row">
                 <div className="mb-6">{card.icon}</div>
                 <p className="text-center text-2xl font-semibold tracking-wider select-none">
                   {card.title}
                 </p>
               </div>
-              <p className="text-center text-4xl font-semibold tracking-wider select-none">card pending count</p>
+              <p className="text-center text-4xl font-semibold tracking-wider select-none">
+                {counts[card.id] || 0}
+              </p>
             </div>
           ))}
         </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../../api";
+import AppraisalTableMap from "./AppraisalTableMap";
 
 const AppraisalTable = ({ searchInput, filters }) => {
   const [users, setUsers] = useState(null); // Initialize users as null
@@ -73,14 +74,13 @@ const AppraisalTable = ({ searchInput, filters }) => {
                   {/* <input type="checkbox" className="checkbox" /> */}
                 </label>
               </th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Department</th>
+              <th>Applicant Name</th>
+              <th>Hours Rendered</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {/* <UserTableMap users={filteredUsers} loading={loading} /> */}
+            <AppraisalTableMap users={filteredUsers} loading={loading} />
           </tbody>
         </table>
       </div>
