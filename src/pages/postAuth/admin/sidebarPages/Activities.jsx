@@ -142,10 +142,7 @@ const Activities = () => {
 
           {/* 3rd section */}
           <div className="mt-4">
-            <ActivityTable
-              searchInput={searchInput}
-              filters={filters}
-            />
+            <ActivityTable searchInput={searchInput} filters={filters} />
           </div>
         </div>
       </div>

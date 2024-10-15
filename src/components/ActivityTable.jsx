@@ -3,8 +3,8 @@ import api from "../api";
 import ActivityTableMap from "./ActivityTableMap";
 
 const ActivityTable = ({ searchInput, filters }) => {
-  const [activities, setActivities] = useState([]);
-  const [filteredActivities, setFilteredActivities] = useState([]);
+  const [activities, setActivities] = useState(null);
+  const [filteredActivities, setFilteredActivities] = useState(null);
 
   useEffect(() => {
     api
@@ -16,14 +16,21 @@ const ActivityTable = ({ searchInput, filters }) => {
           setFilteredActivities(data.Activities); // Initialize filtered activities
         } else {
           console.error("Expected an array but got:", data);
+          setActivities([]);
+          setFilteredActivities([]);
         }
       })
       .catch((error) => {
         console.error("Error fetching activities:", error);
+        setActivities([]);
+        setFilteredActivities([]);
       });
   }, []);
 
   useEffect(() => {
+    if (activities === null) {
+      return; // Wait until activities are loaded
+    }
 
     const filtered = activities.filter((activity) => {
       const matchesSearch = `${activity.title} ${activity.description}`
@@ -45,12 +52,12 @@ const ActivityTable = ({ searchInput, filters }) => {
           ? activity.isActivated
           : !activity.isActivated;
 
-      // Check if adminApproval exists before accessing isApproved
+      // Handle undefined adminApproval for pending activities
       const matchesApprovalStatus = activity.adminApproval
         ? filters.isApproved
           ? activity.adminApproval.isApproved
           : !activity.adminApproval.isApproved
-        : true; // If adminApproval doesn't exist, allow all activities
+        : !filters.isApproved; // If no adminApproval, assume pending
 
       return (
         matchesSearch &&
