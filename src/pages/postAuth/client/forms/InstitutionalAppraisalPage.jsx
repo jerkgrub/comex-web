@@ -220,83 +220,89 @@ const InstitutionalAppraisalPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
-      <button
-        onClick={() => navigate('/client/engagement-appraisals-institutional')}
-        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
-      >
-        <ArrowLeft className="w-5 h-5" /> Back
-      </button>
-      <h2 className="text-3xl font-bold mb-4 text-center">{formConfig[currentStep].title}</h2>
-      <p className="mb-8 text-lg text-center">{formConfig[currentStep].description}</p>
-      <form>
-        {formConfig[currentStep].questions.map((question) => (
-          <div key={question.id} className="mb-4">
-            <label className="block text-lg font-bold mb-2">{question.questionText}</label>
+    <div className='w-screen h-max min-h-[calc(100vh_-_80px)] py-12  flex justify-center items-center'>
+      <div className="max-w-3xl h-max mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <button
+          onClick={() => navigate('/client/engagement-appraisals-institutional')}
+          className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
+        >
+          <ArrowLeft className="w-5 h-5" /> Back
+        </button>
+        <h2 className="text-3xl font-bold mb-4 text-center">{formConfig[currentStep].title}</h2>
+        <p className="mb-8 text-lg text-center">{formConfig[currentStep].description}</p>
+        <form>
+          {formConfig[currentStep].questions.map(question => (
+            <div key={question.id} className="mb-4">
+              <label className="block text-lg font-bold mb-2">{question.questionText}</label>
 
-            {question.type === "text" && (
-              <input
-                type="text"
-                value={question.value}
-                onChange={question.handleChange}
-                className={`w-full p-2 border rounded-lg ${
-                  preFilledFields.includes(question.fieldName) ? "bg-gray-100 cursor-not-allowed" : ""
-                }`}
-                disabled={preFilledFields.includes(question.fieldName)}
-              />
-            )}
+              {question.type === 'text' && (
+                <input
+                  type="text"
+                  value={question.value}
+                  onChange={question.handleChange}
+                  className={`w-full p-2 border rounded-lg ${
+                    preFilledFields.includes(question.fieldName)
+                      ? 'bg-gray-100 cursor-not-allowed'
+                      : ''
+                  }`}
+                  disabled={preFilledFields.includes(question.fieldName)}
+                />
+              )}
 
-            {question.type === "radio" &&
-              question.options.map((option) => (
-                <div key={option} className="mb-2">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      name={question.id}
-                      value={option}
-                      checked={formData.isVoluntary === option}
-                      onChange={question.handleChange}
-                      className="form-radio"
-                      disabled={preFilledFields.includes(question.fieldName)}
-                    />
-                    <span className="ml-2">{option}</span>
-                  </label>
-                </div>
-              ))}
+              {question.type === 'radio' &&
+                question.options.map(option => (
+                  <div key={option} className="mb-2">
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name={question.id}
+                        value={option}
+                        checked={formData.isVoluntary === option}
+                        onChange={question.handleChange}
+                        className="form-radio"
+                        disabled={preFilledFields.includes(question.fieldName)}
+                      />
+                      <span className="ml-2">{option}</span>
+                    </label>
+                  </div>
+                ))}
 
-            {question.type === "date" && (
-              <input
-                type="date"
-                value={question.value}
-                onChange={question.handleChange}
-                className={`w-full p-2 border rounded-lg ${
-                  preFilledFields.includes(question.fieldName) ? "bg-gray-100 cursor-not-allowed" : ""
-                }`}
-                disabled={preFilledFields.includes(question.fieldName)}
-              />
-            )}
+              {question.type === 'date' && (
+                <input
+                  type="date"
+                  value={question.value}
+                  onChange={question.handleChange}
+                  className={`w-full p-2 border rounded-lg ${
+                    preFilledFields.includes(question.fieldName)
+                      ? 'bg-gray-100 cursor-not-allowed'
+                      : ''
+                  }`}
+                  disabled={preFilledFields.includes(question.fieldName)}
+                />
+              )}
 
-            {question.type === "file" && (
-              <input
-                type="file"
-                onChange={question.handleChange}
-                className="w-full p-2 border rounded-lg"
-              />
-            )}
+              {question.type === 'file' && (
+                <input
+                  type="file"
+                  onChange={question.handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              )}
 
-            {question.description && (
-              <p className="text-sm text-gray-600 mt-1">{question.description}</p>
-            )}
-          </div>
-        ))}
-      </form>
+              {question.description && (
+                <p className="text-sm text-gray-600 mt-1">{question.description}</p>
+              )}
+            </div>
+          ))}
+        </form>
 
-      <FormNavigation
-        currentStep={currentStep}
-        totalSteps={formConfig.length}
-        onNext={handleNext}
-        onBack={handleBack}
-      />
+        <FormNavigation
+          currentStep={currentStep}
+          totalSteps={formConfig.length}
+          onNext={handleNext}
+          onBack={handleBack}
+        />
+      </div>
     </div>
   );
 };
