@@ -61,6 +61,7 @@ import EditProfilePage from "./pages/postAuth/client/profilePages/EditProfilePag
 import ViewAchievementsPage from "./pages/postAuth/client/profilePages/ViewAchievementsPage";
 import ViewParticipatedActivitiesPage from "./pages/postAuth/client/profilePages/ViewParticipatedActivitiesPage";
 import AutoCertPage from "./pages/postAuth/admin/sidebarPages/AutoCertPage";
+import InstitutionalAppraisalPage from "./pages/postAuth/client/forms/InstitutionalAppraisalPage";
 //
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -150,6 +151,7 @@ function App() {
             <Route path="view-activities/:activityid" element={<><PostAuthNavbar /><ClientViewOneActivity /><Footer /></>} />
             <Route path="engagement-appraisals" element={<><PostAuthNavbar /><ClientAppraisals /><Footer /></>} />
             <Route path="engagement-appraisals-institutional" element={<><PostAuthNavbar /><InstitutionalPage /><Footer /></>} />
+            <Route path="engagement-appraisals-institutional/:activityId" element={<><PostAuthNavbar /><InstitutionalAppraisalPage /><Footer /></>} />
             <Route path="engagement-appraisals/:title" element={<><PostAuthNavbar /><EngagementAppraisalsPage /><Footer /></>} />
             <Route path="engagement-appraisals/community-engagement/:activityid" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
             <Route path="view-activities/:activityid/register" element={<><PostAuthNavbar /><RegisterActivityPage /><Footer /></>} />
