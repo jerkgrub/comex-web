@@ -21,6 +21,7 @@ const InstitutionalAppraisalPage = () => {
     supportingDocuments: null, // Matches backend field
     facultyReflection: '' // Matches backend field
   });
+  const [preFilledFields, setPreFilledFields] = useState([]); // New state for pre-filled fields
   const navigate = useNavigate();
 
   // New state to hold the activity data
@@ -39,16 +40,28 @@ const InstitutionalAppraisalPage = () => {
 
         setActivityData(activity);
 
+        // Prepare preFilledFields
+        const preFilled = [];
+
         setFormData({
           title: activity.title || '',
           isVoluntary: activity.isVoluntaryAndUnpaid ? 'Yes' : 'No',
           beneficiaries: activity.beneficiaries || '',
-          startDate: activity.startDate || '',
-          endDate: activity.endDate || '',
+          startDate: activity.startDate ? activity.startDate.split('T')[0] : '',
+          endDate: activity.endDate ? activity.endDate.split('T')[0] : '',
           totalHoursRendered: activity.hours ? activity.hours.toString() : '',
           supportingDocuments: null,
           facultyReflection: ''
         });
+
+        if (activity.title) preFilled.push('title');
+        if (activity.isVoluntaryAndUnpaid !== undefined) preFilled.push('isVoluntary');
+        if (activity.beneficiaries) preFilled.push('beneficiaries');
+        if (activity.startDate) preFilled.push('startDate');
+        if (activity.endDate) preFilled.push('endDate');
+        if (activity.hours) preFilled.push('totalHoursRendered');
+
+        setPreFilledFields(preFilled);
       } catch (error) {
         console.error('Error fetching activity data:', error);
         // Handle the error appropriately
@@ -73,8 +86,6 @@ const InstitutionalAppraisalPage = () => {
       ),
       questions: []
     },
-
-    // dwadawddawdwadwa
     {
       id: 2,
       title: 'Community Engagement Appraisal',
@@ -83,6 +94,7 @@ const InstitutionalAppraisalPage = () => {
         {
           id: 'q1',
           questionText: 'Title of Community Engagement',
+          fieldName: 'title',
           type: 'text',
           value: formData.title,
           handleChange: e => handleAnswerChange('title', e.target.value)
@@ -90,6 +102,7 @@ const InstitutionalAppraisalPage = () => {
         {
           id: 'q2',
           questionText: 'Is this Community Engagement voluntary and an unpaid service?',
+          fieldName: 'isVoluntary',
           type: 'radio',
           options: ['Yes', 'No'],
           value: formData.isVoluntary,
@@ -98,6 +111,7 @@ const InstitutionalAppraisalPage = () => {
         {
           id: 'q3',
           questionText: 'Who are the beneficiaries of this Community Engagement?',
+          fieldName: 'beneficiaries',
           type: 'text',
           value: formData.beneficiaries,
           handleChange: e => handleAnswerChange('beneficiaries', e.target.value)
@@ -105,6 +119,7 @@ const InstitutionalAppraisalPage = () => {
         {
           id: 'q4',
           questionText: 'Start date of Community Engagement',
+          fieldName: 'startDate',
           type: 'date',
           value: formData.startDate,
           handleChange: e => handleAnswerChange('startDate', e.target.value)
@@ -112,6 +127,7 @@ const InstitutionalAppraisalPage = () => {
         {
           id: 'q5',
           questionText: 'End date of Community Engagement',
+          fieldName: 'endDate',
           type: 'date',
           value: formData.endDate,
           handleChange: e => handleAnswerChange('endDate', e.target.value)
@@ -119,6 +135,7 @@ const InstitutionalAppraisalPage = () => {
         {
           id: 'q6',
           questionText: 'Total number of hours rendered for this Community Engagement',
+          fieldName: 'totalHoursRendered',
           type: 'text',
           value: formData.totalHoursRendered,
           handleChange: e => handleAnswerChange('totalHoursRendered', e.target.value)
@@ -126,6 +143,7 @@ const InstitutionalAppraisalPage = () => {
         {
           id: 'q7',
           questionText: 'Supporting Documents (Non-anonymous Question)',
+          fieldName: 'supportingDocuments',
           type: 'file',
           description:
             'Please attach any document from this community engagement that will serve as a proof of your participation (any of these: attendance sheet, certificates, photo evidence/screenshot of the event, meeting, extension activity, meeting highlights, post-activity report).',
@@ -134,6 +152,7 @@ const InstitutionalAppraisalPage = () => {
         {
           id: 'q8',
           questionText: 'Faculty Reflection',
+          fieldName: 'facultyReflection',
           type: 'text',
           description: 'Please share your reflection and personal realization.',
           value: formData.facultyReflection,
@@ -168,12 +187,13 @@ const InstitutionalAppraisalPage = () => {
     }
 
     const formDataToSubmit = new FormData();
-    formDataToSubmit.append('isRegisteredEvent', 'true'); // Since it's an institutional activity
-    formDataToSubmit.append('activityId', activityId); // Include the activityId
-    formDataToSubmit.append('type', activityData.type); // Use the type from activity
+    // Set isRegisteredEvent to 'false' to include additional fields
+    formDataToSubmit.append('isRegisteredEvent', 'false'); // Changed from 'true' to 'false'
+    // Removed activityId and type since it's now a non-registered event
+    formDataToSubmit.append('type', activityData.type); // Ensure 'type' is still included if necessary
     formDataToSubmit.append('userId', user._id); // Use userId fetched from useFetchUserData
     formDataToSubmit.append('title', formData.title);
-    formDataToSubmit.append('isVoluntary', formData.isVoluntary === 'Yes');
+    formDataToSubmit.append('isVoluntary', formData.isVoluntary === 'Yes' ? 'true' : 'false'); // Ensure it's a string
     formDataToSubmit.append('beneficiaries', formData.beneficiaries);
     formDataToSubmit.append('startDate', formData.startDate);
     formDataToSubmit.append('endDate', formData.endDate);
@@ -210,24 +230,24 @@ const InstitutionalAppraisalPage = () => {
       <h2 className="text-3xl font-bold mb-4 text-center">{formConfig[currentStep].title}</h2>
       <p className="mb-8 text-lg text-center">{formConfig[currentStep].description}</p>
       <form>
-        {formConfig[currentStep].questions.map(question => (
+        {formConfig[currentStep].questions.map((question) => (
           <div key={question.id} className="mb-4">
             <label className="block text-lg font-bold mb-2">{question.questionText}</label>
 
-            {question.type === 'text' && (
+            {question.type === "text" && (
               <input
                 type="text"
                 value={question.value}
                 onChange={question.handleChange}
                 className={`w-full p-2 border rounded-lg ${
-                  question.value ? 'bg-gray-100 cursor-not-allowed' : ''
-                }`} // Adds gray background and disabled cursor
-                disabled={!!question.value} // Disable if the field is pre-filled
+                  preFilledFields.includes(question.fieldName) ? "bg-gray-100 cursor-not-allowed" : ""
+                }`}
+                disabled={preFilledFields.includes(question.fieldName)}
               />
             )}
 
-            {question.type === 'radio' &&
-              question.options.map(option => (
+            {question.type === "radio" &&
+              question.options.map((option) => (
                 <div key={option} className="mb-2">
                   <label className="inline-flex items-center">
                     <input
@@ -237,26 +257,26 @@ const InstitutionalAppraisalPage = () => {
                       checked={formData.isVoluntary === option}
                       onChange={question.handleChange}
                       className="form-radio"
-                      disabled={!!formData.isVoluntary} // Disable radio options if pre-filled
+                      disabled={preFilledFields.includes(question.fieldName)}
                     />
                     <span className="ml-2">{option}</span>
                   </label>
                 </div>
               ))}
 
-            {question.type === 'date' && (
+            {question.type === "date" && (
               <input
                 type="date"
                 value={question.value}
                 onChange={question.handleChange}
                 className={`w-full p-2 border rounded-lg ${
-                  question.value ? 'bg-gray-100 cursor-not-allowed' : ''
-                }`} // Gray background and disabled cursor for dates
-                disabled={!!question.value} // Disable if the field is pre-filled
+                  preFilledFields.includes(question.fieldName) ? "bg-gray-100 cursor-not-allowed" : ""
+                }`}
+                disabled={preFilledFields.includes(question.fieldName)}
               />
             )}
 
-            {question.type === 'file' && (
+            {question.type === "file" && (
               <input
                 type="file"
                 onChange={question.handleChange}
