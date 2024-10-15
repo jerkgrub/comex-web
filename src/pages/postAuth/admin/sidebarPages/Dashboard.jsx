@@ -10,8 +10,10 @@ import DataCard from "../../../../components/DataCard";
 import DashboardTrackerTable from "../../../../components/DashboardTrackerTable";
 import HighestEngagementParticipation from "../../../../components/HighestEngagementParticipation";
 import ActivitiesAccomplishedPerDepartment from "../../../../components/ActivitiesAccomplishedPerDepartment";
+import usePendingActivitiesCount from "../../../../components/hooks/usePendingActivitiesCount";
 
 const Dashboard = () => {
+  const pendingCount = usePendingActivitiesCount();
   const navigate = useNavigate();
 
   return (
@@ -29,7 +31,7 @@ const Dashboard = () => {
         />
         <DataCard
           title="Pending Activities"
-          count={0}
+          count={pendingCount}
           icon={<CalendarClock size={40} />}
           color="border-[#E7DF94]"
         />

@@ -27,29 +27,43 @@ const Users = () => {
   const toggleAccountStatus = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      accountStatus: prevFilters.accountStatus === "Activated" ? "Deactivated" : "Activated",
+      accountStatus:
+        prevFilters.accountStatus === "Activated" ? "Deactivated" : "Activated",
     }));
+  };
+
+  // Add the resetFilters function
+  const resetFilters = () => {
+    setFilters({
+      department: "",
+      userType: "",
+      accountStatus: "Activated",
+    });
+    setSearchInput("");
   };
 
   return (
     <div className="p-4 md:p-8 min-h-screen card bg-base-100">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 space-y-4 md:space-y-0">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4 md:mb-0">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
           Manage Users ☎️
         </h1>
 
-        <div className="flex flex-wrap items-center space-x-4">
+        <div className="flex flex-wrap items-center mt-4 md:mt-0 space-x-4">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">
-              Toggle {filters.accountStatus === "Activated" ? "Activated" : "Deactivated"} users
+              Toggle{" "}
+              {filters.accountStatus === "Activated" ? "Activated" : "Deactivated"} users
             </p>
             <button
               className={`btn btn-xs btn-square md:w-auto ${
                 filters.accountStatus === "Activated" ? "btn-success" : "btn-error"
               }`}
               onClick={toggleAccountStatus}
-              title={`Toggle to ${filters.accountStatus === "Activated" ? "Deactivated" : "Activated"} users`}
+              title={`Toggle to ${
+                filters.accountStatus === "Activated" ? "Deactivated" : "Activated"
+              } users`}
             >
               {filters.accountStatus === "Activated" ? (
                 <Power className="w-5 h-5" />
@@ -59,7 +73,10 @@ const Users = () => {
             </button>
           </div>
 
-          <button className="btn bg-nucolor3 hover:bg-nucolor2 w-full md:w-auto" onClick={handleCreateUserButton}>
+          <button
+            className="btn bg-nucolor3 hover:bg-nucolor2 w-full md:w-auto"
+            onClick={handleCreateUserButton}
+          >
             <Plus className="w-5 h-5" />
             Create User
           </button>
@@ -68,7 +85,7 @@ const Users = () => {
 
       {/* Filters Section */}
       <div className="mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           {/* Search Input */}
           <div className="md:col-span-2">
             <div className="relative">
@@ -118,8 +135,8 @@ const Users = () => {
             </select>
           </div>
 
-          {/* Department Filter */}
-          <div>
+          {/* Department Filter and Reset Button */}
+          <div className="flex space-x-2">
             <select
               value={filters.department}
               onChange={(e) => handleFilterChange("department", e.target.value)}
@@ -132,6 +149,15 @@ const Users = () => {
                 </option>
               ))}
             </select>
+
+            {/* Reset Filters Button */}
+            <button
+              className="btn"
+              onClick={resetFilters}
+              title="Reset Filters"
+            >
+              Reset
+            </button>
           </div>
         </div>
       </div>

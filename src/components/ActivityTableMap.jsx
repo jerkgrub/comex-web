@@ -35,7 +35,7 @@ const ActivityTableMap = ({ activities }) => {
         >
           <th>
             <label>
-              <input type="checkbox" className="checkbox" />
+              {/* <input type="checkbox" className="checkbox" /> */}
             </label>
           </th>
           <td>{activity.title}</td>
