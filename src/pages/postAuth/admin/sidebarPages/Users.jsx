@@ -43,7 +43,7 @@ const Users = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 min-h-screen card bg-base-100">
+    <div className="p-4 md:p-8 min-h-screen card bg-base-100 shadow-lg">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
@@ -126,7 +126,6 @@ const Users = () => {
               onChange={(e) => handleFilterChange("userType", e.target.value)}
               className="select select-bordered w-full"
             >
-              <option value="">All User Types</option>
               {usertypeItems.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
@@ -142,7 +141,6 @@ const Users = () => {
               onChange={(e) => handleFilterChange("department", e.target.value)}
               className="select select-bordered w-full"
             >
-              <option value="">All Departments</option>
               {departmentItems.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
