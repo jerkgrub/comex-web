@@ -59,7 +59,7 @@ const InstitutionalPage = () => {
       </div>
 
       <h1 className="text-4xl font-bold mb-4 text-center text-gray-800">Institutional Activities</h1>
-      <p className="text-center text-lg text-gray-600 mb-6">Please select an event to credit:</p>
+      <p className="text-center text-lg text-gray-600 mb-6">Please select an activity to credit:</p>
 
       {/* Search Box */}
       <div className="relative mb-6">
