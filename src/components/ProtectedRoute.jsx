@@ -1,18 +1,10 @@
+// src/components/ProtectedRoute.jsx
 import { Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import FetchUserData from "./hooks/FetchUserData";
+import useFetchUserData from "./hooks/useFetchUserData";
 import LoadingPage from "../pages/LoadingPage";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const user = FetchUserData();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Stop loading when user data is fetched or if the user is not authenticated
-    if (Object.keys(user).length !== 0 || !localStorage.getItem("userEmail")) {
-      setLoading(false);
-    }
-  }, [user]);
+  const { user, loading } = useFetchUserData();
 
   // Show loading indicator while fetching user data
   if (loading) {

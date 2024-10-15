@@ -1,17 +1,39 @@
 import { useNavigate } from "react-router-dom";
-import LoadingPage from "./../pages/LoadingPage";
+import Skeleton from "react-loading-skeleton"; // Import Skeleton
+import 'react-loading-skeleton/dist/skeleton.css'; // Import Skeleton CSS
 
 const ActivityTableMap = ({ activities }) => {
   const navigate = useNavigate();
 
   if (activities === null) {
-    // Activities are still loading
+    // Activities are still loading; render skeleton placeholders
     return (
-      <tr>
-        <td colSpan="5" className="text-center">
-          <LoadingPage />
-        </td>
-      </tr>
+      <>
+        {Array(5)
+          .fill()
+          .map((_, index) => (
+            <tr key={index}>
+              <th>
+                <label>
+                  {/* Optionally, you can add a skeleton checkbox here */}
+                  {/* <Skeleton circle={true} height={20} width={20} /> */}
+                </label>
+              </th>
+              <td>
+                <Skeleton width={`80%`} height={20} />
+              </td>
+              <td>
+                <Skeleton width={`90%`} height={20} />
+              </td>
+              <td>
+                <Skeleton width={`70%`} height={20} />
+              </td>
+              <th>
+                <Skeleton width={80} height={30} />
+              </th>
+            </tr>
+          ))}
+      </>
     );
   }
 

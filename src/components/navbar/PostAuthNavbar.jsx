@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ccLogo from "../images/ccLogo.png";
 import { showToast } from "../Toast";
-import FetchUserData from "../hooks/FetchUserData";
+import useFetchUserData from "../hooks/useFetchUserData";
+import Skeleton from "react-loading-skeleton";
 
 // Define menu items for each user type
 const menuItemsByUserType = {
@@ -45,7 +46,6 @@ const menuItemsByUserType = {
       name: "Application for Engagement Appraisal",
       link: "/client/engagement-appraisals",
     },
-    
   ],
   NTP: [
     { name: "NTP Home", link: "/ntp/home" },
@@ -74,17 +74,16 @@ const menuItemsByUserType = {
 
 const PostAuthNavbar = () => {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
-  const user = FetchUserData();
+  const { user, loading } = useFetchUserData();
   const userType = user.usertype; // Assuming 'usertype' is the property name
-
   const navigate = useNavigate();
 
   const handleProfile = () => {
     navigate("/client/profile");
     if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur(); // Close the dropdown by blurring the active element
+      document.activeElement.blur();
     }
-    setOpenDropdownIndex(null); // Close the open dropdown
+    setOpenDropdownIndex(null);
   };
 
   const handleLogout = () => {
@@ -111,23 +110,38 @@ const PostAuthNavbar = () => {
     });
   };
 
-  const handleNavigation = (link) => {
-    if (link !== "#") {
-      navigate(link);
-    }
-  };
-
-  // Handle item click and close the dropdown
   const handleItemClick = (itemLink) => {
-    handleNavigation(itemLink);
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur(); // Close the dropdown by blurring the active element
+    if (itemLink !== "#") {
+      navigate(itemLink);
     }
-    setOpenDropdownIndex(null); // Close the open dropdown
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    setOpenDropdownIndex(null);
   };
 
   // Get menu items based on user type
   const menuItems = menuItemsByUserType[userType] || [];
+
+  const renderMenuItems = (items) =>
+    items.map((item, index) => (
+      <li key={index}>
+        <a onClick={() => (item.subItems ? null : handleItemClick(item.link))}>
+          {item.name}
+        </a>
+        {item.subItems && (
+          <ul className="p-2">
+            {item.subItems.map((subItem, subIndex) => (
+              <li key={subIndex}>
+                <a onClick={() => handleItemClick(subItem.link)}>
+                  {subItem.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ));
 
   return (
     <>
@@ -143,40 +157,27 @@ const PostAuthNavbar = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
               </svg>
             </div>
             <ul
               tabIndex={0}
               className="text-black menu menu-sm dropdown-content mt-3 z-20 p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {menuItems.map((item, index) => (
-                <li key={index}>
-                  <a
-                    onClick={() =>
-                      item.subItems ? null : handleItemClick(item.link)
-                    }
-                  >
-                    {item.name}
-                  </a>
-                  {item.subItems && (
-                    <ul className="p-2">
-                      {item.subItems.map((subItem, subIndex) => (
-                        <li key={subIndex}>
-                          <a onClick={() => handleItemClick(subItem.link)}>
-                            {subItem.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
+              {loading
+                ? Array(3)
+                    .fill()
+                    .map((_, index) => (
+                      <li key={index}>
+                        <Skeleton
+                          className="animate-pulse"
+                          baseColor="#606f9e"
+                          highlightColor="#ffffff"
+                          width={80}
+                        />
+                      </li>
+                    ))
+                : renderMenuItems(menuItems)}
             </ul>
           </div>
           <div className="ml-3 flex flex-row justify-center items-center gap-1 ">
@@ -189,41 +190,49 @@ const PostAuthNavbar = () => {
 
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {menuItems.map((item, index) => (
-              <div key={index} className="dropdown">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-ghost font-normal text-base"
-                  onClick={() => {
-                    if (item.subItems) {
-                      setOpenDropdownIndex(
-                        openDropdownIndex === index ? null : index
-                      );
-                    } else {
-                      handleItemClick(item.link);
-                    }
-                  }}
-                >
-                  {item.name}
-                  {item.subItems && <ChevronDown className="w-4 text-white3" />}
-                </div>
-                {item.subItems && openDropdownIndex === index && (
-                  <ul
-                    tabIndex={0}
-                    className="text-black dropdown-content z-20 menu p-2 shadow bg-base-100 rounded-box w-52"
-                  >
-                    {item.subItems.map((subItem, subIndex) => (
-                      <li key={subIndex}>
-                        <a onClick={() => handleItemClick(subItem.link)}>
-                          {subItem.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
+            {loading
+              ? Array(3)
+                  .fill()
+                  .map((_, index) => (
+                    <div key={index} className="btn btn-ghost font-normal text-base">
+                      <Skeleton
+                        className="animate-pulse"
+                        baseColor="#606f9e"
+                        highlightColor="#ffffff"
+                        width={200}
+                        height={25}
+                      />
+                    </div>
+                  ))
+              : menuItems.map((item, index) => (
+                  <div key={index} className="dropdown">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="btn btn-ghost font-normal text-base"
+                      onClick={() =>
+                        item.subItems
+                          ? setOpenDropdownIndex(openDropdownIndex === index ? null : index)
+                          : handleItemClick(item.link)
+                      }
+                    >
+                      {item.name}
+                      {item.subItems && <ChevronDown className="w-4 text-white3" />}
+                    </div>
+                    {item.subItems && openDropdownIndex === index && (
+                      <ul
+                        tabIndex={0}
+                        className="text-black dropdown-content z-20 menu p-2 shadow bg-base-100 rounded-box w-52"
+                      >
+                        {item.subItems.map((subItem, subIndex) => (
+                          <li key={subIndex}>
+                            <a onClick={() => handleItemClick(subItem.link)}>{subItem.name}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
           </ul>
         </div>
 
@@ -234,7 +243,17 @@ const PostAuthNavbar = () => {
               role="button"
               className="font-normal text-sm btn btn-ghost tracking-widest cursor-pointer"
             >
-              Hello, {user.firstName}
+              Hello,{" "}
+              {loading ? (
+                <Skeleton
+                  className="animate-pulse"
+                  baseColor="#606f9e"
+                  highlightColor="#ffffff"
+                  width={80}
+                />
+              ) : (
+                user.firstName
+              )}
             </div>
             <ul
               tabIndex={0}

@@ -1,9 +1,10 @@
-// src/FetchUserData.jsx
+// src/hooks/useFetchUserData.jsx
 import { useState, useEffect } from 'react';
 import api from '../../api'; // Import the custom Axios instance
 
-const FetchUserData = () => {
+const useFetchUserData = () => {
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const fetchUserData = async () => {
     const signedEmail = localStorage.getItem('userEmail');
@@ -17,7 +18,11 @@ const FetchUserData = () => {
         setUser(userData.User);
       } catch (error) {
         console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false); // Ensure loading is set to false
       }
+    } else {
+      setLoading(false); // Handle case where no signedEmail is found
     }
   };
 
@@ -25,7 +30,7 @@ const FetchUserData = () => {
     fetchUserData();
   }, []);
 
-  return user;
+  return { user, loading };
 };
 
-export default FetchUserData;
+export default useFetchUserData;

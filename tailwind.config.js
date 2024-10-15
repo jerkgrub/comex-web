@@ -56,12 +56,17 @@ export default {
         'sm': '646px',
       },
       keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '-200px 0' },
+          '100%': { backgroundPosition: '200px 0' },
+        },
         shine: {
           '0%': { transform: 'translateX(-100%)', opacity: '0.5' },
           '100%': { transform: 'translateX(100%)', opacity: '0' },
         },
       },
       animation: {
+        shimmer: 'shimmer 1.5s infinite linear',
         shine: 'shine 1s linear',
       },
     }

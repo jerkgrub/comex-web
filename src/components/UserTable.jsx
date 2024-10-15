@@ -3,8 +3,9 @@ import api from "../api"; // Updated to use the `api` instance
 import UserTableMap from "./UserTableMap";
 
 const UserTable = ({ searchInput, filters }) => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null); // Initialize users as null
   const [filteredUsers, setFilteredUsers] = useState([]); // State for filtered users
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
     api
@@ -16,14 +17,23 @@ const UserTable = ({ searchInput, filters }) => {
           setFilteredUsers(data.Users); // Initialize filtered users
         } else {
           console.error("Expected an array but got:", data);
+          setUsers([]); // Set users to an empty array on error
         }
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
+        setUsers([]); // Set users to an empty array on error
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false when API call completes
       });
   }, []);
 
   useEffect(() => {
+    if (users === null) {
+      // Users are still loading; do not update filteredUsers
+      return;
+    }
     // Filter users based on search input, user type, department, and account status
     const filtered = users.filter((user) => {
       const matchesSearch = `${user.firstName} ${user.lastName} ${user.email}`
@@ -60,6 +70,7 @@ const UserTable = ({ searchInput, filters }) => {
             <tr>
               <th>
                 <label>
+                  {/* Uncomment the checkbox if needed */}
                   {/* <input type="checkbox" className="checkbox" /> */}
                 </label>
               </th>
@@ -70,7 +81,7 @@ const UserTable = ({ searchInput, filters }) => {
             </tr>
           </thead>
           <tbody>
-            <UserTableMap users={filteredUsers} />
+            <UserTableMap users={filteredUsers} loading={loading} />
           </tbody>
         </table>
       </div>

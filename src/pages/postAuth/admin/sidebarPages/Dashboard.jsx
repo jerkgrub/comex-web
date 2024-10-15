@@ -1,3 +1,4 @@
+// src/pages/Dashboard.jsx
 import {
   BookCopy,
   CalendarClock,
@@ -11,15 +12,33 @@ import DashboardTrackerTable from "../../../../components/DashboardTrackerTable"
 import HighestEngagementParticipation from "../../../../components/HighestEngagementParticipation";
 import ActivitiesAccomplishedPerDepartment from "../../../../components/ActivitiesAccomplishedPerDepartment";
 import usePendingActivitiesCount from "../../../../components/hooks/usePendingActivitiesCount";
+import useFetchUserData from "../../../../components/hooks/useFetchUserData";
+import 'react-loading-skeleton/dist/skeleton.css';
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 const Dashboard = () => {
+  const { user, loading } = useFetchUserData();
   const pendingCount = usePendingActivitiesCount();
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-col min-h-screen p-8 bg-gray-200 space-y-8">
       {/* Label Section */}
-      <h1 className="text-3xl font-bold">DASHBOARD</h1>
+      <h1 className="text-3xl font-bold">
+      {loading ? (
+  <Skeleton
+    className="animate-pulse"
+    width={280}
+    height={30}
+    duration={2}
+    enableAnimation={true}
+    direction="ltr"
+  />
+) : (
+  <span>Welcome, {user.firstName}! 🫡</span>
+)}
+
+      </h1>
 
       {/* Data Cards Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -10,6 +10,9 @@ import { Home } from "./pages/postAuth/client";
 import { BookCopy, ContactRound, FolderKanban, Gauge, Hourglass, Shield, Ticket, Zap } from "lucide-react";
 import { Footer } from "./components/Footer";
 
+import { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
+
 import EngagementAppraisalsPage from "./pages/postAuth/client/forms/EngagementAppraisalsPage";
 
 // Pre Authentication
@@ -103,6 +106,7 @@ function App() {
   }, [user]);
 
   return (
+    <SkeletonTheme baseColor="#c0c7d1" highlightColor="#444">
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ScrollToTop />
@@ -165,6 +169,7 @@ function App() {
         </Routes>
       </Router>
     </UserContext.Provider>
+    </SkeletonTheme>
   );
 }
 
