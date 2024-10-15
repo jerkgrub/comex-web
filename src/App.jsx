@@ -106,7 +106,7 @@ function App() {
   }, [user]);
 
   return (
-    <SkeletonTheme baseColor="#c0c7d1" highlightColor="#444">
+    <SkeletonTheme baseColor="#c0c7d1" highlightColor="#ffffff">
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ScrollToTop />
