@@ -7,7 +7,7 @@ import {
 import { useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 import { Home } from "./pages/postAuth/client";
-import { BookCopy, ContactRound, FolderKanban, Gauge, Hourglass, Shield, Ticket, Zap } from "lucide-react";
+import { BookCopy, ContactRound, Earth, FolderKanban, Gauge, Hourglass, Shield, Ticket, Zap } from "lucide-react";
 import { Footer } from "./components/Footer";
 
 import { SkeletonTheme } from 'react-loading-skeleton';
@@ -31,6 +31,7 @@ import Activities from "./pages/postAuth/admin/sidebarPages/Activities";
 import ComexForms from "./pages/postAuth/admin/sidebarPages/ComexForms";
 import CreateUserPage from "./pages/postAuth/admin/sidebarPages/CreateUserPage";
 import ViewActivityPage from "./pages/postAuth/admin/sidebarPages/ViewActivityPage";
+import InstitutionalPage from "./pages/postAuth/client/forms/InstitutionalPage"
 
 // Post Authentication {Client}
 import PostAuthNavbar from "./components/navbar/PostAuthNavbar";
@@ -81,8 +82,7 @@ function AdminLayout() {
         <SidebarItem to="/admin/dashboard" icon={<Gauge size={20} />} text="Dashboard" active />
         <SidebarItem to="/admin/users" icon={<ContactRound size={20} />} text="Manage Users" />
         <SidebarItem to="/admin/spez" icon={<Hourglass size={20} />} text="Manage SPEZ" />
-        <SidebarItem to="/admin/activities" icon={<Ticket size={20} />} text="Manage Activities" />
-        <SidebarItem to="/admin/evaluate-engagement-appraisals" icon={<BookCopy size={20} />} text="Evaluate Engagement Appraisals" />
+        <SidebarItem to="/admin/activities" icon={<Earth size={20} />} text="Manage Activities" />
         <SidebarItem to="/admin/review-evaluation-forms" icon={<FolderKanban size={20} />} text="Review Evaluation Forms" />
         <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text="Manage NSTP" />
         <SidebarItem to="/admin/autocert" icon={<Zap size={20} />} text="AutoCert" />
@@ -132,7 +132,7 @@ function App() {
             <Route path="activities/:activityid/edit" element={<EditActivityPage />} />
 
             {/* appraisals */}
-            <Route path="evaluate-engagement-appraisals" element={<ViewAppraisals />} />
+            <Route path="review-evaluation-forms" element={<ViewAppraisals />} />
             <Route path="engagement-appraisals/:activityid" element={<EngagementAppraisalsPage/>} />
             <Route path="engagement-appraisals/credits/:creditid" element={<ViewOneCredit />} />
             
@@ -149,7 +149,7 @@ function App() {
             <Route path="view-activities" element={<><PostAuthNavbar /><ClientViewAllActivities /><Footer /></>} />
             <Route path="view-activities/:activityid" element={<><PostAuthNavbar /><ClientViewOneActivity /><Footer /></>} />
             <Route path="engagement-appraisals" element={<><PostAuthNavbar /><ClientAppraisals /><Footer /></>} />
-            <Route path="engagement-appraisals/blank" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
+            <Route path="engagement-appraisals-institutional" element={<><PostAuthNavbar /><InstitutionalPage /><Footer /></>} />
             <Route path="engagement-appraisals/:title" element={<><PostAuthNavbar /><EngagementAppraisalsPage /><Footer /></>} />
             <Route path="engagement-appraisals/community-engagement/:activityid" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
             <Route path="view-activities/:activityid/register" element={<><PostAuthNavbar /><RegisterActivityPage /><Footer /></>} />
