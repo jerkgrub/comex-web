@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../../../../api";
+import api from "../../../../api"; // Assuming you have your api instance set up
 import {
   Mail,
   Phone,
@@ -8,6 +8,8 @@ import {
   Briefcase,
   CheckCircle,
   XCircle,
+  Power,
+  PowerOff,
   ArrowLeft,
   Calendar,
 } from "lucide-react";
@@ -19,13 +21,16 @@ const ViewUserPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isActivated, setIsActivated] = useState(null);
 
   useEffect(() => {
+    // Fetch the user data
     api
       .get(`/users/${userid}`)
       .then((response) => {
         if (response.data && response.data.User) {
           setUser(response.data.User);
+          setIsActivated(response.data.User.isActivated);
         } else {
           setError("User data not found");
         }
@@ -38,6 +43,38 @@ const ViewUserPage = () => {
       });
   }, [userid]);
 
+  const toggleAccountStatus = async () => {
+    try {
+      // Log the current status before toggling
+      console.log("Current isActivated status:", isActivated);
+      
+
+      // Toggle the current status
+      const updatedStatus = !isActivated;
+
+      console.log("Request body:", { isActivated: updatedStatus });
+      // Log the status that you're about to send in the API request
+      console.log("Updated isActivated status (before API call):", updatedStatus);
+
+      // Send the request to the backend to update the status
+      const response = await api.put(`/users/update/${userid}`, {
+        isActivated: updatedStatus,
+      });
+
+      // Log the response from the API to check if the backend successfully updated the value
+      console.log("API response:", response.data);
+
+      // Update the local state with the new value from the response, if necessary
+      setIsActivated(updatedStatus);
+
+      // Log the final updated state to confirm the change
+      console.log("Updated isActivated status (after API call):", updatedStatus);
+    } catch (error) {
+      // Log any error that occurs during the API request
+      console.error("Failed to update account status", error);
+    }
+  };
+
   if (loading) {
     return <LoadingPage />;
   }
@@ -49,8 +86,6 @@ const ViewUserPage = () => {
   if (!user) {
     return <div>No user data available</div>;
   }
-
-  console.log('User Type:', user.usertype); // For debugging
 
   return (
     <div className="p-8 min-h-screen">
@@ -138,15 +173,32 @@ const ViewUserPage = () => {
           <div>
             <Detail
               label="Account Status"
-              value={user.isActivated ? "Activated" : "Not Activated"}
+              value={isActivated ? "Activated" : "Not Activated"}
               icon={
-                user.isActivated ? (
+                isActivated ? (
                   <CheckCircle className="w-5 h-5 text-green-500" />
                 ) : (
                   <XCircle className="w-5 h-5 text-red-500" />
                 )
               }
             />
+            {/* Account Activation/Deactivation Toggle Button */}
+            <div className="flex flex-row gap-3">
+            <p>Toggle Activation:</p>
+            <button
+              className={`btn btn-xs btn-square md:w-auto ${
+                isActivated ? "btn-success" : "btn-error"
+              }`}
+              onClick={toggleAccountStatus}
+              title={`Toggle to ${isActivated ? "Deactivate" : "Activate"} account`}
+            >
+              {isActivated ? (
+                <Power className="w-5 h-5" />
+              ) : (
+                <PowerOff className="w-5 h-5" />
+              )}
+            </button>
+            </div>
           </div>
         </div>
       </div>
