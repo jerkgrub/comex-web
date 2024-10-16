@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import api from "../../../api";
 import AppraisalTableMap from "./AppraisalTableMap";
+import PropTypes from 'prop-types'; // Optional: For future use if props are added
 
 const AppraisalTable = ({ searchInput, filters, appraisalType }) => {
-  const [credits, setCredits] = useState(null); // Initialize credits as null
+  const [credits, setCredits] = useState([]); // Initialize credits as an empty array
   const [filteredCredits, setFilteredCredits] = useState([]); // State for filtered credits
   const [loading, setLoading] = useState(true); // Loading state
 
@@ -15,16 +16,18 @@ const AppraisalTable = ({ searchInput, filters, appraisalType }) => {
         // Fetch credits based on appraisalType and status 'pending'
         const response = await api.get(`/credit/pending/${appraisalType}`);
         const data = response.data;
-        if (data.credits && Array.isArray(data.credits)) { // Changed from data.Credits to data.credits
+        if (data.credits && Array.isArray(data.credits)) { // Ensure data.credits is an array
           setCredits(data.credits);
           setFilteredCredits(data.credits); // Initialize filtered credits
         } else {
           console.error("Expected an array but got:", data);
           setCredits([]); // Set credits to an empty array on error
+          setFilteredCredits([]); // Also clear filteredCredits
         }
       } catch (error) {
         console.error("Error fetching credits:", error);
         setCredits([]); // Set credits to an empty array on error
+        setFilteredCredits([]); // Also clear filteredCredits
       } finally {
         setLoading(false); // Set loading to false when API call completes
       }
@@ -34,8 +37,9 @@ const AppraisalTable = ({ searchInput, filters, appraisalType }) => {
   }, [appraisalType]);
 
   useEffect(() => {
-    if (credits === null) {
-      // Credits are still loading; do not update filteredCredits
+    if (credits.length === 0) {
+      // Credits are still loading or empty; do not update filteredCredits
+      setFilteredCredits([]);
       return;
     }
     // Filter credits based on search input and filters
@@ -90,12 +94,27 @@ const AppraisalTable = ({ searchInput, filters, appraisalType }) => {
             </tr>
           </thead>
           <tbody>
-            <AppraisalTableMap credits={filteredCredits} loading={loading} />
+            <AppraisalTableMap
+              credits={filteredCredits}
+              loading={loading}
+              setCredits={setCredits} // Pass setCredits as a prop
+            />
           </tbody>
         </table>
       </div>
     </div>
   );
+};
+
+// Optional: Define PropTypes if AppraisalTable receives props
+AppraisalTable.propTypes = {
+  searchInput: PropTypes.string,
+  filters: PropTypes.shape({
+    department: PropTypes.string,
+    userType: PropTypes.string,
+    accountStatus: PropTypes.string,
+  }),
+  appraisalType: PropTypes.string.isRequired,
 };
 
 export default AppraisalTable;
