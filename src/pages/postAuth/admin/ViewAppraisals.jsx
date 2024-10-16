@@ -1,8 +1,11 @@
+// src/pages/postAuth/admin/ViewAppraisals.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layers, GraduationCap, Earth, Building } from 'lucide-react';
 import api from '../../../api';
 import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; // Ensure Skeleton styles are imported
 
 // Define the card data with appraisal types and routes
 const cardData = [
@@ -35,24 +38,36 @@ const cardData = [
 const ViewAppraisals = () => {
   const navigate = useNavigate();
   const [counts, setCounts] = useState({});
+  const [loadingCounts, setLoadingCounts] = useState(true); // New loading state
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
         // Fetch counts for each card type
         const promises = cardData.map(card =>
-          api.get(`/credit/pending/${card.type}/count`),
+          api.get(`/credit/pending/${card.type}/count`)
         );
 
         const results = await Promise.all(promises);
         const newCounts = {};
         results.forEach((response, index) => {
-          newCounts[cardData[index].id] = response.data.count;
+          // Check if response.data.credits is an array
+          if (response.data.credits && Array.isArray(response.data.credits)) {
+            newCounts[cardData[index].id] = response.data.credits.length;
+          } else if (response.data.count !== undefined) {
+            // Fallback in case the API returns a count property
+            newCounts[cardData[index].id] = response.data.count;
+          } else {
+            console.error(`Unexpected response structure for card ID ${cardData[index].id}:`, response.data);
+            newCounts[cardData[index].id] = 0; // Default to 0 if structure is unexpected
+          }
         });
 
         setCounts(newCounts);
       } catch (error) {
         console.error('Failed to fetch counts:', error);
+      } finally {
+        setLoadingCounts(false); // Set loading to false regardless of success or failure
       }
     };
 
@@ -61,7 +76,7 @@ const ViewAppraisals = () => {
 
   // Navigate to the route with the appropriate appraisal type
   const handleCardClick = (card) => {
-    navigate(`/admin/review-evaluation-forms/${card.type}`);
+    navigate(`/admin/review-evaluation-forms/${encodeURIComponent(card.type)}`);
   };
 
   return (
@@ -71,7 +86,7 @@ const ViewAppraisals = () => {
           Review Appraisal Forms 📄
         </h2>
 
-        {/* Filter Button Grid */}
+        {/* Appraisal Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {cardData.map(card => (
             <div
@@ -86,7 +101,11 @@ const ViewAppraisals = () => {
                 </p>
               </div>
               <p className="text-center text-4xl font-semibold tracking-wider select-none">
-                {counts[card.id] || 0}
+                {loadingCounts ? (
+                  <Skeleton baseColor='#3B469C' width={40} height={40} />
+                ) : (
+                  counts[card.id] !== undefined ? counts[card.id] : 0
+                )}
               </p>
             </div>
           ))}

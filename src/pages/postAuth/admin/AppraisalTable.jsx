@@ -1,66 +1,75 @@
+// src/pages/postAuth/admin/AppraisalTable.jsx
+
 import { useEffect, useState } from "react";
 import api from "../../../api";
 import AppraisalTableMap from "./AppraisalTableMap";
 
-const AppraisalTable = ({ searchInput, filters }) => {
-  const [users, setUsers] = useState(null); // Initialize users as null
-  const [filteredUsers, setFilteredUsers] = useState([]); // State for filtered users
-  const [loading, setLoading] = useState(true); // Add a loading state
+const AppraisalTable = ({ searchInput, filters, appraisalType }) => {
+  const [credits, setCredits] = useState(null); // Initialize credits as null
+  const [filteredCredits, setFilteredCredits] = useState([]); // State for filtered credits
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
-    api
-      .get("/users/all") // Using the `api` instance
-      .then((response) => {
+    const fetchCredits = async () => {
+      try {
+        // Fetch credits based on appraisalType and status 'pending'
+        const response = await api.get(`/credit/pending/${appraisalType}`);
         const data = response.data;
-        if (data.Users && Array.isArray(data.Users)) {
-          setUsers(data.Users);
-          setFilteredUsers(data.Users); // Initialize filtered users
+        if (data.credits && Array.isArray(data.credits)) { // Changed from data.Credits to data.credits
+          setCredits(data.credits);
+          setFilteredCredits(data.credits); // Initialize filtered credits
         } else {
           console.error("Expected an array but got:", data);
-          setUsers([]); // Set users to an empty array on error
+          setCredits([]); // Set credits to an empty array on error
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
-        setUsers([]); // Set users to an empty array on error
-      })
-      .finally(() => {
+      } catch (error) {
+        console.error("Error fetching credits:", error);
+        setCredits([]); // Set credits to an empty array on error
+      } finally {
         setLoading(false); // Set loading to false when API call completes
-      });
-  }, []);
+      }
+    };
+
+    fetchCredits();
+  }, [appraisalType]);
 
   useEffect(() => {
-    if (users === null) {
-      // Users are still loading; do not update filteredUsers
+    if (credits === null) {
+      // Credits are still loading; do not update filteredCredits
       return;
     }
-    // Filter users based on search input, user type, department, and account status
-    const filtered = users.filter((user) => {
-      const matchesSearch = `${user.firstName} ${user.lastName} ${user.email}`
-        .toLowerCase()
-        .includes(searchInput.toLowerCase());
-      const matchesUserType =
-        filters.userType === "All Usertypes" || filters.userType === ""
-          ? true
-          : user.usertype === filters.userType;
+    // Filter credits based on search input and filters
+    const filtered = credits.filter((credit) => {
+      const applicantName = `${credit.userId.firstName} ${credit.userId.lastName}`.toLowerCase();
+      const applicantEmail = credit.userId.email.toLowerCase();
+      const matchesSearch =
+        applicantName.includes(searchInput.toLowerCase()) ||
+        applicantEmail.includes(searchInput.toLowerCase());
+
       const matchesDepartment =
         filters.department === "All Departments" || filters.department === ""
           ? true
-          : user.department === filters.department;
+          : credit.userId.department === filters.department;
+
+      const matchesUserType =
+        filters.userType === "All Usertypes" || filters.userType === ""
+          ? true
+          : credit.userId.usertype === filters.userType;
+
       const matchesAccountStatus =
         filters.accountStatus === "Activated"
-          ? user.isActivated
-          : !user.isActivated;
+          ? credit.userId.isActivated
+          : !credit.userId.isActivated;
 
       return (
         matchesSearch &&
-        matchesUserType &&
         matchesDepartment &&
+        matchesUserType &&
         matchesAccountStatus
       );
     });
-    setFilteredUsers(filtered);
-  }, [searchInput, filters, users]);
+    setFilteredCredits(filtered);
+  }, [searchInput, filters, credits]);
 
   return (
     <div className="mt-6 card bg-white max-w max-h ">
@@ -75,12 +84,13 @@ const AppraisalTable = ({ searchInput, filters }) => {
                 </label>
               </th>
               <th>Applicant Name</th>
+              <th>Activity Title</th>
               <th>Hours Rendered</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <AppraisalTableMap users={filteredUsers} loading={loading} />
+            <AppraisalTableMap credits={filteredCredits} loading={loading} />
           </tbody>
         </table>
       </div>

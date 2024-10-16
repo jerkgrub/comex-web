@@ -1,6 +1,8 @@
+// src/pages/postAuth/admin/ManageAppraisals.jsx
+
 import { ArrowLeft, Plus, Power, PowerOff } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AppraisalTable from "./AppraisalTable";
 
 const ManageAppraisals = () => {
@@ -11,10 +13,7 @@ const ManageAppraisals = () => {
     accountStatus: "Activated",
   });
   const navigate = useNavigate();
-
-  const handleCreateUserButton = () => {
-    navigate("/admin/create-user");
-  };
+  const { appraisalType } = useParams(); // Retrieve appraisalType from URL
 
   const handleFilterChange = (filterName, value) => {
     setFilters((prevFilters) => ({
@@ -31,7 +30,7 @@ const ManageAppraisals = () => {
     }));
   };
 
-  // Add the resetFilters function
+  // Reset filters function
   const resetFilters = () => {
     setFilters({
       department: "",
@@ -45,21 +44,21 @@ const ManageAppraisals = () => {
     <div className="p-4 md:p-8 min-h-screen card bg-base-100 shadow-lg">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-      <button
+        <button
           onClick={() => navigate('/admin/review-evaluation-forms')}
           className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
         >
           <ArrowLeft className="w-5 h-5" /> Back
         </button>
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
-          Manage Forms 📄
+          Manage Appraisals ({appraisalType}) 📄
         </h1>
 
         <div className="flex flex-wrap items-center mt-4 md:mt-0 space-x-4">
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">
+            {/* <p className="text-sm font-medium">
               Toggle{" "}
-              {filters.accountStatus === "Activated" ? "Activated" : "Deactivated"} users
+              {filters.accountStatus === "Activated" ? "Activated" : "Deactivated"} credits
             </p>
             <button
               className={`btn btn-xs btn-square md:w-auto ${
@@ -68,35 +67,37 @@ const ManageAppraisals = () => {
               onClick={toggleAccountStatus}
               title={`Toggle to ${
                 filters.accountStatus === "Activated" ? "Deactivated" : "Activated"
-              } users`}
+              } credits`}
             >
               {filters.accountStatus === "Activated" ? (
                 <Power className="w-5 h-5" />
               ) : (
                 <PowerOff className="w-5 h-5" />
               )}
-            </button>
+            </button> */}
           </div>
 
+          {/* Uncomment if you plan to add create credit functionality */}
           {/* <button
             className="btn bg-nucolor3 hover:bg-nucolor2 w-full md:w-auto"
-            onClick={handleCreateUserButton}
+            onClick={handleCreateCreditButton}
           >
             <Plus className="w-5 h-5" />
-            Create User
+            Create Credit
           </button> */}
         </div>
       </div>
 
-
-
-      {/* User Table */}
+      {/* Appraisal Table */}
       <div className="rounded-lg">
-        <AppraisalTable searchInput={searchInput} filters={filters} />
+        <AppraisalTable
+          searchInput={searchInput}
+          filters={filters}
+          appraisalType={appraisalType} // Pass appraisalType to AppraisalTable
+        />
       </div>
     </div>
   );
 };
 
 export default ManageAppraisals;
-
