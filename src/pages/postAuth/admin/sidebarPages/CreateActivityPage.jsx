@@ -87,15 +87,6 @@ const CreateActivityPage = () => {
             options={[
               { value: "Institutional", label: "Institutional" },
               { value: "College Driven", label: "College Driven" },
-              { value: "Extension Services", label: "Extension Services" },
-              {
-                value: "Capacity-Building Services",
-                label: "Capacity-Building Services",
-              },
-              {
-                value: "External Participation",
-                label: "External Participation",
-              },
             ]}
             onChange={handleInputChange}
           />

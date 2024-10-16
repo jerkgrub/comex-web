@@ -10,10 +10,6 @@ import ComexConnectHeader from "./ComexConnectHeader";
 
 // add items here
 const menuItems = [
-  { name: "Home", link: "/ " },
-  {
-    name: "About Us", link: "/about-us",
-  },
 ];
 
 const PreAuthNavbar = () => {
@@ -115,7 +111,7 @@ const PreAuthNavbar = () => {
 
   return (
     <>
-      <div className="navbar fixed top-0 left-0 w-full z-50  bg-nucolor1 text-white2 border-b-4 border-nucolor3 drop-shadow-lg">
+      <div className="navbar fixed top-0 left-0 w-full z-50   bg-nucolor1 text-white2 border-b-4 border-nucolor3 drop-shadow-lg">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

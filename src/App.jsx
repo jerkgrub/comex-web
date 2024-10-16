@@ -70,6 +70,7 @@ function HeroPageWithNavbarAndFooter() {
     <>
       <PreAuthNavbar />
       <HeroPage />
+      <AboutUs />
       <Footer />
     </>
   );
@@ -118,7 +119,7 @@ function App() {
           <Route path="/" element={<HeroPageWithNavbarAndFooter />} />
           <Route path="/login" element={<><PreAuthNavbar /><LoginPage /><Footer /></>} />
           <Route path="/register" element={<><PreAuthNavbar /><RegisterPage /><Footer /></>} />
-          <Route path="about-us" element={<><PreAuthNavbar /><AboutUs /><Footer /></>} />
+          <Route path="about-us" element={<><PreAuthNavbar /><Footer /></>} />
           <Route path="forgotpassword" element={<><PreAuthNavbar /><ForgotPasswordPage /><Footer /></>} />
 
           {/* Admin Routes */}
