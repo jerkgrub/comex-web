@@ -584,7 +584,7 @@ function AutoCert() {
           </div>
         )}
       </div>
-      <div>//to-be-added: unique hours + unique ID option (as requested by sir Zoren)</div>
+      {/* <div>//to-be-added: unique hours + unique ID option (as requested by sir Zoren)</div> */}
     </div>
   );
 }

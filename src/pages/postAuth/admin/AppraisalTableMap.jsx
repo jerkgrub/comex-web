@@ -7,8 +7,22 @@ import 'react-loading-skeleton/dist/skeleton.css';
 const AppraisalTableMap = ({ credits, loading }) => {
   const navigate = useNavigate();
 
-  const handleViewCredit = credit => {
-    navigate(`/admin/credits/${credit._id}`); // Adjust the route as needed
+  // Handler for viewing the appraisal details
+  const handleViewCredit = (credit) => {
+    navigate(`/admin/review-evaluation-forms/view/${credit._id}`);
+  };
+
+  // Placeholder handlers for Approve and Reject buttons
+  const handleApproveCredit = (credit) => {
+    // Implement approve functionality here
+    console.log(`Approve credit with ID: ${credit._id}`);
+    // Example: api.post(`/credit/approve/${credit._id}`)
+  };
+
+  const handleRejectCredit = (credit) => {
+    // Implement reject functionality here
+    console.log(`Reject credit with ID: ${credit._id}`);
+    // Example: api.post(`/credit/reject/${credit._id}`)
   };
 
   if (loading) {
@@ -36,9 +50,9 @@ const AppraisalTableMap = ({ credits, loading }) => {
               </td>
               <td>
                 <div className='flex flex-row gap-3'>
-                <Skeleton width={80} height={30} />
-                <Skeleton width={80} height={30} />
-                <Skeleton width={80} height={30} />
+                  <Skeleton width={80} height={30} />
+                  <Skeleton width={80} height={30} />
+                  <Skeleton width={80} height={30} />
                 </div>
               </td>
             </tr>
@@ -61,8 +75,8 @@ const AppraisalTableMap = ({ credits, loading }) => {
   // Render actual credit data when loading is complete
   return (
     <>
-      {credits.map((credit, index) => (
-        <tr className="hover:bg-gray-100" key={credit._id || index}>
+      {credits.map((credit) => (
+        <tr className="hover:bg-gray-100" key={credit._id}>
           <th>
             <label>
               {/* Uncomment the checkbox if needed */}
@@ -92,13 +106,22 @@ const AppraisalTableMap = ({ credits, loading }) => {
           <td>{credit.totalHoursRendered}</td>
           <td>
             <div className='flex gap-3'>
-              <button className="btn btn-ghost btn-md" onClick={() => handleViewCredit(credit)}>
+              <button
+                className="btn btn-ghost btn-md"
+                onClick={() => handleViewCredit(credit)}
+              >
                 View
               </button>
-              <button className="btn btn-rounded bg-lime-200 btn-md" onClick={() => handleViewCredit(credit)}>
+              <button
+                className="btn btn-rounded bg-lime-200 btn-md"
+                onClick={() => handleApproveCredit(credit)}
+              >
                 Approve
               </button>
-              <button className="btn btn-rounded bg-red-400 btn-md" onClick={() => handleViewCredit(credit)}>
+              <button
+                className="btn btn-rounded bg-red-400 btn-md"
+                onClick={() => handleRejectCredit(credit)}
+              >
                 Reject
               </button>
             </div>

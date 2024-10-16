@@ -84,7 +84,7 @@ const AppraisalTable = ({ searchInput, filters, appraisalType }) => {
                 </label>
               </th>
               <th>Applicant Name</th>
-              <th>Activity Title</th>
+              <th>Activity Participated</th>
               <th>Hours Rendered</th>
               <th>Actions</th>
             </tr>

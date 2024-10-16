@@ -55,7 +55,6 @@ import ClientViewOneActivity from "./pages/postAuth/client/ClientViewOneActivity
 import RegisterActivityPage from "./pages/postAuth/client/RegisterActivityPage";
 import ClientAppraisals from "./pages/postAuth/client/ClientAppraisals";
 import ViewAppraisals from "./pages/postAuth/admin/ViewAppraisals";
-import Admin_ViewOneAppraisal from "./pages/postAuth/admin/Admin_ViewOneAppraisal";
 import ViewOneCredit from "./pages/postAuth/admin/sidebarPages/ViewOneCredit";
 import EditProfilePage from "./pages/postAuth/client/profilePages/EditProfilePage";
 import ViewAchievementsPage from "./pages/postAuth/client/profilePages/ViewAchievementsPage";
@@ -63,6 +62,7 @@ import ViewParticipatedActivitiesPage from "./pages/postAuth/client/profilePages
 import AutoCertPage from "./pages/postAuth/admin/sidebarPages/AutoCertPage";
 import InstitutionalAppraisalPage from "./pages/postAuth/client/forms/InstitutionalAppraisalPage";
 import ManageAppraisals from "./pages/postAuth/admin/ManageAppraisals";
+import ViewOneAppraisal from "./pages/postAuth/admin/ViewOneAppraisal";
 //
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -136,6 +136,7 @@ function App() {
             {/* appraisals */}
             <Route path="review-evaluation-forms" element={<ViewAppraisals />} />
             <Route path="review-evaluation-forms/:appraisalType" element={<ManageAppraisals />} />
+            <Route path="review-evaluation-forms/view/:appraisalId" element={<ViewOneAppraisal />} />
             <Route path="engagement-appraisals/:activityid" element={<EngagementAppraisalsPage/>} />
             <Route path="engagement-appraisals/credits/:creditid" element={<ViewOneCredit />} />
             
