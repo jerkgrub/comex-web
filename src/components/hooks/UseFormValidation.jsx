@@ -1,85 +1,94 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const UseFormValidation = () => {
   const [errors, setErrors] = useState({});
 
   // Validate a specific field, skip if disabled
   const validateField = (name, value, otherValues = {}, isDisabled = false) => {
-    let error = "";
+    let error = '';
 
     if (isDisabled) {
       // If the field is disabled, remove any existing error and skip validation
-      setErrors((prevErrors) => {
+      setErrors(prevErrors => {
         const updatedErrors = { ...prevErrors };
         delete updatedErrors[name];
         return updatedErrors;
       });
-      return ""; // No error if disabled
+      return ''; // No error if disabled
     }
 
     switch (name) {
-      case "email":
+      case 'email':
         if (!value) {
-          error = "Email is required";
+          error = 'Email is required';
         } else if (!/^[\w-.]+@[\w-.]*nu-moa\.edu\.ph$/.test(value)) {
           error = "Email must end with 'nu-moa.edu.ph'";
         }
         break;
 
-      case "password":
-        if (!value) error = "Password is required";
-        else if (value.length < 8)
-          error = "Password must be at least 8 characters";
+      case 'password':
+        if (!value) error = 'Password is required';
+        else if (value.length < 8) error = 'Password must be at least 8 characters';
         break;
 
-      case "confirmPassword":
-        if (!value) error = "Confirming your password is required";
-        else if (value !== otherValues.password)
-          error = "Passwords do not match";
+      case 'confirmPassword':
+        if (!value) error = 'Confirming your password is required';
+        else if (value !== otherValues.password) error = 'Passwords do not match';
         break;
 
-      case "mobileNumber":
-        if (!value) error = "Mobile Number is required";
-        else if (!/^\d{10}$/.test(value))
-          error = "Mobile number must be 10 digits";
+      case 'mobileNumber':
+        if (!value) error = 'Mobile Number is required';
+        else if (!/^\d{10}$/.test(value)) error = 'Mobile number must be 10 digits';
         break;
 
-      case "usertype":
-        if (!value) error = "Usertype is required";
+      case 'usertype':
+        if (!value) error = 'Usertype is required';
         break;
 
-      case "department":
-        if (!value) error = "Department is required";
+      case 'department':
+        if (!value) error = 'Department is required';
         break;
 
-      case "idNumber":
+      case 'idNumber':
         if (!value) {
-          error = "ID Number is required";
-        } else if (!/^\d{4}-\d{6}$/.test(value)) {
-          error = "ID Number must follow the format 2XXX-1XXXX";
+          error = 'ID Number is required';
+        } else {
+          if (otherValues.usertype === 'Student') {
+            // Adjusted regex for Student IDs to allow XXXX-XXXXX
+            if (!/^\d{4}-\d{6}$/.test(value)) {
+              error = 'ID Number must follow the format XXXX-XXXXX';
+            }
+          } else if (['Faculty', 'NTP', 'COMEX Coordinator'].includes(otherValues.usertype)) {
+            // Adjusted regex for Faculty, NTP, and COMEX Coordinator IDs to allow XX-XXXX
+            if (!/^\d{2}-\d{4}$/.test(value)) {
+              error = 'ID Number must follow the format XX-XXXX';
+            }
+          } else {
+            error = 'Invalid user type for ID Number';
+          }
         }
         break;
 
-      case "firstName":
-        if (!value) error = "First name is required";
+      case 'firstName':
+        if (!value) error = 'First name is required';
         break;
 
-      case "middleName":
-        if (!value) error = "Middle name is required";
+      case 'middleName':
+        // if (!value) error = 'Middle name is required';
         break;
 
-      case "lastName":
-        if (!value) error = "Last name is required";
+      case 'lastName':
+        if (!value) error = 'Last name is required';
         break;
 
-      case "dateHired":
+      case 'dateHired':
         if (!value) {
-          error = "Date Hired is required";
+          error = 'Date Hired is required';
         } else {
           const today = new Date();
           const selectedDate = new Date(value);
           if (selectedDate > today) {
-            error = "Date hired cannot be in the future";
+            error = 'Date hired cannot be in the future';
           }
         }
         break;
@@ -89,7 +98,7 @@ const UseFormValidation = () => {
         break;
     }
 
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    setErrors(prevErrors => ({ ...prevErrors, [name]: error }));
     return error;
   };
 

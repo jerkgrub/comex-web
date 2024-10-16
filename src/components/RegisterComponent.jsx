@@ -54,8 +54,13 @@ const RegisterComponent = () => {
       setIsIdDisabled(false);
       setIsDateHiredDisabled(true);
       setDateHired(""); // Clear dateHired when disabled
+    } else if (["Faculty", "NTP", "COMEX Coordinator"].includes(usertype)) {
+      // Enable ID Number and disable Date Hired for these user types
+      setIsIdDisabled(false);
+      setIsDateHiredDisabled(true);
+      setDateHired(""); // Clear dateHired when disabled
     } else {
-      // Disable ID Number and enable Date Hired for others
+      // Disable ID Number and enable Date Hired for other user types
       setIsIdDisabled(true);
       setIdNumber(""); // Clear idNumber when disabled
       setIsDateHiredDisabled(false);
@@ -137,7 +142,7 @@ const RegisterComponent = () => {
           errorMessage={errors.firstName}
         />
         <TextInput
-          label="Middle name"
+          label="Middle name (Optional)"
           value={middleName}
           onChange={(e) => {
             setMiddleName(e.target.value);
@@ -162,13 +167,25 @@ const RegisterComponent = () => {
         <div className="w-full">
           <TextInput
             disabled={isIdDisabled}
-            placeholder="2XXX-1XXXX"
+            placeholder={
+              usertype === "Student"
+                ? "2XXX-1XXXX"
+                : ["Faculty", "NTP", "COMEX Coordinator"].includes(usertype)
+                ? "1X-0XXX"
+                : ""
+            }
             label="ID Number"
             value={idNumber}
-            maxLength={11}
+            maxLength={
+              usertype === "Student"
+                ? 11 // e.g., 2XXX-1XXXX
+                : ["Faculty", "NTP", "COMEX Coordinator"].includes(usertype)
+                ? 7 // e.g., 1X-0XXX
+                : 0
+            }
             onChange={(e) => {
               setIdNumber(e.target.value);
-              validateField("idNumber", e.target.value, {}, isIdDisabled);
+              validateField("idNumber", e.target.value, { usertype }, isIdDisabled);
             }}
             error={!!errors.idNumber && !isIdDisabled}
             errorMessage={errors.idNumber}
@@ -176,7 +193,7 @@ const RegisterComponent = () => {
         </div>
         <div className="w-full">
           <MobileNumberInput
-          placeholder="9XXXXXXXXX"
+            placeholder="9XXXXXXXXX"
             label="Mobile Number"
             type="tel"
             value={mobileNumber}
@@ -200,7 +217,7 @@ const RegisterComponent = () => {
             disabled={isDateHiredDisabled}
             onChange={(e) => {
               setDateHired(e.target.value);
-              validateField("dateHired", e.target.value, {}, isDateHiredDisabled);
+              validateField("dateHired", e.target.value, { usertype }, isDateHiredDisabled);
             }}
             className={`input input-bordered w-full ${
               errors.dateHired && !isDateHiredDisabled ? "border-red-500" : ""
