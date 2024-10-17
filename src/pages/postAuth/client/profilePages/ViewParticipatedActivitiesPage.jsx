@@ -247,7 +247,7 @@ const ViewParticipatedActivitiesPage = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border-collapse">
           <thead>
-            <tr className="bg-blue-700 text-black">
+            <tr className="bg-nucolor1 text-nucolor3">
               <th className="p-4 text-left border">
                 Title Of Activities/Project/Program
               </th>
@@ -285,7 +285,7 @@ const ViewParticipatedActivitiesPage = () => {
                 </td>
               </tr>
             ))}
-            <tr className="bg-blue-100 font-bold">
+            <tr className="bg-[#edfcff] font-bold">
               <td className="p-4 border">Total number of hours rendered</td>
               <td className="p-4 border text-center">
                 {totals.extensionServices || "-"}
@@ -301,7 +301,7 @@ const ViewParticipatedActivitiesPage = () => {
               </td>
             </tr>
 
-            <tr className="bg-blue-100 font-bold">
+            <tr className="bg-[#edfcff] font-bold">
               <td className="p-4 border">Equivalent Points</td>
               <td className="p-4 border text-center">
                 {equivalentPoints.extensionServices}
