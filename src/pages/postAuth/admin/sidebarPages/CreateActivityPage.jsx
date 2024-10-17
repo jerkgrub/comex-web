@@ -11,7 +11,7 @@ const CreateActivityPage = () => {
     description: "",
     department: "",
     type: "",
-    objectives:"",
+    objectives: "", // Added objectives field
     organizer: "",
     startDate: "",
     endDate: "",
@@ -62,7 +62,7 @@ const CreateActivityPage = () => {
         </button>
         <button
           onClick={handleCreateActivity}
-          className="px-4 py-2 bg-nucolor3 trounded-lg hover:bg-blue-700 flex items-center gap-2"
+          className="px-4 py-2 bg-nucolor3 rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           <Plus className="w-5 h-5" /> Create Activity
         </button>
@@ -108,6 +108,8 @@ const CreateActivityPage = () => {
             onChange={handleInputChange}
           />
         </div>
+
+        
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           {/* Dates and Time */}
@@ -176,6 +178,16 @@ const CreateActivityPage = () => {
           />
         </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* Objectives */}
+          <TextAreaField
+            label="Objectives"
+            name="objectives"
+            value={activity.objectives}
+            onChange={handleInputChange}
+          />
+        </div>
+
         <div className="flex items-center gap-2 mt-6">
           <input
             type="checkbox"
@@ -206,6 +218,22 @@ const InputField = ({ label, name, value, onChange, type = "text" }) => {
         value={value}
         onChange={onChange}
         className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+      />
+    </div>
+  );
+};
+
+// Reusable TextArea Field Component
+const TextAreaField = ({ label, name, value, onChange }) => {
+  return (
+    <div className="mb-4">
+      <label className="text-sm font-semibold text-gray-700">{label}:</label>
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+        rows={5}
       />
     </div>
   );

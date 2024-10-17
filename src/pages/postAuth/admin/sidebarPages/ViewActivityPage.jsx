@@ -118,6 +118,7 @@ const ViewActivityPage = () => {
             <Detail label="Description" value={activity.description} />
             <Detail label="Department" value={activity.department} />
             <Detail label="Type" value={activity.type} />
+            <Detail label="Objectives" value={activity.objectives} />
             {/* Image Display */}
             <div>
               <p className="text-sm font-semibold text-gray-500">Activity Image:</p>

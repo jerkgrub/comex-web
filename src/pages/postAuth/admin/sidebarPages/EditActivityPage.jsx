@@ -14,6 +14,7 @@ const EditActivityPage = () => {
     description: "",
     department: "",
     type: "",
+    objectives: "", // Added objectives field
     organizer: "",
     startDate: "",
     endDate: "",
@@ -74,7 +75,7 @@ const EditActivityPage = () => {
   }
 
   return (
-    <div className="p-4 sm:p-8  min-h-screen">
+    <div className="p-4 sm:p-8 min-h-screen">
       {/* Top Section: Back Button on left, Save Changes on right */}
       <div className="flex justify-between items-center mb-6">
         <button
@@ -134,6 +135,15 @@ const EditActivityPage = () => {
             label="Description"
             name="description"
             value={activity.description}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* Objectives Field */}
+          <TextAreaField
+            label="Objectives"
+            name="objectives"
+            value={activity.objectives}
             onChange={handleInputChange}
           />
         </div>
@@ -240,6 +250,22 @@ const InputField = ({ label, name, value, onChange, type = "text" }) => {
         value={value}
         onChange={onChange}
         className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+      />
+    </div>
+  );
+};
+
+// Reusable TextArea Field Component
+const TextAreaField = ({ label, name, value, onChange }) => {
+  return (
+    <div className="mb-4">
+      <label className="text-sm font-semibold text-gray-500">{label}:</label>
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+        rows={5}
       />
     </div>
   );
