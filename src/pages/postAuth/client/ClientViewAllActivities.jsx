@@ -4,7 +4,8 @@ import "react-calendar/dist/Calendar.css"; // Default Calendar CSS
 import "./CustomCalendar.css"; // Custom CSS for enhanced styling
 import { useFetchActivities, formatDate, formatTime } from "../../../components/hooks/useFetchActivities"; // Import custom hook
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import LoadingPage from "../../LoadingPage";
+import Skeleton from "react-loading-skeleton"; // Import skeleton
+import "react-loading-skeleton/dist/skeleton.css"; // Import skeleton CSS
 
 const ClientViewAllActivities = () => {
   const [date, setDate] = useState(new Date());
@@ -33,8 +34,46 @@ const ClientViewAllActivities = () => {
     );
   }, [activities]);
 
-  // Ensure that activities is defined and an array
-  if (loading) return <LoadingPage />;
+  // Display skeletons while loading
+  if (loading) {
+    return (
+      <div className="flex w-full min-h-screen py-9 px-4 flex-col lg:flex-row gap-8 bg-gray-200">
+        {/* Left side: Loading Skeletons for List of Activities */}
+        <div className="w-full lg:w-1/2 p-6 rounded-lg">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <Skeleton width={200} />
+          </h2>
+
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              <Skeleton width={180} />
+            </h3>
+            {/* Skeleton for upcoming activities */}
+            <Skeleton height={100} count={3} />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              <Skeleton width={180} />
+            </h3>
+            {/* Skeleton for accomplished activities */}
+            <Skeleton height={100} count={3} />
+          </div>
+        </div>
+
+        {/* Right side: Loading Skeleton for Calendar */}
+        <div className="w-full lg:w-1/2 p-6 rounded-lg">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <Skeleton width={150} />
+          </h2>
+          <div className="p-4 rounded-lg">
+            <Skeleton height={400} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (error) return <p className="text-red-500">Error: {error}</p>;
   if (!activities || activities.length === 0)
     return <p className="text-gray-700">No activities found.</p>;
