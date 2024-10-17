@@ -46,3 +46,9 @@
     display: none;
   }
 }
+
+/* Add this to your global CSS file or inline style */
+#accumulatedCircle, #pointsCircle {
+  color-scheme: normal; /* Disable modern color schemes */
+  background-color: white !important; /* Ensure supported background colors */
+}
