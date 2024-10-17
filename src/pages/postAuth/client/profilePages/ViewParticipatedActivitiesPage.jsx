@@ -43,7 +43,7 @@ const ViewParticipatedActivitiesPage = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border-collapse">
           <thead>
-            <tr className="bg-blue-700 text-white">
+            <tr className="bg-blue-700 text-black">
               <th className="p-4 text-left border">Title Of Activities/Project/Program</th>
               <th className="p-4 text-left border">Extension Services</th>
               <th className="p-4 text-left border">College Driven</th>

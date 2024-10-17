@@ -11,6 +11,7 @@ const CreateActivityPage = () => {
     description: "",
     department: "",
     type: "",
+    objectives:"",
     organizer: "",
     startDate: "",
     endDate: "",

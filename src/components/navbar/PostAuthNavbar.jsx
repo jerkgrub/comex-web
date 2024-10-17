@@ -21,27 +21,18 @@ const menuItemsByUserType = {
     { name: "Settings", link: "/admin/settings" },
   ],
   "Comex Coordinator": [
-    { name: "Coordinator Home", link: "/coordinator/home" },
-    {
-      name: "Activities",
-      subItems: [
-        { name: "Create Activity", link: "/coordinator/create-activity" },
-        { name: "Manage Activities", link: "/coordinator/manage-activities" },
-      ],
-    },
-    { name: "Reports", link: "/coordinator/reports" },
+    { name: "Home", link: "/client/home" },
+    { name: "About Us", link: "/client/about-us" },
+    { name: "Highlights", link: "/client/highlights" },
+    { name: "Activities", link: "/client/view-activities" },
+    { name: "Application for Engagement Appraisal", link: "/client/engagement-appraisals", },
+    { name: "Create an Activity", link:"/client/create-activity" },
   ],
   Faculty: [
     { name: "Home", link: "/client/home" },
     { name: "About Us", link: "/client/about-us" },
     { name: "Highlights", link: "/client/highlights" },
-    {
-      name: "Activities",
-      subItems: [
-        { name: "View Activities", link: "/client/view-activities" },
-        { name: "Evaluation Forms", link: "/student/evaluation-forms" },
-      ],
-    },
+    { name: "Activities", link: "/client/view-activities" },
     {
       name: "Application for Engagement Appraisal",
       link: "/client/engagement-appraisals",
@@ -61,13 +52,7 @@ const menuItemsByUserType = {
   Student: [
     { name: "Home", link: "/client/home" },
     { name: "About Us", link: "/client/about-us" },
-    {
-      name: "Activities",
-      subItems: [
-        { name: "View Activities", link: "/client/view-activities" },
-        { name: "Evaluation Forms", link: "/student/evaluation-forms" },
-      ],
-    },
+    { name: "Activities", link: "/client/view-activities" },
     { name: "Highlights", link: "/client/highlights" },
   ],
 };
