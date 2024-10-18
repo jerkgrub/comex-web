@@ -88,16 +88,31 @@ const ViewParticipatedActivitiesPage = () => {
     );
   }, [totals]);
 
-  const equivalentPoints = {
-    extensionServices: 1.5,
-    collegeDriven: 3.5,
-    institutional: 3.5,
-    capacityBuilding: 2,
+  const calculateEquivalentPoints = (hours) => {
+    if (hours >= 78) return 7.5;
+    if (hours >= 65) return 6;
+    if (hours >= 49) return 4.5;
+    if (hours >= 17) return 3;
+    if (hours >= 7) return 1.5;
+    return 0; // If hours are below 7
   };
-
+  
+  const equivalentPoints = {
+    extensionServices: calculateEquivalentPoints(totals.extensionServices),
+    collegeDriven: calculateEquivalentPoints(totals.collegeDriven),
+    institutional: calculateEquivalentPoints(totals.institutional),
+    capacityBuilding: calculateEquivalentPoints(totals.capacityBuilding),
+  };
+  
   const equivalentTotalPoints = useMemo(() => {
-    return Object.values(equivalentPoints).reduce((acc, val) => acc + val, 0);
+    return (
+      equivalentPoints.extensionServices +
+      equivalentPoints.collegeDriven +
+      equivalentPoints.institutional +
+      equivalentPoints.capacityBuilding
+    );
   }, [equivalentPoints]);
+  
 
   const totalRequiredHours = 78;
   const maxPoints = 18;
