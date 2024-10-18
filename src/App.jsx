@@ -23,6 +23,7 @@ import LoginPage from "./pages/preAuth/authentication/LoginPage";
 import Users from "./pages/postAuth/admin/sidebarPages/Users";
 import ForgotPasswordPage from "./pages/preAuth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/preAuth/ResetPasswordPage";
+import ProposeActivityPage from "./pages/postAuth/client/ProposeActivityPage"
 
 // Post Authentication {Admin}
 import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
@@ -154,6 +155,7 @@ function App() {
             <Route path="view-activities" element={<><PostAuthNavbar /><ClientViewAllActivities /><Footer /></>} />
             <Route path="view-activities/:activityid" element={<><PostAuthNavbar /><ClientViewOneActivity /><Footer /></>} />
             <Route path="engagement-appraisals" element={<><PostAuthNavbar /><ClientAppraisals /><Footer /></>} />
+            <Route path="propose-activity" element={<><PostAuthNavbar /><ProposeActivityPage /><Footer /></>} />
             <Route path="engagement-appraisals-institutional" element={<><PostAuthNavbar /><InstitutionalPage /><Footer /></>} />
             <Route path="engagement-appraisals-institutional/:activityId" element={<><PostAuthNavbar /><InstitutionalAppraisalPage /><Footer /></>} />
             <Route path="engagement-appraisals/:title" element={<><PostAuthNavbar /><EngagementAppraisalsPage /><Footer /></>} />

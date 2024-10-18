@@ -1,60 +1,65 @@
-import { ChevronDown, CircleUserRound, LogOut } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import ccLogo from "../images/ccLogo.png";
-import { showToast } from "../Toast";
-import useFetchUserData from "../hooks/useFetchUserData";
-import Skeleton from "react-loading-skeleton";
+import { ChevronDown, CircleUserRound, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import ccLogo from '../images/ccLogo.png';
+import { showToast } from '../Toast';
+import useFetchUserData from '../hooks/useFetchUserData';
+import Skeleton from 'react-loading-skeleton';
 
 // Define menu items for each user type
 const menuItemsByUserType = {
   Admin: [
-    { name: "Admin Dashboard", link: "/admin/dashboard" },
+    { name: 'Admin Dashboard', link: '/admin/dashboard' },
     {
-      name: "User Management",
+      name: 'User Management',
       subItems: [
-        { name: "Manage Users", link: "/admin/users" },
-        { name: "Roles & Permissions", link: "/admin/roles" },
-      ],
+        { name: 'Manage Users', link: '/admin/users' },
+        { name: 'Roles & Permissions', link: '/admin/roles' }
+      ]
     },
-    { name: "Settings", link: "/admin/settings" },
+    { name: 'Settings', link: '/admin/settings' }
   ],
-  "Comex Coordinator": [
-    { name: "Home", link: "/client/home" },
-    { name: "About Us", link: "/client/about-us" },
-    { name: "Highlights", link: "/client/highlights" },
-    { name: "Activities", link: "/client/view-activities" },
-    { name: "Application for Engagement Appraisal", link: "/client/engagement-appraisals", },
-    { name: "Create an Activity", link:"/client/create-activity" },
+  'Comex Coordinator': [
+    { name: 'Home', link: '/client/home' },
+    { name: 'About Us', link: '/client/about-us' },
+    { name: 'Highlights', link: '/client/highlights' },
+    {
+      name: 'Activities',
+      subItems: [
+        { name: 'View Activities', link: '/client/view-activities' },
+        { name: 'Application for Engagement Appraisal', link: '/client/engagement-appraisals' },
+        { name: 'Propose an Activity', link: '/client/propose-activity' }
+      ]
+    },
   ],
   Faculty: [
-    { name: "Home", link: "/client/home" },
-    { name: "About Us", link: "/client/about-us" },
-    { name: "Highlights", link: "/client/highlights" },
-    { name: "Activities", link: "/client/view-activities" },
+    { name: 'Home', link: '/client/home' },
+    { name: 'About Us', link: '/client/about-us' },
+    { name: 'Highlights', link: '/client/highlights' },
+    { name: 'Activities', link: '/client/view-activities' },
     {
-      name: "Application for Engagement Appraisal",
-      link: "/client/engagement-appraisals",
-    },
+      name: 'Application for Engagement Appraisal',
+      link: '/client/engagement-appraisals'
+    }
   ],
   NTP: [
-    { name: "NTP Home", link: "/ntp/home" },
+    { name: 'NTP Home', link: '/ntp/home' },
     {
-      name: "Tasks",
+      name: 'Tasks',
       subItems: [
-        { name: "My Tasks", link: "/ntp/my-tasks" },
-        { name: "Submit Report", link: "/ntp/submit-report" },
-      ],
+        { name: 'My Tasks', link: '/ntp/my-tasks' },
+        { name: 'Submit Report', link: '/ntp/submit-report' }
+      ]
     },
-    { name: "NTP Guidelines", link: "/ntp/guidelines" },
+    { name: 'NTP Guidelines', link: '/ntp/guidelines' }
   ],
   Student: [
-    { name: "Home", link: "/client/home" },
-    { name: "About Us", link: "/client/about-us" },
-    { name: "Activities", link: "/client/view-activities" },
-    { name: "Highlights", link: "/client/highlights" },
-  ],
+    { name: 'Home', link: '/client/home' },
+    { name: 'About Us', link: '/client/about-us' },
+    { name: 'Activities', link: '/client/view-activities' },
+    { name: 'Highlights', link: '/client/highlights' }
+  ]
 };
 
 const PostAuthNavbar = () => {
@@ -64,7 +69,7 @@ const PostAuthNavbar = () => {
   const navigate = useNavigate();
 
   const handleProfile = () => {
-    navigate("/client/profile");
+    navigate('/client/profile');
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
@@ -73,30 +78,30 @@ const PostAuthNavbar = () => {
 
   const handleLogout = () => {
     Swal.fire({
-      title: "Are you sure you want to sign out?",
+      title: 'Are you sure you want to sign out?',
       showDenyButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: "No",
-    }).then((result) => {
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No'
+    }).then(result => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: "Signing out...",
+          title: 'Signing out...',
           timer: 1000,
           timerProgressBar: true,
           didOpen: () => {
             Swal.showLoading();
-          },
+          }
         }).then(() => {
           localStorage.clear();
-          showToast("success", "Signed out!");
-          navigate("/");
+          showToast('success', 'Signed out!');
+          navigate('/');
         });
       }
     });
   };
 
-  const handleItemClick = (itemLink) => {
-    if (itemLink !== "#") {
+  const handleItemClick = itemLink => {
+    if (itemLink !== '#') {
       navigate(itemLink);
     }
     if (document.activeElement instanceof HTMLElement) {
@@ -108,19 +113,15 @@ const PostAuthNavbar = () => {
   // Get menu items based on user type
   const menuItems = menuItemsByUserType[userType] || [];
 
-  const renderMenuItems = (items) =>
+  const renderMenuItems = items =>
     items.map((item, index) => (
       <li key={index}>
-        <a onClick={() => (item.subItems ? null : handleItemClick(item.link))}>
-          {item.name}
-        </a>
+        <a onClick={() => (item.subItems ? null : handleItemClick(item.link))}>{item.name}</a>
         {item.subItems && (
           <ul className="p-2">
             {item.subItems.map((subItem, subIndex) => (
               <li key={subIndex}>
-                <a onClick={() => handleItemClick(subItem.link)}>
-                  {subItem.name}
-                </a>
+                <a onClick={() => handleItemClick(subItem.link)}>{subItem.name}</a>
               </li>
             ))}
           </ul>
@@ -142,7 +143,12 @@ const PostAuthNavbar = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
               </svg>
             </div>
             <ul
@@ -228,7 +234,7 @@ const PostAuthNavbar = () => {
               role="button"
               className="font-normal text-sm btn btn-ghost tracking-widest cursor-pointer"
             >
-              Hello,{" "}
+              Hello,{' '}
               {loading ? (
                 <Skeleton
                   className="animate-pulse"

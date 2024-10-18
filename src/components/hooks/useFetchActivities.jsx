@@ -10,7 +10,7 @@ export const useFetchActivities = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await api.get("/activity/all"); // Using the `api` instance
+        const response = await api.get("/activity/approved"); // Using the `api` instance
 
         if (response.data && response.data.Activities) {
           setActivities(response.data.Activities);

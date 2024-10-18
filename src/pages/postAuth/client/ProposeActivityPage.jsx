@@ -4,7 +4,7 @@ import api from "../../../api"; // Updated to use the `api` instance
 import { ArrowLeft, Plus } from "lucide-react";
 import { departmentItems } from "../../../components/ItemOptions"; // Import department items
 import { showToast } from "../../../components/Toast"; // Assuming you have this utility for showing toast messages
-
+  
 const ProposeActivityPage = () => {
   const navigate = useNavigate();
   const [activity, setActivity] = useState({
@@ -36,7 +36,28 @@ const ProposeActivityPage = () => {
     setActivity({ ...activity, image: e.target.files[0] }); // Handle image file
   };
 
+  const validateFields = () => {
+    if (
+      !activity.title.trim() ||
+      !activity.organizer.trim() ||
+      !activity.description.trim() ||
+      !activity.startDate ||
+      !activity.endDate ||
+      !activity.time ||
+      !activity.department ||
+      activity.department === "Select an option" || // Must not be default
+      activity.isVoluntaryAndUnpaid === null ||
+      !activity.objectives.trim()
+    ) {
+      showToast('error', 'Please fill in all required fields.');
+      return false;
+    }
+    return true;
+  };
+
   const handleCreateActivity = () => {
+    if (!validateFields()) return;
+
     api
       .post("/activity/new", activity, {
         headers: {
@@ -45,7 +66,7 @@ const ProposeActivityPage = () => {
       })
       .then(() => {
         showToast('success', 'Activity proposed successfully!'); // Show success toast
-        navigate("/admin/activities");
+        navigate("/client/home");
       })
       .catch(() => {
         setError("Failed to create activity");
@@ -252,6 +273,7 @@ const SelectField = ({ label, name, value, onChange, options, disabled }) => {
         disabled={disabled} // Disable the dropdown if needed
         className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
       >
+        <option value="Select an option">Select an option</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
