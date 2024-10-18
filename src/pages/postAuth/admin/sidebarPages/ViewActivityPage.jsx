@@ -120,6 +120,11 @@ const ViewActivityPage = () => {
             <Detail label="Type" value={activity.type} />
             <Detail label="Objectives" value={activity.objectives} />
             <Detail label="Location" value={activity.location} />
+            <Detail label="Start Date" value={activity.startDate} />
+            <Detail label="End Date" value={activity.endDate} />
+            <Detail label="Registration Start" value={activity.registrationStart} />
+            <Detail label="Registration End" value={activity.registrationEnd} />
+            <Detail label="Hours Rendered" value={activity.hours} />
             {/* Image Display */}
             <div>
               <p className="text-sm font-semibold text-gray-500">Activity Image:</p>

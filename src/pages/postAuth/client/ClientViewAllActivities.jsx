@@ -142,6 +142,14 @@ const ClientViewAllActivities = () => {
                       <p className="text-lg font-bold text-gray-800 mt-1">
                         {activity.title}
                       </p>
+                      {/* Registration Start and End */}
+                      <p className="text-sm text-gray-500 mt-1">
+                        Registration: {formatEndDate(activity.registrationStart)} - {formatEndDate(activity.registrationEnd)}
+                      </p>
+                      {/* Hours */}
+                      <p className="text-sm text-gray-500 mt-1">
+                        {activity.hours} hours
+                      </p>
                       {/* End date */}
                       <p className="text-sm text-gray-500 mt-1">
                         End Date: {formattedEndDate}
@@ -200,6 +208,14 @@ const ClientViewAllActivities = () => {
                       {/* Title */}
                       <p className="text-lg font-bold text-gray-800 mt-1">
                         {activity.title}
+                      </p>
+                      {/* Registration Start and End */}
+                      <p className="text-sm text-gray-500 mt-1">
+                        Registration: {formatEndDate(activity.registrationStart)} - {formatEndDate(activity.registrationEnd)}
+                      </p>
+                      {/* Hours */}
+                      <p className="text-sm text-gray-500 mt-1">
+                        Hours: {activity.hours} hours
                       </p>
                       {/* End date */}
                       <p className="text-sm text-gray-500 mt-1">

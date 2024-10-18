@@ -14,11 +14,14 @@ const EditActivityPage = () => {
     description: "",
     department: "",
     type: "",
-    objectives: "", // Added objectives field
+    objectives: "",
     organizer: "",
-    location: "", // Added location field
+    location: "",
     startDate: "",
     endDate: "",
+    registrationStart: "", // New field for registration start date
+    registrationEnd: "", // New field for registration end date
+    hours: 0, // New field for hours rendered
     time: "",
     image: "", // Image URL as a string
     isActivated: false,
@@ -125,6 +128,7 @@ const EditActivityPage = () => {
             onChange={handleInputChange}
           />
         </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <InputField
             label="Organizer"
@@ -139,6 +143,7 @@ const EditActivityPage = () => {
             onChange={handleInputChange}
           />
         </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <InputField
             label="Location" // Added the Location field
@@ -153,6 +158,7 @@ const EditActivityPage = () => {
             onChange={handleInputChange}
           />
         </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <InputField
             label="Start Date"
@@ -169,6 +175,36 @@ const EditActivityPage = () => {
             onChange={handleInputChange}
           />
         </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* Registration Start and End Dates */}
+          <InputField
+            label="Registration Start"
+            name="registrationStart"
+            type="date"
+            value={activity.registrationStart}
+            onChange={handleInputChange}
+          />
+          <InputField
+            label="Registration End"
+            name="registrationEnd"
+            type="date"
+            value={activity.registrationEnd}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="mt-6">
+          {/* Hours */}
+          <InputField
+            label="Hours Rendered"
+            name="hours"
+            type="number"
+            value={activity.hours}
+            onChange={handleInputChange}
+          />
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <InputField
             label="Time"
@@ -209,14 +245,14 @@ const EditActivityPage = () => {
           </div>
         </div>
 
-        {/* Department Dropdown */}
+        {/* Department Dropdown - Restricted to Institutional and College Driven */}
         <div className="mt-6">
           <SelectField
             label="Department"
             name="department"
             value={activity.department}
             options={departmentItems.filter(
-              (item) => item.value !== "All Departments"
+              (item) => item.value === "Institutional" || item.value === "College Driven"
             )}
             onChange={handleInputChange}
           />

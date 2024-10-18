@@ -17,6 +17,9 @@ const CreateActivityPage = () => {
     startDate: "",
     endDate: "",
     time: "",
+    registrationStart: "", // New field for registration start date
+    registrationEnd: "", // New field for registration end date
+    hours: 0, // New field for hours rendered
     image:
       "https://images.gmanews.tv/webpics/2023/09/cleanupdrive(1)_2023_09_16_19_15_58.jpg",
     isActivated: true,
@@ -152,6 +155,35 @@ const CreateActivityPage = () => {
             type="date"
             name="endDate"
             value={activity.endDate}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* Registration Start and End Dates */}
+          <InputField
+            label="Registration Start"
+            name="registrationStart"
+            type="date"
+            value={activity.registrationStart}
+            onChange={handleInputChange}
+          />
+          <InputField
+            label="Registration End"
+            type="date"
+            name="registrationEnd"
+            value={activity.registrationEnd}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="mt-6">
+          {/* Hours */}
+          <InputField
+            label="Hours Rendered"
+            name="hours"
+            type="number"
+            value={activity.hours}
             onChange={handleInputChange}
           />
         </div>
