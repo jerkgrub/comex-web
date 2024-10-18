@@ -1,21 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download } from "lucide-react"; // Import Download icon from lucide-react
-import { Accordion } from "flowbite-react"; // Import Flowbite Accordion
-import api from "../../../../api"; // Import API for fetching data
+import { ArrowLeft, Download } from "lucide-react";
+import { Accordion } from "flowbite-react";
+import api from "../../../../api";
 import useFetchUserData from "../../../../components/hooks/useFetchUserData";
-import Skeleton from "react-loading-skeleton"; // Import Skeleton
-import 'react-loading-skeleton/dist/skeleton.css'; // Import Skeleton CSS
-import { PDFDocument, rgb } from "pdf-lib"; // Import PDF-lib for PDF generation
-import certificateTemplate from "/public/images/certificate_template.png"; // Import the certificate template image
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { PDFDocument, rgb } from "pdf-lib";
+import fontkit from "@pdf-lib/fontkit"; // Import fontkit for custom fonts
+import certificateTemplate from "/images/certificate_template.png"; // Adjust the path if needed
 
 const ViewAchievementsPage = () => {
   const navigate = useNavigate();
-  const { user, loading: userLoading } = useFetchUserData(); // Fetch user data to get user ID
+  const { user, loading: userLoading } = useFetchUserData();
   const [achievements, setAchievements] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state for fetching credits
+  const [loading, setLoading] = useState(true);
 
-  // Fetch the credits based on the user ID from the backend
+  // Configuration as per the provided config JSON
+  const config = {
+    positions: {
+      nameX: 367,
+      nameY: 230,
+      hoursX: 207,
+      hoursY: 287,
+      titleX: 360,
+      titleY: 287,
+      dateX: 437,
+      dateY: 311,
+      locationX: 271,
+      locationY: 318,
+      dateReceivedX: 367,
+      dateReceivedY: 376,
+    },
+    fontSize: {
+      nameSize: 41,
+      textSize: 15,
+      locationSize: 11,
+      dateReceivedSize: 17,
+    },
+    selectedFontName: "Great Vibes",
+    selectedFontText: "Century Gothic",
+    nameColor: "#b99f41",
+  };
+
   useEffect(() => {
     const fetchCredits = async () => {
       if (user._id) {
@@ -35,65 +62,151 @@ const ViewAchievementsPage = () => {
     }
   }, [user, userLoading]);
 
-  // Function to generate PDF for a specific achievement
   const generatePDF = async (achievement) => {
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([850, 650]);
+    try {
+      const pdfDoc = await PDFDocument.create();
+      pdfDoc.registerFontkit(fontkit);
 
-    // Load the certificate template image
-    const templateBytes = await fetch(certificateTemplate).then((res) => res.arrayBuffer());
-    const templateImage = await pdfDoc.embedPng(templateBytes);
-    const { width, height } = templateImage.scale(1);
+      // Load custom fonts
+      const greatVibesFontBytes = await fetch("/fonts/GreatVibes-Regular.ttf").then((res) =>
+        res.arrayBuffer()
+      );
+      const centuryGothicFontBytes = await fetch("/fonts/GOTHIC.TTF").then((res) =>
+        res.arrayBuffer()
+      );
 
-    // Draw the certificate template on the PDF
-    page.drawImage(templateImage, {
-      x: 0,
-      y: 0,
-      width: 850,
-      height: 650,
-    });
+      const greatVibesFont = await pdfDoc.embedFont(greatVibesFontBytes);
+      const centuryGothicFont = await pdfDoc.embedFont(centuryGothicFontBytes);
 
-    // Add the dynamic text for credits
-    page.drawText(`${user.firstName} ${user.lastName}`, {
-      x: 320,
-      y: 340,
-      size: 24,
-      color: rgb(0, 0, 0),
-    });
+      const page = pdfDoc.addPage([850, 650]);
 
-    page.drawText(`for rendering ${achievement.totalHoursRendered} hours`, {
-      x: 100,
-      y: 300,
-      size: 18,
-      color: rgb(0, 0, 0),
-    });
+      // Load the certificate template image
+      const templateBytes = await fetch(certificateTemplate).then((res) =>
+        res.arrayBuffer()
+      );
+      const templateImage = await pdfDoc.embedPng(templateBytes);
 
-    page.drawText(`at ${achievement.title}`, {
-      x: 100,
-      y: 280,
-      size: 18,
-      color: rgb(0, 0, 0),
-    });
+      // Draw the certificate template
+      page.drawImage(templateImage, {
+        x: 0,
+        y: 0,
+        width: 850,
+        height: 650,
+      });
 
-    page.drawText(`Given this ${new Date().getDate()} day of ${new Date().toLocaleString('default', { month: 'long' })}`, {
-      x: 100,
-      y: 240,
-      size: 18,
-      color: rgb(0, 0, 0),
-    });
+      // Helper to convert hex to RGB
+      const hexToRgb = (hex) => {
+        const bigint = parseInt(hex.replace("#", ""), 16);
+        return [
+          (bigint >> 16) & 255,
+          (bigint >> 8) & 255,
+          bigint & 255,
+        ].map((value) => value / 255);
+      };
 
-    // Serialize the PDF and download it
-    const pdfBytes = await pdfDoc.save();
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${achievement.title}-certificate.pdf`;
-    link.click();
+      // Helper to format date
+      const formatDate = (date) => {
+        return new Intl.DateTimeFormat("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }).format(new Date(date));
+      };
+
+      const currentDate = formatDate(new Date());
+
+      // Helper function to draw text at specific coordinates
+      const drawTextAt = (text, x, y, font, size, color, options = {}) => {
+        page.drawText(text, {
+          x,
+          y,
+          size,
+          font,
+          color,
+          ...options,
+        });
+      };
+
+      // Draw name
+      drawTextAt(
+        `${user.firstName} ${user.lastName}`,
+        config.positions.nameX,
+        config.positions.nameY,
+        greatVibesFont,
+        config.fontSize.nameSize,
+        rgb(...hexToRgb(config.nameColor))
+      );
+
+      // Draw hours
+      const hoursText = `${achievement.totalHoursRendered} HOURS OF ${achievement.type.toUpperCase()} COMMUNITY ENGAGEMENT`;
+      drawTextAt(
+        hoursText,
+        config.positions.hoursX,
+        config.positions.hoursY,
+        centuryGothicFont,
+        config.fontSize.textSize,
+        rgb(0, 0, 0)
+      );
+
+      // Draw title
+      const titleText = `AT ${achievement.location ? achievement.location.toUpperCase() : "N/A"}`;
+      drawTextAt(
+        titleText,
+        config.positions.titleX,
+        config.positions.titleY,
+        centuryGothicFont,
+        config.fontSize.textSize,
+        rgb(0, 0, 0)
+      );
+
+      // Draw date
+      const dateText = `GIVEN THIS ${currentDate.toUpperCase()}`;
+      drawTextAt(
+        dateText,
+        config.positions.dateX,
+        config.positions.dateY,
+        centuryGothicFont,
+        config.fontSize.textSize,
+        rgb(0, 0, 0)
+      );
+
+      // Draw location
+      const locationText = achievement.location ? achievement.location.toUpperCase() : "N/A";
+      drawTextAt(
+        locationText,
+        config.positions.locationX,
+        config.positions.locationY,
+        centuryGothicFont,
+        config.fontSize.locationSize,
+        rgb(0, 0, 0)
+      );
+
+      // Draw date received (Dynamic Date)
+      const dateReceivedText = `Given this day on the ${currentDate} at NU MOA, Pasay City`;
+      drawTextAt(
+        dateReceivedText,
+        config.positions.dateReceivedX,
+        config.positions.dateReceivedY,
+        centuryGothicFont,
+        config.fontSize.dateReceivedSize,
+        rgb(0, 0, 0)
+      );
+
+      // Finalize the PDF
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `certificate-${achievement.title}.pdf`;
+      link.click();
+    } catch (error) {
+      console.error("Error generating the PDF:", error);
+      // Optional: Provide user feedback here (e.g., toast notification)
+    }
   };
 
   return (
-    <div className="p-8 min-h-screen">
-      {/* Top Section: Back Button */}
+    <div className="p-8 min-h-screen bg-gray-100">
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={() => navigate(`/client/profile`)}
@@ -107,7 +220,6 @@ const ViewAchievementsPage = () => {
         Participated Activities
       </h2>
 
-      {/* Display skeletons or actual achievements */}
       {loading ? (
         <Accordion collapseAll>
           {Array(5)
@@ -127,6 +239,7 @@ const ViewAchievementsPage = () => {
                 </Accordion.Content>
               </Accordion.Panel>
             ))}
+
         </Accordion>
       ) : achievements.length > 0 ? (
         <Accordion collapseAll>
@@ -135,23 +248,26 @@ const ViewAchievementsPage = () => {
               <Accordion.Title className="flex justify-between items-center">
                 <div className="flex-1">{achievement.title}</div>
                 <span className="text-sm text-gray-500">
-                  Date Received: {new Date(achievement.endDate).toLocaleDateString()}
+                  Date Received: {formatDate(achievement.endDate)}
                 </span>
               </Accordion.Title>
               <Accordion.Content>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center flex-wrap gap-4">
                   <div className="text-gray-600">
-                    Description: {achievement.facultyReflection || "No description available."}
+                    Location: {achievement.location || "N/A"}
+                  </div>
+                  <div className="text-gray-600">
+                    Total Hours Rendered: {achievement.totalHoursRendered || 0} hours
+                  </div>
+                  <div className="text-gray-600">
+                    Beneficiaries: {achievement.beneficiaries || "N/A"}
                   </div>
                   <button
                     className="flex items-center text-blue-600 hover:text-blue-800"
                     onClick={() => generatePDF(achievement)}
                   >
-                    <Download className="w-5 h-5 mr-1" /> Download PDF
+                    <Download className="w-5 h-5 mr-1" /> Download Certificate
                   </button>
-                </div>
-                <div className="text-gray-600">
-                  Total Hours Rendered: {achievement.totalHoursRendered || 0} hours
                 </div>
               </Accordion.Content>
             </Accordion.Panel>
@@ -164,6 +280,15 @@ const ViewAchievementsPage = () => {
       )}
     </div>
   );
+};
+
+// Helper function to format date as "April 15, 2024"
+const formatDate = (date) => {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(date));
 };
 
 export default ViewAchievementsPage;

@@ -33,11 +33,13 @@ const InstitutionalAppraisalPage = () => {
         const response = await api.get(`/activity/${activityId}`);
         console.log("API Response:", response.data);
         const activity = response.data.Activity || response.data.activity;
-
+  
         if (!activity) {
           throw new Error("Activity data not found in the response.");
         }
-
+  
+        console.log("Fetched Activity Data:", activity); // Add this line
+  
         setActivityData(activity);
 
         // Prepare preFilledFields
@@ -194,7 +196,7 @@ const InstitutionalAppraisalPage = () => {
       alert("User data is still loading. Please wait.");
       return;
     }
-
+  
     const formDataToSubmit = new FormData();
     // Set isRegisteredEvent to 'false' to include additional fields
     formDataToSubmit.append("isRegisteredEvent", "false"); // Changed from 'true' to 'false'
@@ -211,18 +213,33 @@ const InstitutionalAppraisalPage = () => {
     formDataToSubmit.append("endDate", formData.endDate);
     formDataToSubmit.append("totalHoursRendered", formData.totalHoursRendered);
     formDataToSubmit.append("facultyReflection", formData.facultyReflection);
-
+  
     // Automatically add location and organizer from activityData
-    formDataToSubmit.append("location", activityData.location);
-    formDataToSubmit.append("organizer", activityData.organizer);
-
+    if (activityData.location) {
+      formDataToSubmit.append("location", activityData.location);
+    } else {
+      console.warn("Activity data is missing 'location'.");
+    }
+  
+    if (activityData.organizer) {
+      formDataToSubmit.append("organizer", activityData.organizer);
+    } else {
+      console.warn("Activity data is missing 'organizer'.");
+    }
+  
     if (formData.supportingDocuments) {
       formDataToSubmit.append(
         "supportingDocument",
         formData.supportingDocuments
       );
     }
-
+  
+    // Log FormData entries to verify
+    console.log("Submitting Form Data:");
+    for (let pair of formDataToSubmit.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
+    }
+  
     try {
       const response = await api.post("/credit/new", formDataToSubmit, {
         headers: {
@@ -234,10 +251,25 @@ const InstitutionalAppraisalPage = () => {
         navigate("/client/engagement-appraisals");
       }
     } catch (error) {
-      console.error("Failed to submit the credit form", error);
-      alert("There was an error submitting the form. Please try again.");
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        console.error("Error Response:", error.response.data);
+        console.error("Status Code:", error.response.status);
+        alert(
+          `Error: ${error.response.data.message || "Submission failed."}`
+        );
+      } else if (error.request) {
+        // Request was made but no response received
+        console.error("Error Request:", error.request);
+        alert("No response from server. Please try again later.");
+      } else {
+        // Something else caused the error
+        console.error("Error Message:", error.message);
+        alert("There was an error submitting the form. Please try again.");
+      }
     }
   };
+  
 
   return (
     <div className="w-screen h-max min-h-[calc(100vh_-_80px)] py-12  flex justify-center items-center">

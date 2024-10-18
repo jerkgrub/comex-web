@@ -14,15 +14,14 @@ const HeroPage = () => {
       transition: { duration: 0.6, delay: custom, ease: "easeOut" },
     }),
   };
-  
+
   const scaleVariant = {
     hidden: { scale: 0 },
     visible: { scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
   const start_btn = () => {
-    // Example to navigate to another route
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -60,17 +59,15 @@ const HeroPage = () => {
           animate="visible"
           custom={0.4}
         />
-      </div>
 
-      {/* Call to Action Button */}
-      {/* <motion.button
-        onClick={start_btn}
-        className=" px-12 py-3 bg-nucolor3 text-black font-semibold rounded-lg shadow-lg hover:bg-nucolor2 hover:text-gray-500 transition-colors duration-300 ease-in-out hover:scale-105 active:scale-95"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        Count me in
-      </motion.button> */}
+        {/* Android Download Image */}
+        <motion.img
+          className="h-auto w-48 md:w-56 mt-8 cursor-pointer object-contain transition-transform duration-300 ease-in-out transform hover:scale-110 hover:rotate-3 drop-shadow-lg"
+          src="/images/download_android.png"
+          alt="Download Android App"
+          whileHover={{ scale: 1.1 }}
+        />
+      </div>
     </div>
   );
 };
