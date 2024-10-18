@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 import api from "../../../../api"; // Assuming you have your api instance set up
 import {
   Mail,
@@ -45,38 +47,45 @@ const ViewUserPage = () => {
 
   const toggleAccountStatus = async () => {
     try {
-      // Log the current status before toggling
-      console.log("Current isActivated status:", isActivated);
-      
-
-      // Toggle the current status
       const updatedStatus = !isActivated;
-
-      console.log("Request body:", { isActivated: updatedStatus });
-      // Log the status that you're about to send in the API request
-      console.log("Updated isActivated status (before API call):", updatedStatus);
-
-      // Send the request to the backend to update the status
       const response = await api.put(`/users/update/${userid}`, {
         isActivated: updatedStatus,
       });
-
-      // Log the response from the API to check if the backend successfully updated the value
-      console.log("API response:", response.data);
-
-      // Update the local state with the new value from the response, if necessary
       setIsActivated(updatedStatus);
-
-      // Log the final updated state to confirm the change
-      console.log("Updated isActivated status (after API call):", updatedStatus);
     } catch (error) {
-      // Log any error that occurs during the API request
       console.error("Failed to update account status", error);
     }
   };
 
   if (loading) {
-    return <LoadingPage />;
+    return (
+      <div className="p-8 min-h-screen">
+        {/* Skeleton for Top Section */}
+        <div className="flex justify-between items-center mb-6">
+          <Skeleton width={100} height={30} />
+          <Skeleton width={120} height={40} />
+        </div>
+
+        {/* Skeleton for User Profile Header */}
+        <Skeleton width={`60%`} height={50} />
+
+        {/* Skeleton for Avatar and Details */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-lg shadow-lg mt-6">
+          <div className="flex flex-col items-center border-r border-gray-200 pr-6">
+            <Skeleton circle={true} height={192} width={192} />
+            <Skeleton width={`70%`} height={30} className="mt-4" />
+          </div>
+          <div className="col-span-2">
+            <Skeleton count={6} height={30} className="mb-4" />
+          </div>
+        </div>
+
+        {/* Skeleton for Additional User Information */}
+        <div className="mt-8 bg-white p-6 rounded-lg shadow-lg">
+          <Skeleton count={4} height={30} className="mb-4" />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -131,7 +140,6 @@ const ViewUserPage = () => {
               <Detail label="Last Name" value={user.lastName} />
             </div>
             <div>
-              {/* Conditionally render ID Number or Date Hired */}
               {user.usertype && user.usertype.toLowerCase() === "student" ? (
                 <Detail
                   label="ID Number"
@@ -182,22 +190,23 @@ const ViewUserPage = () => {
                 )
               }
             />
-            {/* Account Activation/Deactivation Toggle Button */}
             <div className="flex flex-row gap-3">
-            <p>Toggle Activation:</p>
-            <button
-              className={`btn btn-xs btn-square md:w-auto ${
-                isActivated ? "btn-success" : "btn-error"
-              }`}
-              onClick={toggleAccountStatus}
-              title={`Toggle to ${isActivated ? "Deactivate" : "Activate"} account`}
-            >
-              {isActivated ? (
-                <Power className="w-5 h-5" />
-              ) : (
-                <PowerOff className="w-5 h-5" />
-              )}
-            </button>
+              <p>Toggle Activation:</p>
+              <button
+                className={`btn btn-xs btn-square md:w-auto ${
+                  isActivated ? "btn-success" : "btn-error"
+                }`}
+                onClick={toggleAccountStatus}
+                title={`Toggle to ${
+                  isActivated ? "Deactivate" : "Activate"
+                } account`}
+              >
+                {isActivated ? (
+                  <Power className="w-5 h-5" />
+                ) : (
+                  <PowerOff className="w-5 h-5" />
+                )}
+              </button>
             </div>
           </div>
         </div>
