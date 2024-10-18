@@ -6,6 +6,8 @@ import api from "../../../../api"; // Import API for fetching data
 import useFetchUserData from "../../../../components/hooks/useFetchUserData";
 import Skeleton from "react-loading-skeleton"; // Import Skeleton
 import 'react-loading-skeleton/dist/skeleton.css'; // Import Skeleton CSS
+import { PDFDocument, rgb } from "pdf-lib"; // Import PDF-lib for PDF generation
+import certificateTemplate from "/public/images/certificate_template.png"; // Import the certificate template image
 
 const ViewAchievementsPage = () => {
   const navigate = useNavigate();
@@ -32,6 +34,62 @@ const ViewAchievementsPage = () => {
       fetchCredits();
     }
   }, [user, userLoading]);
+
+  // Function to generate PDF for a specific achievement
+  const generatePDF = async (achievement) => {
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([850, 650]);
+
+    // Load the certificate template image
+    const templateBytes = await fetch(certificateTemplate).then((res) => res.arrayBuffer());
+    const templateImage = await pdfDoc.embedPng(templateBytes);
+    const { width, height } = templateImage.scale(1);
+
+    // Draw the certificate template on the PDF
+    page.drawImage(templateImage, {
+      x: 0,
+      y: 0,
+      width: 850,
+      height: 650,
+    });
+
+    // Add the dynamic text for credits
+    page.drawText(`${user.firstName} ${user.lastName}`, {
+      x: 320,
+      y: 340,
+      size: 24,
+      color: rgb(0, 0, 0),
+    });
+
+    page.drawText(`for rendering ${achievement.totalHoursRendered} hours`, {
+      x: 100,
+      y: 300,
+      size: 18,
+      color: rgb(0, 0, 0),
+    });
+
+    page.drawText(`at ${achievement.title}`, {
+      x: 100,
+      y: 280,
+      size: 18,
+      color: rgb(0, 0, 0),
+    });
+
+    page.drawText(`Given this ${new Date().getDate()} day of ${new Date().toLocaleString('default', { month: 'long' })}`, {
+      x: 100,
+      y: 240,
+      size: 18,
+      color: rgb(0, 0, 0),
+    });
+
+    // Serialize the PDF and download it
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${achievement.title}-certificate.pdf`;
+    link.click();
+  };
 
   return (
     <div className="p-8 min-h-screen">
@@ -85,7 +143,10 @@ const ViewAchievementsPage = () => {
                   <div className="text-gray-600">
                     Description: {achievement.facultyReflection || "No description available."}
                   </div>
-                  <button className="flex items-center text-blue-600 hover:text-blue-800">
+                  <button
+                    className="flex items-center text-blue-600 hover:text-blue-800"
+                    onClick={() => generatePDF(achievement)}
+                  >
                     <Download className="w-5 h-5 mr-1" /> Download PDF
                   </button>
                 </div>

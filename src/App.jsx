@@ -7,11 +7,22 @@ import {
 import { useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 import { Home } from "./pages/postAuth/client";
-import { BookCopy, ContactRound, Earth, FolderKanban, Gauge, Hourglass, Shield, Ticket, Zap } from "lucide-react";
+import {
+  BookCopy,
+  ContactRound,
+  Earth,
+  FolderKanban,
+  Gauge,
+  Hourglass,
+  Shield,
+  Ticket,
+  Zap,
+} from "lucide-react";
 import { Footer } from "./components/Footer";
+import CertTest from "./pages/postAuth/client/profilePages/CertTest";
 
-import { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 import EngagementAppraisalsPage from "./pages/postAuth/client/forms/EngagementAppraisalsPage";
 
@@ -23,7 +34,7 @@ import LoginPage from "./pages/preAuth/authentication/LoginPage";
 import Users from "./pages/postAuth/admin/sidebarPages/Users";
 import ForgotPasswordPage from "./pages/preAuth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/preAuth/ResetPasswordPage";
-import ProposeActivityPage from "./pages/postAuth/client/ProposeActivityPage"
+import ProposeActivityPage from "./pages/postAuth/client/ProposeActivityPage";
 
 // Post Authentication {Admin}
 import Sidebar, { SidebarItem } from "./pages/postAuth/admin/Sidebar";
@@ -32,7 +43,7 @@ import Activities from "./pages/postAuth/admin/sidebarPages/Activities";
 import ComexForms from "./pages/postAuth/admin/sidebarPages/ComexForms";
 import CreateUserPage from "./pages/postAuth/admin/sidebarPages/CreateUserPage";
 import ViewActivityPage from "./pages/postAuth/admin/sidebarPages/ViewActivityPage";
-import InstitutionalPage from "./pages/postAuth/client/forms/InstitutionalPage"
+import InstitutionalPage from "./pages/postAuth/client/forms/InstitutionalPage";
 
 // Post Authentication {Client}
 import PostAuthNavbar from "./components/navbar/PostAuthNavbar";
@@ -83,15 +94,44 @@ function AdminLayout() {
   return (
     <div className="bg-gray-200">
       <Sidebar>
-        <SidebarItem to="/admin/dashboard" icon={<Gauge size={20} />} text="Dashboard" active />
-        <SidebarItem to="/admin/users" icon={<ContactRound size={20} />} text="Manage Users" />
+        <SidebarItem
+          to="/admin/dashboard"
+          icon={<Gauge size={20} />}
+          text="Dashboard"
+          active
+        />
+        <SidebarItem
+          to="/admin/users"
+          icon={<ContactRound size={20} />}
+          text="Manage Users"
+        />
         {/* <SidebarItem to="/admin/spez" icon={<Hourglass size={20} />} text="Manage SPEZ" /> */}
-        <SidebarItem to="/admin/activities" icon={<Earth size={20} />} text="Manage Activities" />
-        <SidebarItem to="/admin/review-evaluation-forms" icon={<FolderKanban size={20} />} text="Review Evaluation Forms" />
-        <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text="Manage NSTP" />
-        <SidebarItem to="/admin/autocert" icon={<Zap size={20} />} text="AutoCert" />
+        <SidebarItem
+          to="/admin/activities"
+          icon={<Earth size={20} />}
+          text="Manage Activities"
+        />
+        <SidebarItem
+          to="/admin/review-evaluation-forms"
+          icon={<FolderKanban size={20} />}
+          text="Review Evaluation Forms"
+        />
+        <SidebarItem
+          to="/admin/nstp"
+          icon={<Shield size={20} />}
+          text="Manage NSTP"
+        />
+        <SidebarItem
+          to="/admin/autocert"
+          icon={<Zap size={20} />}
+          text="AutoCert"
+        />
       </Sidebar>
-      <div className={`flex-grow transition-all duration-200 ${expanded ? "ml-64" : "ml-16"} p-4`}>
+      <div
+        className={`flex-grow transition-all duration-200 ${
+          expanded ? "ml-64" : "ml-16"
+        } p-4`}
+      >
         <Outlet />
       </div>
     </div>
@@ -106,77 +146,328 @@ function App() {
   });
 
   useEffect(() => {
-    user ? localStorage.setItem("user", JSON.stringify(user)) : localStorage.removeItem("user");
+    user
+      ? localStorage.setItem("user", JSON.stringify(user))
+      : localStorage.removeItem("user");
   }, [user]);
 
   return (
     <SkeletonTheme baseColor="#c0c7d1" highlightColor="#dae3e8">
-    <UserContext.Provider value={{ user, setUser }}>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          {/* Pre Authentication */}
-          <Route path="/reset-password" element={<><PreAuthNavbar/><ResetPasswordPage /><Footer/></>} />
-          <Route path="/" element={<HeroPageWithNavbarAndFooter />} />
-          <Route path="/login" element={<><PreAuthNavbar /><LoginPage /><Footer /></>} />
-          <Route path="/register" element={<><PreAuthNavbar /><RegisterPage /><Footer /></>} />
-          <Route path="about-us" element={<><PreAuthNavbar /><Footer /></>} />
-          <Route path="forgotpassword" element={<><PreAuthNavbar /><ForgotPasswordPage /><Footer /></>} />
+      <UserContext.Provider value={{ user, setUser }}>
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            {/* Pre Authentication */}
+            <Route
+              path="/reset-password"
+              element={
+                <>
+                  <PreAuthNavbar />
+                  <ResetPasswordPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route path="/" element={<HeroPageWithNavbarAndFooter />} />
+            <Route
+              path="/login"
+              element={
+                <>
+                  <PreAuthNavbar />
+                  <LoginPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <>
+                  <PreAuthNavbar />
+                  <RegisterPage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="about-us"
+              element={
+                <>
+                  <PreAuthNavbar />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="forgotpassword"
+              element={
+                <>
+                  <PreAuthNavbar />
+                  <ForgotPasswordPage />
+                  <Footer />
+                </>
+              }
+            />
 
-          {/* Admin Routes */}
-          <Route path="/admin/*" element={<ProtectedRoute allowedRoles={["Admin"]}><AdminLayout /></ProtectedRoute>}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="comexforms" element={<ComexForms />} />
-            <Route path="activities" element={<Activities />} />
-            <Route path="create-activity" element={<CreateActivityPage />} />
-            <Route path="autocert" element={<AutoCertPage />} />
+            {/* Admin Routes */}
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]}>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="comexforms" element={<ComexForms />} />
+              <Route path="activities" element={<Activities />} />
+              <Route path="create-activity" element={<CreateActivityPage />} />
+              <Route path="autocert" element={<AutoCertPage />} />
 
-            {/* activities */}
-            <Route path="activities/:activityid" element={<ViewActivityPage />} />
-            <Route path="activities/:activityid/edit" element={<EditActivityPage />} />
+              {/* activities */}
+              <Route
+                path="activities/:activityid"
+                element={<ViewActivityPage />}
+              />
+              <Route
+                path="activities/:activityid/edit"
+                element={<EditActivityPage />}
+              />
 
-            {/* appraisals */}
-            <Route path="review-evaluation-forms" element={<ViewAppraisals />} />
-            <Route path="review-evaluation-forms/:appraisalType" element={<ManageAppraisals />} />
-            <Route path="review-evaluation-forms/view/:appraisalId" element={<ViewOneAppraisal />} />
-            <Route path="engagement-appraisals/:activityid" element={<EngagementAppraisalsPage/>} />
-            <Route path="engagement-appraisals/credits/:creditid" element={<ViewOneCredit />} />
-            
-            <Route path="users" element={<Users />} />
-            <Route path="create-user" element={<CreateUserPage />} />
-            <Route path="users/:userid" element={<ViewUserPage />} />
-            <Route path="users/:userid/edit" element={<EditUserPage />} />
-          </Route>
+              {/* appraisals */}
+              <Route
+                path="review-evaluation-forms"
+                element={<ViewAppraisals />}
+              />
+              <Route
+                path="review-evaluation-forms/:appraisalType"
+                element={<ManageAppraisals />}
+              />
+              <Route
+                path="review-evaluation-forms/view/:appraisalId"
+                element={<ViewOneAppraisal />}
+              />
+              <Route
+                path="engagement-appraisals/:activityid"
+                element={<EngagementAppraisalsPage />}
+              />
+              <Route
+                path="engagement-appraisals/credits/:creditid"
+                element={<ViewOneCredit />}
+              />
 
-          {/* Client Routes */}
-          <Route path="/client/*" element={<ProtectedRoute allowedRoles={["Comex Coordinator", "Faculty", "NTP", "Student"]}><Outlet /></ProtectedRoute>}>
-            <Route path="home" element={<><PostAuthNavbar /><Home /><Footer /></>} />
-            <Route path="about-us" element={<><PostAuthNavbar /><AboutUs /><Footer /></>} />
-            <Route path="view-activities" element={<><PostAuthNavbar /><ClientViewAllActivities /><Footer /></>} />
-            <Route path="view-activities/:activityid" element={<><PostAuthNavbar /><ClientViewOneActivity /><Footer /></>} />
-            <Route path="engagement-appraisals" element={<><PostAuthNavbar /><ClientAppraisals /><Footer /></>} />
-            <Route path="propose-activity" element={<><PostAuthNavbar /><ProposeActivityPage /><Footer /></>} />
-            <Route path="engagement-appraisals-institutional" element={<><PostAuthNavbar /><InstitutionalPage /><Footer /></>} />
-            <Route path="engagement-appraisals-institutional/:activityId" element={<><PostAuthNavbar /><InstitutionalAppraisalPage /><Footer /></>} />
-            <Route path="engagement-appraisals/:title" element={<><PostAuthNavbar /><EngagementAppraisalsPage /><Footer /></>} />
-            <Route path="engagement-appraisals/community-engagement/:activityid" element={<><PostAuthNavbar /><CommunityEngagementForm /><Footer /></>} />
-            <Route path="view-activities/:activityid/register" element={<><PostAuthNavbar /><RegisterActivityPage /><Footer /></>} />
-            <Route path="form-submitted" element={<><PostAuthNavbar /><FormSubmitted /><Footer /></>} />
-            <Route path="profile" element={<><PostAuthNavbar /><Profile /><Footer /></>} />
-            <Route path="profile/edit" element={<><PostAuthNavbar /><EditProfilePage /><Footer /></>} />
-            <Route path="profile/view-participated-activities" element={<><PostAuthNavbar /><ViewParticipatedActivitiesPage /><Footer /></>} />
-            <Route path="profile/view-achievements" element={<><PostAuthNavbar /><ViewAchievementsPage /><Footer /></>} />
-            <Route path="highlights" element={<><PostAuthNavbar /><Highlights /><Footer /></>} />
-          </Route>
+              <Route path="users" element={<Users />} />
+              <Route path="create-user" element={<CreateUserPage />} />
+              <Route path="users/:userid" element={<ViewUserPage />} />
+              <Route path="users/:userid/edit" element={<EditUserPage />} />
+            </Route>
 
-          {/* Forms */}
-          <Route path="/studform" element={<StudentEngagementForm />} />
+            {/* Client Routes */}
+            <Route
+              path="/client/*"
+              element={
+                <ProtectedRoute
+                  allowedRoles={[
+                    "Comex Coordinator",
+                    "Faculty",
+                    "NTP",
+                    "Student",
+                  ]}
+                >
+                  <Outlet />
+                </ProtectedRoute>
+              }
+            >
+              <Route
+                path="home"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <Home />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="about-us"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <AboutUs />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="view-activities"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <ClientViewAllActivities />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="view-activities/:activityid"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <ClientViewOneActivity />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="engagement-appraisals"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <ClientAppraisals />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="propose-activity"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <ProposeActivityPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="engagement-appraisals-institutional"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <InstitutionalPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="engagement-appraisals-institutional/:activityId"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <InstitutionalAppraisalPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="engagement-appraisals/:title"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <EngagementAppraisalsPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="engagement-appraisals/community-engagement/:activityid"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <CommunityEngagementForm />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="cert"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <CertTest />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="view-activities/:activityid/register"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <RegisterActivityPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="form-submitted"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <FormSubmitted />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="profile"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <Profile />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="profile/edit"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <EditProfilePage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="profile/view-participated-activities"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <ViewParticipatedActivitiesPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="profile/view-achievements"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <ViewAchievementsPage />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="highlights"
+                element={
+                  <>
+                    <PostAuthNavbar />
+                    <Highlights />
+                    <Footer />
+                  </>
+                }
+              />
+            </Route>
 
-          {/* 404 Not Found */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </UserContext.Provider>
+            {/* Forms */}
+            <Route path="/studform" element={<StudentEngagementForm />} />
+
+            {/* 404 Not Found */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </UserContext.Provider>
     </SkeletonTheme>
   );
 }

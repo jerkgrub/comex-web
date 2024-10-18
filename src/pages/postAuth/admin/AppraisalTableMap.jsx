@@ -1,289 +1,219 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../../../api"; // Updated to use the `api` instance
-import { ArrowLeft, Plus } from "lucide-react";
-import { departmentItems } from "../../../components/ItemOptions"; // Import department items
-import { showToast } from "../../../components/Toast"; // Assuming you have this utility for showing toast messages
+import { useNavigate } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { useState } from 'react';
+import PropTypes from 'prop-types'; // Added for prop type checking
+import api from '../../../api'; // Adjust the path based on your project structure
+import { showToast } from '../../../components/Toast'; // Assuming you have this utility to show toasts
 
-const ProposeActivityPage = () => {
+const AppraisalTableMap = ({ credits, loading, setCredits }) => {
   const navigate = useNavigate();
-  const [activity, setActivity] = useState({
-    title: "",
-    description: "",
-    department: "",
-    type: "College Driven", // Set type to College Driven by default
-    objectives: "", // Added objectives field
-    organizer: "",
-    startDate: "",
-    endDate: "",
-    time: "",
-    image:
-      "https://images.gmanews.tv/webpics/2023/09/cleanupdrive(1)_2023_09_16_19_15_58.jpg",
-    isActivated: true, // Default set to true and unclickable
-    isVoluntaryAndUnpaid: false,
-    adminApproval: {
-      isApproved: false,
-    },
-  });
-  const [error, setError] = useState(null);
+  const [processingIds, setProcessingIds] = useState([]); // Manage processing state per credit
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setActivity({ ...activity, [name]: value });
+  // Handler for viewing the appraisal details
+  const handleViewCredit = (credit) => {
+    navigate(`/admin/review-evaluation-forms/view/${credit._id}`);
   };
 
-  const handleImageChange = (e) => {
-    setActivity({ ...activity, image: e.target.files[0] }); // Handle image file
+  // Approve Credit Handler
+  const handleApproveCredit = async (credit) => {
+    if (typeof setCredits !== 'function') {
+      console.error('setCredits prop is not a function');
+      showToast('error', 'Internal error: Unable to update credits.');
+      return;
+    }
+
+    setProcessingIds((prev) => [...prev, credit._id]);
+    console.log(`Approving credit with ID: ${credit._id}`);
+
+    try {
+      const response = await api.put(`/credit/approve/${credit._id}`);
+      
+      // Optional: Check response status or data if necessary
+      if (response.status === 200) {
+        showToast('success', 'Approved'); // Show approval toast
+
+        // Update the UI: Remove the approved credit from the list
+        setCredits((prevCredits) =>
+          prevCredits.filter((item) => item._id !== credit._id)
+        );
+      } else {
+        throw new Error('Unexpected response from the server.');
+      }
+    } catch (error) {
+      console.error('Error approving credit:', error);
+      showToast('error', 'Failed to approve');
+    } finally {
+      setProcessingIds((prev) => prev.filter((id) => id !== credit._id));
+    }
   };
 
-  const handleCreateActivity = () => {
-    api
-      .post("/activity/new", activity, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then(() => {
-        showToast('success', 'Activity proposed successfully!'); // Show success toast
-        navigate("/admin/activities");
-      })
-      .catch(() => {
-        setError("Failed to create activity");
-        showToast('error', 'Failed to propose activity.'); // Show failure toast
-      });
+  // Reject Credit Handler
+  const handleRejectCredit = async (credit) => {
+    if (typeof setCredits !== 'function') {
+      console.error('setCredits prop is not a function');
+      showToast('error', 'Internal error: Unable to update credits.');
+      return;
+    }
+
+    setProcessingIds((prev) => [...prev, credit._id]);
+    console.log(`Rejecting credit with ID: ${credit._id}`);
+
+    try {
+      const response = await api.put(`/credit/reject/${credit._id}`);
+      
+      // Optional: Check response status or data if necessary
+      if (response.status === 200) {
+        showToast('success', 'Rejected'); // Show rejection toast
+
+        // Update the UI: Remove the rejected credit from the list
+        setCredits((prevCredits) =>
+          prevCredits.filter((item) => item._id !== credit._id)
+        );
+      } else {
+        throw new Error('Unexpected response from the server.');
+      }
+    } catch (error) {
+      console.error('Error rejecting credit:', error);
+      showToast('error', 'Failed to reject');
+    } finally {
+      setProcessingIds((prev) => prev.filter((id) => id !== credit._id));
+    }
   };
 
-  return (
-    <div className="p-6 sm:p-8 bg-gray-50 min-h-screen">
-      {/* Top Section */}
-      <div className="flex justify-between items-center mb-6">
-        <button
-          onClick={() => navigate(`/client/home`)}
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-        >
-          <ArrowLeft className="w-5 h-5" /> Back
-        </button>
-        <button
-          onClick={handleCreateActivity}
-          className="px-4 py-2 bg-nucolor3 rounded-lg hover:bg-blue-700 flex items-center gap-2"
-        >
-          <Plus className="w-5 h-5" /> Propose Activity
-        </button>
-      </div>
-
-      <h2 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-6">
-        Propose New Activity
-      </h2>
-
-      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Title and Type */}
-          <InputField
-            label="Activity Title"
-            name="title"
-            value={activity.title}
-            onChange={handleInputChange}
-          />
-          {/* Type is pre-set to "College Driven" and disabled */}
-          <SelectField
-            label="Type"
-            name="type"
-            value={activity.type}
-            options={[
-              { value: "College Driven", label: "College Driven" }, // Pre-set option
-            ]}
-            onChange={handleInputChange}
-            disabled // Make the field unclickable
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-          {/* Organizer and Description */}
-          <InputField
-            label="Organizer"
-            name="organizer"
-            value={activity.organizer}
-            onChange={handleInputChange}
-          />
-          <InputField
-            label="Description"
-            name="description"
-            value={activity.description}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-          {/* Dates and Time */}
-          <InputField
-            label="Start Date"
-            name="startDate"
-            type="date"
-            value={activity.startDate}
-            onChange={handleInputChange}
-          />
-          <InputField
-            label="End Date"
-            name="endDate"
-            type="date"
-            value={activity.endDate}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="mt-6">
-          {/* Time */}
-          <InputField
-            label="Time"
-            name="time"
-            type="time"
-            value={activity.time}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="mt-6">
-          {/* Department */}
-          <SelectField
-            label="Department"
-            name="department"
-            value={activity.department}
-            options={departmentItems.filter(
-              (item) => item.value !== "All Departments" // Filter out "All Departments"
-            )}
-            onChange={handleInputChange}
-          />
-          <InputField
-            label="Image"
-            name="image"
-            value={activity.image}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="mt-6">
-          {/* Radio buttons for Voluntary and Unpaid */}
-          <RadioButtonGroup
-            label="Is this activity voluntary and unpaid?"
-            name="isVoluntaryAndUnpaid"
-            value={activity.isVoluntaryAndUnpaid}
-            options={[
-              { value: true, label: "Yes" },
-              { value: false, label: "No" },
-            ]}
-            onChange={(e) =>
-              setActivity({
-                ...activity,
-                isVoluntaryAndUnpaid: e.target.value === "true",
-              })
-            }
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-          {/* Objectives */}
-          <TextAreaField
-            label="Objectives"
-            name="objectives"
-            value={activity.objectives}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="flex items-center gap-2 mt-6">
-          {/* The "Activated" checkbox is checked by default and unclickable */}
-          <input
-            type="checkbox"
-            className="checkbox checkbox-success"
-            name="isActivated"
-            checked={activity.isActivated}
-            disabled // Make the checkbox unclickable
-          />
-          <span>Activity Activated</span>
-        </div>
-      </div>
-
-      {error && <div className="mt-4 text-red-500">{error}</div>}
-    </div>
-  );
-};
-
-// Reusable Input Field Component
-const InputField = ({ label, name, value, onChange, type = "text" }) => {
-  return (
-    <div className="mb-4">
-      <label className="text-sm font-semibold text-gray-700">{label}:</label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
-      />
-    </div>
-  );
-};
-
-// Reusable TextArea Field Component
-const TextAreaField = ({ label, name, value, onChange }) => {
-  return (
-    <div className="mb-4">
-      <label className="text-sm font-semibold text-gray-700">{label}:</label>
-      <textarea
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
-        rows={5}
-      />
-    </div>
-  );
-};
-
-// Reusable Select Field Component for Dropdowns
-const SelectField = ({ label, name, value, onChange, options, disabled }) => {
-  return (
-    <div className="mb-4">
-      <label className="text-sm font-semibold text-gray-700">{label}:</label>
-      <select
-        name={name}
-        value={value}
-        onChange={onChange}
-        disabled={disabled} // Disable the dropdown if needed
-        className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
+  if (loading) {
+    // Render simplified skeleton placeholders when data is loading
+    return (
+      <>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <tr className="hover:bg-gray-100" key={index}>
+            <th>
+              <label>
+                <Skeleton circle height={24} width={24} />
+              </label>
+            </th>
+            <td>
+              <Skeleton width={150} height={20} />
+            </td>
+            <td>
+              <Skeleton width={100} height={20} />
+            </td>
+            <td>
+              <Skeleton width={80} height={20} />
+            </td>
+            <td>
+              <div className='flex flex-row gap-3'>
+                <Skeleton width={80} height={30} />
+                <Skeleton width={80} height={30} />
+                <Skeleton width={80} height={30} />
+              </div>
+            </td>
+          </tr>
         ))}
-      </select>
-    </div>
-  );
-};
+      </>
+    );
+  }
 
-// Reusable Radio Button Group Component
-const RadioButtonGroup = ({ label, name, value, onChange, options }) => {
+  if (!credits || credits.length === 0) {
+    return (
+      <tr>
+        <td colSpan="5" className="text-center">
+          No credits found.
+        </td>
+      </tr>
+    );
+  }
+
   return (
-    <div className="mb-4">
-      <label className="text-sm font-semibold text-gray-700">{label}</label>
-      <div className="mt-2 flex gap-4">
-        {options.map((option) => (
-          <label key={option.value} className="flex items-center">
-            <input
-              type="radio"
-              name={name}
-              value={option.value}
-              checked={value === option.value}
-              onChange={onChange}
-              className="form-radio text-blue-600"
-            />
-            <span className="ml-2">{option.label}</span>
-          </label>
-        ))}
-      </div>
-    </div>
+    <>
+      {credits.map((credit) => {
+        const user = credit.userId || {};
+        const fullName = `${user.firstName || 'First'} ${user.lastName || 'Last'}`;
+        const email = user.email || 'No email';
+        const isProcessing = processingIds.includes(credit._id);
+
+        return (
+          <tr className="hover:bg-gray-100" key={credit._id}>
+            <th>
+              <label>
+                {/* If you intend to have a checkbox or similar, add it here */}
+              </label>
+            </th>
+            <td>
+              <div className="flex items-center gap-3">
+                <div className="avatar select-none pointer-events-none">
+                  <div className="mask mask-squircle h-12 w-12">
+                    <img
+                      className="rounded-full"
+                      src={user.avatar || '/default-avatar.png'}
+                      alt={fullName}
+                      onError={(e) => { e.target.src = '/default-avatar.png'; }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="font-bold">{fullName}</div>
+                  <div className="text-sm opacity-50">{email}</div>
+                </div>
+              </div>
+            </td>
+            <td>{credit.title || 'No Title'}</td>
+            <td>{credit.totalHoursRendered !== undefined ? credit.totalHoursRendered : 'N/A'}</td>
+            <td>
+              <div className='flex gap-3'>
+                <button
+                  className="btn btn-ghost btn-md"
+                  onClick={() => handleViewCredit(credit)}
+                  disabled={isProcessing}
+                  aria-label={`View details for ${fullName}`}
+                >
+                  View
+                </button>
+                <button
+                  className="btn btn-rounded bg-lime-200 btn-md"
+                  onClick={() => handleApproveCredit(credit)}
+                  disabled={isProcessing}
+                  aria-label={`Approve credit for ${fullName}`}
+                >
+                  Approve
+                </button>
+                <button
+                  className="btn btn-rounded bg-red-400 btn-md"
+                  onClick={() => handleRejectCredit(credit)}
+                  disabled={isProcessing}
+                  aria-label={`Reject credit for ${fullName}`}
+                >
+                  Reject
+                </button>
+              </div>
+            </td>
+          </tr>
+        );
+      })}
+    </>
   );
 };
 
-export default ProposeActivityPage;
+// Adding PropTypes for better type checking and developer experience
+AppraisalTableMap.propTypes = {
+  credits: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      userId: PropTypes.shape({
+        avatar: PropTypes.string,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+        email: PropTypes.string,
+        department: PropTypes.string,
+        usertype: PropTypes.string,
+        isActivated: PropTypes.bool,
+      }),
+      title: PropTypes.string,
+      totalHoursRendered: PropTypes.number,
+    })
+  ).isRequired,
+  loading: PropTypes.bool.isRequired,
+  setCredits: PropTypes.func.isRequired, // Ensure setCredits is a function
+};
+
+export default AppraisalTableMap;

@@ -16,6 +16,7 @@ const EditActivityPage = () => {
     type: "",
     objectives: "", // Added objectives field
     organizer: "",
+    location: "", // Added location field
     startDate: "",
     endDate: "",
     time: "",
@@ -139,7 +140,12 @@ const EditActivityPage = () => {
           />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-          {/* Objectives Field */}
+          <InputField
+            label="Location" // Added the Location field
+            name="location"
+            value={activity.location}
+            onChange={handleInputChange}
+          />
           <TextAreaField
             label="Objectives"
             name="objectives"

@@ -10,6 +10,7 @@ const ProposeActivityPage = () => {
   const [activity, setActivity] = useState({
     title: "",
     description: "",
+    location: "", // Added location field
     department: "",
     type: "College Driven", // Set type to College Driven by default
     objectives: "", // Added objectives field
@@ -41,6 +42,7 @@ const ProposeActivityPage = () => {
       !activity.title.trim() ||
       !activity.organizer.trim() ||
       !activity.description.trim() ||
+      !activity.location.trim() || // Check for location
       !activity.startDate ||
       !activity.endDate ||
       !activity.time ||
@@ -135,6 +137,23 @@ const ProposeActivityPage = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* Location */}
+          <InputField
+            label="Location" // New field for location
+            name="location"
+            value={activity.location}
+            onChange={handleInputChange}
+          />
+          {/* Objectives */}
+          <TextAreaField
+            label="Objectives"
+            name="objectives"
+            value={activity.objectives}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           {/* Dates and Time */}
           <InputField
             label="Start Date"
@@ -198,16 +217,6 @@ const ProposeActivityPage = () => {
                 isVoluntaryAndUnpaid: e.target.value === "true",
               })
             }
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-          {/* Objectives */}
-          <TextAreaField
-            label="Objectives"
-            name="objectives"
-            value={activity.objectives}
-            onChange={handleInputChange}
           />
         </div>
 

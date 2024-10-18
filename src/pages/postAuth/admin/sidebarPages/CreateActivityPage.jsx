@@ -13,6 +13,7 @@ const CreateActivityPage = () => {
     type: "",
     objectives: "", // Added objectives field
     organizer: "",
+    location: "", // Added location field
     startDate: "",
     endDate: "",
     time: "",
@@ -21,7 +22,7 @@ const CreateActivityPage = () => {
     isActivated: true,
     isVoluntaryAndUnpaid: false,
     adminApproval: {
-      isApproved: false,
+      isApproved: false, // Default to false, but we will set it to true when submitting
     },
   });
   const [error, setError] = useState(null);
@@ -36,8 +37,17 @@ const CreateActivityPage = () => {
   };
 
   const handleCreateActivity = () => {
+    // Before making the API request, set isApproved to true
+    const updatedActivity = {
+      ...activity,
+      adminApproval: {
+        ...activity.adminApproval,
+        isApproved: true, // Set isApproved to true before submitting
+      },
+    };
+
     api
-      .post("/activity/new", activity, {
+      .post("/activity/new", updatedActivity, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -109,7 +119,24 @@ const CreateActivityPage = () => {
           />
         </div>
 
-        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* Location and Department */}
+          <InputField
+            label="Location"
+            name="location"
+            value={activity.location}
+            onChange={handleInputChange}
+          />
+          <SelectField
+            label="Department"
+            name="department"
+            value={activity.department}
+            options={departmentItems.filter(
+              (item) => item.value !== "All Departments" // Filter out "All Departments"
+            )}
+            onChange={handleInputChange}
+          />
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           {/* Dates and Time */}
@@ -122,8 +149,8 @@ const CreateActivityPage = () => {
           />
           <InputField
             label="End Date"
-            name="endDate"
             type="date"
+            name="endDate"
             value={activity.endDate}
             onChange={handleInputChange}
           />
@@ -141,18 +168,9 @@ const CreateActivityPage = () => {
         </div>
 
         <div className="mt-6">
-          {/* Department */}
-          <SelectField
-            label="Department"
-            name="department"
-            value={activity.department}
-            options={departmentItems.filter(
-              (item) => item.value !== "All Departments" // Filter out "All Departments"
-            )}
-            onChange={handleInputChange}
-          />
+          {/* Image URL */}
           <InputField
-            label="Image"
+            label="Image URL"
             name="image"
             value={activity.image}
             onChange={handleInputChange}
