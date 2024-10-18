@@ -14,6 +14,7 @@ const ViewParticipatedActivitiesPage = () => {
   const [approvedCredits, setApprovedCredits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [noCreditsMessage, setNoCreditsMessage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,17 +22,24 @@ const ViewParticipatedActivitiesPage = () => {
       const fetchApprovedCredits = async () => {
         try {
           const { data } = await api.get(`/credit/approved-credits/${user._id}`);
-          const { approvedCredits } = data;
-
-          if (Array.isArray(approvedCredits)) {
-            setApprovedCredits(approvedCredits);
+          
+          // Handling the "No credits found" message in the response.
+          if (Array.isArray(data.approvedCredits)) {
+            setApprovedCredits(data.approvedCredits);
+          } else if (data.message) {
+            setNoCreditsMessage(data.message); // Handle message if no credits
           } else {
-            throw new Error("Unexpected response format: approvedCredits is not an array.");
+            setNoCreditsMessage("No credits available.");
           }
-
+          
           setIsLoading(false);
         } catch (err) {
-          setError("Failed to load data");
+          // Check for the status code 404, handle it as "no credits found"
+          if (err.response && err.response.status === 404) {
+            setNoCreditsMessage("No approved credits found for this user.");
+          } else {
+            setError("Failed to load data");
+          }
           setIsLoading(false);
         }
       };
@@ -71,7 +79,6 @@ const ViewParticipatedActivitiesPage = () => {
     return initialTotals;
   }, [approvedCredits]);
 
-  // Define totalAccumulatedHours using useMemo
   const totalAccumulatedHours = useMemo(() => {
     return (
       totals.institutional +
@@ -81,61 +88,13 @@ const ViewParticipatedActivitiesPage = () => {
     );
   }, [totals]);
 
-  // Function to get points based on hours
-  const getPointsForHours = (hours) => {
-    if (hours >= 7 && hours <= 16.99)
-      return {
-        extensionServices: 1.5,
-        collegeDriven: 3.5,
-        institutional: 3.5,
-        capacityBuilding: 2,
-      };
-    if (hours >= 17 && hours <= 48.99)
-      return {
-        extensionServices: 3,
-        collegeDriven: 7,
-        institutional: 7,
-        capacityBuilding: 4,
-      };
-    if (hours >= 49 && hours <= 64.99)
-      return {
-        extensionServices: 4.5,
-        collegeDriven: 10.5,
-        institutional: 10.5,
-        capacityBuilding: 6,
-      };
-    if (hours >= 65 && hours <= 77.99)
-      return {
-        extensionServices: 6,
-        collegeDriven: 14,
-        institutional: 14,
-        capacityBuilding: 8,
-      };
-    if (hours >= 78)
-      return {
-        extensionServices: 7.5,
-        collegeDriven: 18,
-        institutional: 18,
-        capacityBuilding: 10,
-      };
-    return {
-      extensionServices: 0,
-      collegeDriven: 0,
-      institutional: 0,
-      capacityBuilding: 0,
-    };
-  };
-
-  // Get equivalent points
   const equivalentPoints = {
-    extensionServices: getPointsForHours(totals.extensionServices)
-      .extensionServices,
-    collegeDriven: getPointsForHours(totals.collegeDriven).collegeDriven,
-    institutional: getPointsForHours(totals.institutional).institutional,
-    capacityBuilding: getPointsForHours(totals.capacityBuilding).capacityBuilding,
+    extensionServices: 1.5,
+    collegeDriven: 3.5,
+    institutional: 3.5,
+    capacityBuilding: 2,
   };
 
-  // Calculate the total equivalent points
   const equivalentTotalPoints = useMemo(() => {
     return Object.values(equivalentPoints).reduce((acc, val) => acc + val, 0);
   }, [equivalentPoints]);
@@ -207,7 +166,6 @@ const ViewParticipatedActivitiesPage = () => {
     }.pdf`;
     doc.save(filename);
   };
-  
 
   if (isLoading || userLoading) {
     return (
@@ -220,6 +178,24 @@ const ViewParticipatedActivitiesPage = () => {
 
   if (error) {
     return <div className="text-red-500 text-center mt-8">{error}</div>;
+  }
+
+  if (noCreditsMessage) {
+    return (
+      <div className="text-center mt-8 flex justify-center items-center h-[calc(100vh_-_80px)]">
+        <div className="flex flex-col ">
+          <button
+            onClick={() => navigate("/client/profile")}
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
+          >
+            <ArrowLeft className="w-5 h-5" /> Back
+          </button>
+          <div className="card bg-white p-12 shadow-lg text-5xl">
+            {noCreditsMessage}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -320,9 +296,7 @@ const ViewParticipatedActivitiesPage = () => {
         </table>
       </div>
 
-      {/* Updated Progress Bars using rc-progress */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        {/* Accumulated Hours Progress Bar */}
         <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Accumulated Hours of Community Service
@@ -344,7 +318,6 @@ const ViewParticipatedActivitiesPage = () => {
           </div>
         </div>
 
-        {/* Equivalent Total Points Progress Bar */}
         <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Equivalent Total Points
@@ -363,7 +336,8 @@ const ViewParticipatedActivitiesPage = () => {
                 {equivalentTotalPoints}/{maxPoints}
               </span>
               <span className="text-sm text-gray-500">
-                {((equivalentTotalPoints / maxPoints) * 100).toFixed(0)}% Completed
+                {((equivalentTotalPoints / maxPoints) * 100).toFixed(0)}%
+                Completed
               </span>
             </div>
           </div>
