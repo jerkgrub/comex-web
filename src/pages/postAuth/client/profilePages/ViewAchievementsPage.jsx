@@ -1,26 +1,37 @@
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react"; // Import Download icon from lucide-react
+import { Accordion } from "flowbite-react"; // Import Flowbite Accordion
+import api from "../../../../api"; // Import API for fetching data
+import useFetchUserData from "../../../../components/hooks/useFetchUserData";
+import Skeleton from "react-loading-skeleton"; // Import Skeleton
+import 'react-loading-skeleton/dist/skeleton.css'; // Import Skeleton CSS
 
 const ViewAchievementsPage = () => {
   const navigate = useNavigate();
+  const { user, loading: userLoading } = useFetchUserData(); // Fetch user data to get user ID
+  const [achievements, setAchievements] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state for fetching credits
 
-  // Dummy achievements data for UI backbone
-  const achievements = [
-    {
-      _id: "1",
-      title: "First Place in Hackathon",
-      description: "Won the national hackathon in 2024",
-      dateAchieved: "2024-06-15T00:00:00.000Z",
-      hours: 10,
-    },
-    {
-      _id: "2",
-      title: "Best Project Award",
-      description: "Received the best project award in IT department",
-      dateAchieved: "2023-12-01T00:00:00.000Z",
-      hours: 15,
-    },
-  ];
+  // Fetch the credits based on the user ID from the backend
+  useEffect(() => {
+    const fetchCredits = async () => {
+      if (user._id) {
+        try {
+          const response = await api.get(`/credit/certificates/${user._id}`);
+          setAchievements(response.data.approvedCredits);
+        } catch (error) {
+          console.error("Error fetching credits:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    if (!userLoading) {
+      fetchCredits();
+    }
+  }, [user, userLoading]);
 
   return (
     <div className="p-8 min-h-screen">
@@ -34,35 +45,60 @@ const ViewAchievementsPage = () => {
         </button>
       </div>
 
-      <h2 className="text-5xl font-extrabold text-gray-800 mb-6">My Certificates</h2>
+      <h2 className="text-5xl font-extrabold text-gray-800 mb-6">
+        Participated Activities
+      </h2>
 
-      {achievements.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6">
+      {/* Display skeletons or actual achievements */}
+      {loading ? (
+        <Accordion collapseAll>
+          {Array(5)
+            .fill()
+            .map((_, index) => (
+              <Accordion.Panel key={index}>
+                <Accordion.Title className="flex justify-between items-center">
+                  <div className="flex-1">
+                    <Skeleton width={`80%`} height={20} />
+                  </div>
+                  <Skeleton width={120} height={20} />
+                </Accordion.Title>
+                <Accordion.Content>
+                  <Skeleton width={`90%`} height={20} />
+                  <Skeleton width={`40%`} height={20} className="mt-2" />
+                  <Skeleton width={120} height={30} className="mt-4" />
+                </Accordion.Content>
+              </Accordion.Panel>
+            ))}
+        </Accordion>
+      ) : achievements.length > 0 ? (
+        <Accordion collapseAll>
           {achievements.map((achievement) => (
-            <div
-              key={achievement._id}
-              className="bg-white p-6 rounded-lg shadow-lg flex justify-between items-center"
-            >
-              <div>
-                <h3 className="text-2xl font-semibold text-gray-800">
-                  {achievement.title}
-                </h3>
-                <p className="text-gray-600">{achievement.description}</p>
-                <p className="text-sm text-gray-500">
-                  {new Date(achievement.dateAchieved).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="flex flex-col items-end">
-                <p className="text-lg font-bold text-nucolor3">
-                  {achievement.hours} Hours
-                </p>
-              </div>
-            </div>
+            <Accordion.Panel key={achievement._id}>
+              <Accordion.Title className="flex justify-between items-center">
+                <div className="flex-1">{achievement.title}</div>
+                <span className="text-sm text-gray-500">
+                  Date Received: {new Date(achievement.endDate).toLocaleDateString()}
+                </span>
+              </Accordion.Title>
+              <Accordion.Content>
+                <div className="flex justify-between items-center">
+                  <div className="text-gray-600">
+                    Description: {achievement.facultyReflection || "No description available."}
+                  </div>
+                  <button className="flex items-center text-blue-600 hover:text-blue-800">
+                    <Download className="w-5 h-5 mr-1" /> Download PDF
+                  </button>
+                </div>
+                <div className="text-gray-600">
+                  Total Hours Rendered: {achievement.totalHoursRendered || 0} hours
+                </div>
+              </Accordion.Content>
+            </Accordion.Panel>
           ))}
-        </div>
+        </Accordion>
       ) : (
         <div className="text-center text-gray-600">
-          You have not achieved anything yet.
+          You have not participated in any activities yet.
         </div>
       )}
     </div>

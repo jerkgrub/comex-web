@@ -305,6 +305,9 @@ function AutoCert() {
 
         {/* Instructions */}
         <div className="mb-8 p-4 bg-blue-50 border-l-4 border-blue-500">
+        <p className="text-gray-700">
+            <strong>Note to Admin:</strong> This is a tool to manually generate up to 150+ certificates using automation, so this can be used for small-scale events. Example use: Certificates of Participations.
+          </p>
           <p className="text-gray-700">
             <strong>Instructions:</strong> Please upload a background image that
             is ideally 8.5 x 11 inches (Letter Size) for optimum generating of
