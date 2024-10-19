@@ -1,6 +1,8 @@
+// src/components/ItemOptions.jsx
+
 const usertypeItems = [
   { label: "All Usertypes", value: "All Usertypes" },
-  { label: "Admin", value: "Admin" },
+  // Removed the "Admin" option as per the revision
   { label: "Comex Coordinator", value: "Comex Coordinator" },
   { label: "Faculty", value: "Faculty" },
   { label: "NTP", value: "NTP" },
@@ -20,11 +22,22 @@ const departmentItems = [
   { label: "Others", value: "Others" },
 ];
 
+const ntpDepartmentItems = [
+  { label: "All Departments", value: "All Departments" },
+  { label: "Admission", value: "Admission" },
+  { label: "Treasury", value: "Treasury" },
+  { label: "ITRO", value: "ITRO" },
+  { label: "Clinic", value: "Clinic" },
+  { label: "Guidance", value: "Guidance" },
+  { label: "SDAO", value: "SDAO" },
+  { label: "Security", value: "Security" },
+  { label: "Housekeeping", value: "Housekeeping" },
+];
+
 const activityTypeItems = [
   { label: "All Activities", value: "" },
   { label: "Institutional", value: "Institutional" },
   { label: "College Driven", value: "College Driven" },
 ];
 
-
-export { usertypeItems, departmentItems, activityTypeItems };
+export { usertypeItems, departmentItems, activityTypeItems, ntpDepartmentItems };

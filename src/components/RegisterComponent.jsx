@@ -1,3 +1,5 @@
+// src/components/RegisterComponent.jsx
+
 import { useState, useEffect } from "react";
 import TextInput from "./inputs/TextInput";
 import SelectInput from "./inputs/SelectInput";
@@ -6,8 +8,7 @@ import TermsOfService from "./inputs/TermsOfService";
 import ButtonRegister from "./inputs/ButtonRegister";
 import Alternate from "./inputs/Alternate";
 import MobileNumberInput from "./inputs/MobileNumberInput";
-import UserTypeOptions from "./inputs/UserTypeOptions";
-import DepartmentOptions from "./inputs/DepartmentOptions";
+import { usertypeItems, departmentItems, ntpDepartmentItems } from "./ItemOptions"; // Corrected import
 import UseRegister from "./hooks/UseRegister";
 import UseFormValidation from "./hooks/UseFormValidation";
 
@@ -46,26 +47,29 @@ const RegisterComponent = () => {
   // Effect to handle enabling/disabling fields based on usertype
   useEffect(() => {
     if (!usertype) {
-      // If no usertype is selected, disable both fields
       setIsIdDisabled(true);
       setIsDateHiredDisabled(true);
     } else if (usertype === "Student") {
-      // Enable ID Number and disable Date Hired for students
       setIsIdDisabled(false);
       setIsDateHiredDisabled(true);
       setDateHired(""); // Clear dateHired when disabled
-    } else if (["Faculty", "NTP", "COMEX Coordinator"].includes(usertype)) {
-      // Enable ID Number and disable Date Hired for these user types
+    } else if (["Faculty", "NTP", "Comex Coordinator"].includes(usertype)) {
       setIsIdDisabled(false);
-      setIsDateHiredDisabled(true);
-      setDateHired(""); // Clear dateHired when disabled
-    } else {
-      // Disable ID Number and enable Date Hired for other user types
-      setIsIdDisabled(true);
-      setIdNumber(""); // Clear idNumber when disabled
       setIsDateHiredDisabled(false);
+    } else {
+      // Handle any other usertypes if necessary
+      setIsIdDisabled(true);
+      setIsDateHiredDisabled(true);
     }
   }, [usertype]);
+
+  // Function to determine the department options based on usertype
+  const getDepartmentOptions = () => {
+    if (usertype === "NTP") {
+      return ntpDepartmentItems;
+    }
+    return departmentItems;
+  };
 
   const handleSubmit = () => {
     const fields = {
@@ -102,12 +106,10 @@ const RegisterComponent = () => {
     }
   };
 
-  // New function to handle accepting terms from the modal
   const handleAcceptTerms = () => {
     setIsChecked(true);
   };
 
-  // New function to handle declining terms from the modal
   const handleDeclineTerms = () => {
     setIsChecked(false);
   };
@@ -125,7 +127,7 @@ const RegisterComponent = () => {
           setUsertype(e.target.value);
           validateField("usertype", e.target.value);
         }}
-        options={UserTypeOptions()}
+        options={usertypeItems} // Correctly uses label and value
         error={!!errors.usertype}
         errorMessage={errors.usertype}
       />
@@ -170,7 +172,7 @@ const RegisterComponent = () => {
             placeholder={
               usertype === "Student"
                 ? "2XXX-1XXXX"
-                : ["Faculty", "NTP", "COMEX Coordinator"].includes(usertype)
+                : ["Faculty", "NTP", "Comex Coordinator"].includes(usertype)
                 ? "1X-0XXX"
                 : ""
             }
@@ -179,7 +181,7 @@ const RegisterComponent = () => {
             maxLength={
               usertype === "Student"
                 ? 11 // e.g., 2XXX-1XXXX
-                : ["Faculty", "NTP", "COMEX Coordinator"].includes(usertype)
+                : ["Faculty", "NTP", "Comex Coordinator"].includes(usertype)
                 ? 7 // e.g., 1X-0XXX
                 : 0
             }
@@ -238,7 +240,7 @@ const RegisterComponent = () => {
           setDepartment(e.target.value);
           validateField("department", e.target.value);
         }}
-        options={DepartmentOptions()}
+        options={getDepartmentOptions()} // Correctly uses label and value
         error={!!errors.department}
         errorMessage={errors.department}
       />

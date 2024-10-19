@@ -1,3 +1,5 @@
+// src/components/inputs/SelectInput.jsx
+
 import React from 'react';
 
 const SelectInput = ({
@@ -12,7 +14,7 @@ const SelectInput = ({
 }) => {
   return (
     <div className="mb-5">
-      {label && <h2 className="mb-1 pl-1 font-semibold">{label}</h2>}
+      {label && <label className="mb-1 pl-1 font-semibold">{label}</label>}
       <select
         value={value}
         onChange={onChange}
@@ -22,8 +24,8 @@ const SelectInput = ({
           {placeholder}
         </option>
         {options.map((option, index) => (
-          <option key={index} value={option}>
-            {option}
+          <option key={index} value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>

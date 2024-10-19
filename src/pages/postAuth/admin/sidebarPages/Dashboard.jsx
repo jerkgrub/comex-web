@@ -1,10 +1,8 @@
 // src/pages/Dashboard.jsx
 import {
-  BookCopy,
   CalendarClock,
   ClipboardCheck,
   FileText,
-  SquareCheckBig,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import DataCard from "../../../../components/DataCard";

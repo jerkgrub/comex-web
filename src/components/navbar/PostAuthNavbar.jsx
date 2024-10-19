@@ -37,22 +37,29 @@ const menuItemsByUserType = {
     { name: 'Home', link: '/client/home' },
     { name: 'About Us', link: '/client/about-us' },
     { name: 'Highlights', link: '/client/highlights' },
-    { name: 'Activities', link: '/client/view-activities' },
+    {
+      name: 'Activities',
+      subItems: [
+        { name: 'View Activities', link: '/client/view-activities' },
+        { name: 'Evaluation Forms', link: '/client/evaluation-forms' },
+      ]
+    },
     {
       name: 'Application for Engagement Appraisal',
       link: '/client/engagement-appraisals'
     }
   ],
   NTP: [
-    { name: 'NTP Home', link: '/ntp/home' },
+    { name: 'Home', link: '/client/home' },
+    { name: 'About Us', link: '/client/about-us' },
+    { name: 'Highlights', link: '/client/highlights' },
     {
-      name: 'Tasks',
+      name: 'Activities',
       subItems: [
-        { name: 'My Tasks', link: '/ntp/my-tasks' },
-        { name: 'Submit Report', link: '/ntp/submit-report' }
+        { name: 'View Activities', link: '/client/view-activities' },
+        { name: 'Evaluation Forms', link: '/client/evaluation-forms' },
       ]
     },
-    { name: 'NTP Guidelines', link: '/ntp/guidelines' }
   ],
   Student: [
     { name: 'Home', link: '/client/home' },

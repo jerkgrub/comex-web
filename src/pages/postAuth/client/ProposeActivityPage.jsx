@@ -4,7 +4,7 @@ import api from "../../../api"; // Updated to use the `api` instance
 import { ArrowLeft, Plus } from "lucide-react";
 import { departmentItems } from "../../../components/ItemOptions"; // Import department items
 import { showToast } from "../../../components/Toast"; // Assuming you have this utility for showing toast messages
-  
+
 const ProposeActivityPage = () => {
   const navigate = useNavigate();
   const [activity, setActivity] = useState({
@@ -17,7 +17,10 @@ const ProposeActivityPage = () => {
     organizer: "",
     startDate: "",
     endDate: "",
+    registrationStart: "", // New registration start field
+    registrationEnd: "", // New registration end field
     time: "",
+    hours: "", // Added hours field
     image:
       "https://images.gmanews.tv/webpics/2023/09/cleanupdrive(1)_2023_09_16_19_15_58.jpg",
     isActivated: true, // Default set to true and unclickable
@@ -33,10 +36,6 @@ const ProposeActivityPage = () => {
     setActivity({ ...activity, [name]: value });
   };
 
-  const handleImageChange = (e) => {
-    setActivity({ ...activity, image: e.target.files[0] }); // Handle image file
-  };
-
   const validateFields = () => {
     if (
       !activity.title.trim() ||
@@ -45,13 +44,16 @@ const ProposeActivityPage = () => {
       !activity.location.trim() || // Check for location
       !activity.startDate ||
       !activity.endDate ||
+      !activity.registrationStart || // Check registration start date
+      !activity.registrationEnd || // Check registration end date
       !activity.time ||
       !activity.department ||
       activity.department === "Select an option" || // Must not be default
       activity.isVoluntaryAndUnpaid === null ||
-      !activity.objectives.trim()
+      !activity.objectives.trim() ||
+      !activity.hours // Ensure hours is filled
     ) {
-      showToast('error', 'Please fill in all required fields.');
+      showToast("error", "Please fill in all required fields.");
       return false;
     }
     return true;
@@ -67,12 +69,12 @@ const ProposeActivityPage = () => {
         },
       })
       .then(() => {
-        showToast('success', 'Activity proposed successfully!'); // Show success toast
+        showToast("success", "Activity proposed successfully!"); // Show success toast
         navigate("/client/home");
       })
       .catch(() => {
         setError("Failed to create activity");
-        showToast('error', 'Failed to propose activity.'); // Show failure toast
+        showToast("error", "Failed to propose activity."); // Show failure toast
       });
   };
 
@@ -154,7 +156,7 @@ const ProposeActivityPage = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-          {/* Dates and Time */}
+          {/* Dates */}
           <InputField
             label="Start Date"
             name="startDate"
@@ -171,13 +173,38 @@ const ProposeActivityPage = () => {
           />
         </div>
 
-        <div className="mt-6">
-          {/* Time */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* Registration Period */}
+          <InputField
+            label="Registration Start Date"
+            name="registrationStart"
+            type="date"
+            value={activity.registrationStart}
+            onChange={handleInputChange}
+          />
+          <InputField
+            label="Registration End Date"
+            name="registrationEnd"
+            type="date"
+            value={activity.registrationEnd}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* Time and Hours */}
           <InputField
             label="Time"
             name="time"
             type="time"
             value={activity.time}
+            onChange={handleInputChange}
+          />
+          <InputField
+            label="Total Hours"
+            name="hours"
+            type="number"
+            value={activity.hours}
             onChange={handleInputChange}
           />
         </div>
