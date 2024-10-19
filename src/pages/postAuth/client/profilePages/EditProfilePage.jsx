@@ -25,6 +25,9 @@ const EditProfilePage = () => {
   const [department, setDepartment] = useState("");
   const [email, setEmail] = useState("");
   const [usertype, setUsertype] = useState("");
+  const [avatar, setAvatar] = useState(userData.avatar || "/default-avatar.png");
+  const [selectedAvatarFile, setSelectedAvatarFile] = useState(null);
+  const [isAvatarSaving, setIsAvatarSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -42,9 +45,45 @@ const EditProfilePage = () => {
       setDepartment(userData.department || "");
       setEmail(userData.email || "");
       setUsertype(userData.usertype || "");
+      setAvatar(userData.avatar || "/default-avatar.png");
       setLoading(false);
     }
   }, [userData]);
+
+  // Handle avatar file change
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedAvatarFile(file);
+    }
+  };
+
+  // Handle saving the avatar
+  const handleSaveAvatar = () => {
+    if (selectedAvatarFile) {
+      setIsAvatarSaving(true);
+      const formDataAvatar = new FormData();
+      formDataAvatar.append("avatar", selectedAvatarFile);
+
+      api
+        .put(`/users/upload-avatar/${userData._id}`, formDataAvatar, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          if (response.data?.avatarUrl) {
+            setAvatar(response.data.avatarUrl);
+            showToast("success", "Avatar updated successfully");
+            setSelectedAvatarFile(null); // Clear the selected file
+          } else {
+            showToast("error", "Failed to get updated avatar URL");
+          }
+        })
+        .catch(() => showToast("error", "Failed to upload avatar"))
+        .finally(() => {
+          setIsAvatarSaving(false);
+        });
+    }
+  };
 
   const handleSaveChanges = () => {
     const fields = {
@@ -56,7 +95,7 @@ const EditProfilePage = () => {
       department,
       email,
     };
-  
+
     if (validateForm(fields)) {
       const updatedUser = {
         firstName,
@@ -67,14 +106,11 @@ const EditProfilePage = () => {
         department,
         email,
       };
-  
+
       api
         .put(`/users/update/${userData._id}`, updatedUser)
         .then((response) => {
-          // Assuming response.data.updatedUser contains the updated user data
           const updatedUserData = response.data.updatedUser;
-  
-          // Update local state with the updated user data
           setFirstName(updatedUserData.firstName);
           setMiddleName(updatedUserData.middleName);
           setLastName(updatedUserData.lastName);
@@ -83,7 +119,7 @@ const EditProfilePage = () => {
           setDepartment(updatedUserData.department);
           setEmail(updatedUserData.email);
           setUsertype(updatedUserData.usertype);
-  
+
           showToast("success", "Profile updated successfully!");
           navigate(`/client/profile`);
         })
@@ -128,11 +164,19 @@ const EditProfilePage = () => {
         {/* Avatar and Usertype */}
         <div className="flex flex-col items-center border-r border-gray-200 pr-6">
           <img
-            src={userData.avatar || "/default-avatar.png"}
+            src={avatar}
             alt="User Avatar"
             className="h-48 w-48 rounded-full border-4 border-gray-300 shadow-md mb-4"
           />
-          <p className="text-2xl font-semibold text-gray-700">
+          <input type="file" onChange={handleAvatarChange} className="mb-4" />
+          <button
+            onClick={handleSaveAvatar}
+            disabled={isAvatarSaving}
+            className="btn bg-nucolor3 text-black rounded-lg hover:bg-blue-700"
+          >
+            {isAvatarSaving ? "Saving..." : "Save Avatar"}
+          </button>
+          <p className="text-2xl font-semibold text-gray-700 mt-4">
             {usertype || "N/A"}
           </p>
         </div>
