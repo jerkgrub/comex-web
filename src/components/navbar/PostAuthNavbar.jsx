@@ -255,7 +255,7 @@ const PostAuthNavbar = () => {
                   width={80}
                 />
               ) : (
-                user.firstName + ' ' + user.usertype
+                user.firstName + ' - ' + user.usertype
               )}
             </div>
             <ul
