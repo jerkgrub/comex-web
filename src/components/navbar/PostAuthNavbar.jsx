@@ -32,6 +32,10 @@ const menuItemsByUserType = {
         { name: 'Propose an Activity', link: '/client/propose-activity' }
       ]
     },
+    {
+      name: 'Application for Engagement Appraisal',
+      link: '/client/engagement-appraisals'
+    }
   ],
   Faculty: [
     { name: 'Home', link: '/client/home' },
