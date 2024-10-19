@@ -28,7 +28,7 @@ const menuItemsByUserType = {
       name: 'Activities',
       subItems: [
         { name: 'View Activities', link: '/client/view-activities' },
-        { name: 'Application for Engagement Appraisal', link: '/client/engagement-appraisals' },
+        { name: 'Evaluation Forms', link: '/client/evaluation-forms' },
         { name: 'Propose an Activity', link: '/client/propose-activity' }
       ]
     },
