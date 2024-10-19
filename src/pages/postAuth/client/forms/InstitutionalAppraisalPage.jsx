@@ -276,7 +276,7 @@ const InstitutionalAppraisalPage = () => {
       <div className="max-w-3xl h-max mx-auto p-6 bg-white rounded-lg shadow-lg">
         <button
           onClick={() =>
-            navigate("/client/engagement-appraisals-institutional")
+            navigate("/client/evalutaion-forms")
           }
           className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
         >
