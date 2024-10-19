@@ -61,7 +61,7 @@ const HeroPage = () => {
         />
 
         {/* Android Download Image with download functionality */}
-        <a href="/cclogo.png" download>
+        <a href="/comexconnect-mobile.apk" download>
           <motion.img
             className="h-auto w-48 md:w-56 mt-8 cursor-pointer object-contain transition-transform duration-300 ease-in-out transform hover:scale-110 hover:rotate-3 drop-shadow-lg"
             src="/images/download_android.png"
