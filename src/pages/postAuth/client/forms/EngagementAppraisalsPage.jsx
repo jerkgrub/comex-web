@@ -4,11 +4,13 @@ import { ArrowLeft } from 'lucide-react';
 import api from '../../../../api'; // Import your Axios instance
 import useFetchUserData from './../../../../components/hooks/useFetchUserData'; // Import your custom hook
 import FormNavigation from '../../../../components/forms/FormNavigation';
+import { ClipLoader } from 'react-spinners'; // Import a spinner component
 
 const EngagementAppraisalPage = () => {
   const { title } = useParams(); // Get the title from URL parameters (this will be used as the type)
   const { user, loading } = useFetchUserData(); // Fetch user data including userId
   const [currentStep, setCurrentStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state for submission loading
   const [formData, setFormData] = useState({
     title: '', // Matches backend field
     isVoluntary: '', // Matches backend field
@@ -19,6 +21,7 @@ const EngagementAppraisalPage = () => {
     supportingDocuments: null, // Matches backend field
     facultyReflection: '' // Matches backend field
   });
+  const [errors, setErrors] = useState({}); // New state for form errors
   const navigate = useNavigate();
 
   const formConfig = [
@@ -99,6 +102,33 @@ const EngagementAppraisalPage = () => {
 
   const handleAnswerChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
+
+    // Clear the error for the field when the user starts typing
+    if (errors[field]) {
+      setErrors({ ...errors, [field]: '' });
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+
+    if (formData.startDate > today) {
+      newErrors.startDate = 'Start date cannot be in the future.';
+    }
+
+    if (formData.endDate > today) {
+      newErrors.endDate = 'End date cannot be in the future.';
+    }
+
+    if (formData.startDate && formData.endDate && formData.startDate > formData.endDate) {
+      newErrors.endDate = 'End date cannot be earlier than start date.';
+    }
+
+    setErrors(newErrors);
+
+    // Return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleNext = () => {
@@ -120,6 +150,13 @@ const EngagementAppraisalPage = () => {
       alert('User data is still loading. Please wait.');
       return;
     }
+
+    if (!validateForm()) {
+      // If validation fails, prevent submission
+      return;
+    }
+
+    setIsSubmitting(true); // Start loading
 
     const formDataToSubmit = new FormData();
     formDataToSubmit.append('isRegisteredEvent', 'false');
@@ -149,16 +186,18 @@ const EngagementAppraisalPage = () => {
     } catch (error) {
       console.error('Failed to submit the credit form', error);
       alert('There was an error submitting the form. Please try again.');
+    } finally {
+      setIsSubmitting(false); // Stop loading
     }
   };
 
-  // <div className='w-screen h-max min-h-[calc(100vh_-_80px)] py-12  flex justify-center items-center'>
   return (
-    <div className=' h-max min-h-[calc(100vh_-_80px)] py-12  flex justify-center items-center'>
+    <div className='h-max min-h-[calc(100vh_-_80px)] py-12 flex justify-center items-center'>
       <div className="max-w-3xl mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
         <button
           onClick={() => navigate('/client/engagement-appraisals')}
           className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
+          disabled={isSubmitting} // Disable back button during submission
         >
           <ArrowLeft className="w-5 h-5" /> Back
         </button>
@@ -173,7 +212,7 @@ const EngagementAppraisalPage = () => {
                   type="text"
                   value={question.value}
                   onChange={question.handleChange}
-                  className="w-full p-2 border rounded-lg"
+                  className={`w-full p-2 border rounded-lg ${errors[question.id] ? 'border-red-500' : 'border-gray-300'}`}
                 />
               )}
               {question.type === 'radio' &&
@@ -187,28 +226,40 @@ const EngagementAppraisalPage = () => {
                         checked={formData.isVoluntary === option}
                         onChange={question.handleChange}
                         className="form-radio"
+                        disabled={isSubmitting} // Disable inputs during submission
                       />
                       <span className="ml-2">{option}</span>
                     </label>
                   </div>
                 ))}
               {question.type === 'date' && (
-                <input
-                  type="date"
-                  value={question.value}
-                  onChange={question.handleChange}
-                  className="w-full p-2 border rounded-lg"
-                />
+                <>
+                  <input
+                    type="date"
+                    value={question.value}
+                    onChange={question.handleChange}
+                    className={`w-full p-2 border rounded-lg ${errors[question.id] ? 'border-red-500' : 'border-gray-300'}`}
+                    max={new Date().toISOString().split('T')[0]} // Prevent selecting future dates
+                  />
+                  {errors[question.id] && (
+                    <p className="text-sm text-red-500 mt-1">{errors[question.id]}</p>
+                  )}
+                </>
               )}
               {question.type === 'file' && (
                 <input
                   type="file"
                   onChange={question.handleChange}
                   className="w-full p-2 border rounded-lg"
+                  disabled={isSubmitting} // Disable file input during submission
                 />
               )}
               {question.description && (
                 <p className="text-sm text-gray-600 mt-1">{question.description}</p>
+              )}
+              {/* Display error for text inputs if any */}
+              {question.type === 'text' && errors[question.id] && (
+                <p className="text-sm text-red-500 mt-1">{errors[question.id]}</p>
               )}
             </div>
           ))}
@@ -218,7 +269,27 @@ const EngagementAppraisalPage = () => {
           totalSteps={formConfig.length}
           onNext={handleNext}
           onBack={handleBack}
+          isSubmitting={isSubmitting} // Pass submission state to navigation if needed
         />
+        {/* Modify FormNavigation component to handle isSubmitting if necessary */}
+        <div className="mt-6 flex justify-end">
+          <button
+            onClick={handleNext}
+            className={`px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center ${
+              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <ClipLoader size={20} color="#ffffff" className="mr-2" />
+                Submitting...
+              </>
+            ) : (
+              'Submit'
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
