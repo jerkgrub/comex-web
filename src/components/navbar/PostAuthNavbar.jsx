@@ -60,6 +60,11 @@ const menuItemsByUserType = {
         { name: 'Evaluation Forms', link: '/client/evaluation-forms' },
       ]
     },
+    {
+      name: 'Application for Engagement Appraisal',
+      link: '/client/engagement-appraisals'
+    }
+
   ],
   Student: [
     { name: 'Home', link: '/client/home' },
