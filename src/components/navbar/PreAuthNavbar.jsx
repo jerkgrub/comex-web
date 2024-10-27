@@ -114,7 +114,7 @@ const PreAuthNavbar = () => {
       <div className="navbar fixed top-0 left-0 w-full z-50   bg-nucolor1 text-white2 border-b-4 border-nucolor3 drop-shadow-lg">
         <div className="navbar-start">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <div tabIndex={0} role="button" className="btn btn-ghost hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
