@@ -273,7 +273,7 @@ const PostAuthNavbar = () => {
               ) : (
                 <>
                   {user.firstName}{" "}
-                  <div className="px-1 py-[.1rem] uppercase rounded-lg text-nucolor1 text-[.9rem] bg-nucolor3 sm:block hidden">{user.usertype}</div>
+                  <div className="px-1 py-[.05rem] font-roboto-slab font-semibold uppercase rounded-lg text-nucolor1 text-[.8rem] bg-nucolor3 sm:block hidden">{user.usertype}</div>
                 </>
               )}
             </div>
