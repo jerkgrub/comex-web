@@ -99,7 +99,7 @@ function AdminLayout() {
           icon={<FolderKanban size={20} />}
           text="Review Evaluation Forms"
         />
-        <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text="Manage NSTP" />
+        {/* <SidebarItem to="/admin/nstp" icon={<Shield size={20} />} text="Manage NSTP" /> */}
         <SidebarItem to="/admin/autocert" icon={<Zap size={20} />} text="AutoCert" />
       </Sidebar>
       <div className={`flex-grow transition-all duration-200 ${expanded ? 'ml-64' : 'ml-16'} p-4`}>
