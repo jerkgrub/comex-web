@@ -9,6 +9,7 @@ import {
   FolderKanban,
   Gauge,
   Hourglass,
+  PersonStanding,
   Shield,
   Ticket,
   Zap
@@ -71,6 +72,7 @@ import InstitutionalAppraisalPage from './pages/postAuth/client/forms/Institutio
 import ManageAppraisals from './pages/postAuth/admin/ManageAppraisals';
 import ViewOneAppraisal from './pages/postAuth/admin/ViewOneAppraisal';
 import EvaluationForms from './pages/postAuth/client/EvaluationForms';
+import Initiatives from './pages/postAuth/admin/Initiatives';
 //
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -93,7 +95,7 @@ function AdminLayout() {
         <SidebarItem to="/admin/dashboard" icon={<Gauge size={20} />} text="Dashboard" active />
         <SidebarItem to="/admin/users" icon={<ContactRound size={20} />} text="Manage Users" />
         {/* <SidebarItem to="/admin/spez" icon={<Hourglass size={20} />} text="Manage SPEZ" /> */}
-        <SidebarItem to="/admin/activities" icon={<Earth size={20} />} text="Manage Activities" />
+        <SidebarItem to="/admin/initiatives" icon={<PersonStanding size={20} />} text="Manage Initiatives" />
         <SidebarItem
           to="/admin/review-evaluation-forms"
           icon={<FolderKanban size={20} />}
@@ -190,6 +192,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="comexforms" element={<ComexForms />} />
               <Route path="activities" element={<Activities />} />
+              <Route path="initiatives" element={<Initiatives />} />
               <Route path="create-activity" element={<CreateActivityPage />} />
               <Route path="autocert" element={<AutoCertPage />} />
 
