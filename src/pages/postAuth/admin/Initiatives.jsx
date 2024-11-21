@@ -11,18 +11,21 @@ const cardData = [
     title: 'Programs',
     icon: <BookOpen className="w-14 h-14 text-[#d1d5db]" />,
     endpoint: '/program/pending/count',
+    route: '/admin/initiatives/programs', // Add corresponding route
   },
   {
     id: 2,
     title: 'Projects',
     icon: <Folder className="w-14 h-14 text-[#d1d5db]" />,
     endpoint: '/project/pending/count',
+    route: '/admin/initiatives/projects', // Add corresponding route
   },
   {
     id: 3,
     title: 'Activities',
     icon: <Activity className="w-14 h-14 text-[#d1d5db]" />,
     endpoint: '/project/pending/count',
+    route: '/admin/initiatives/activities', // Add corresponding route
   },
 ];
 
@@ -34,7 +37,6 @@ const Initiatives = () => {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        // Fetch counts for each initiative type
         const promises = cardData.map(card => api.get(card.endpoint));
         const results = await Promise.all(promises);
         const newCounts = {};
@@ -62,9 +64,8 @@ const Initiatives = () => {
     fetchCounts();
   }, []);
 
-  // For now, clicking the cards will not have any functionality
   const handleCardClick = (card) => {
-    // No action needed for now
+    navigate(card.route); // Navigate to the respective route
   };
 
   return (
