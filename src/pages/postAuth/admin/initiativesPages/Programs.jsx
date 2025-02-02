@@ -18,7 +18,7 @@ const Programs = () => {
   const pendingCount = usePendingProgramsCount();
 
   const handleCreateProgramButton = () => {
-    navigate("/admin/programs/new");
+    navigate("/admin/initiatives/programs/new");
   };
 
   useEffect(() => {

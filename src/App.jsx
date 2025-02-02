@@ -8,15 +8,10 @@ import { useState, useEffect } from "react";
 import { UserContext } from "./components/UserContext";
 import { Home } from "./pages/postAuth/client";
 import {
-  BookCopy,
   ContactRound,
-  Earth,
   FolderKanban,
   Gauge,
-  Hourglass,
   PersonStanding,
-  Shield,
-  Ticket,
   Zap,
 } from "lucide-react";
 import { Footer } from "./components/Footer";
@@ -80,6 +75,7 @@ import EvaluationForms from "./pages/postAuth/client/EvaluationForms";
 import Initiatives from "./pages/postAuth/admin/Initiatives";
 import Projects from "./pages/postAuth/admin/initiativesPages/Projects";
 import Programs from "./pages/postAuth/admin/initiativesPages/Programs";
+import CreateProgramPage from "./pages/postAuth/admin/initiativesPages/CreateProgramPage";
 //
 // Hero Page with Navbar and Footer
 function HeroPageWithNavbarAndFooter() {
@@ -226,8 +222,14 @@ function App() {
               <Route path="initiatives" element={<Initiatives />} />
 
               {/* initatives sub-routes scuba*/}
+              {/* programs */}
               <Route path="initiatives/programs" element={<Programs />} />
+              <Route path="initiatives/programs/new" element={<CreateProgramPage />} />
+              
+              {/* projects */}
               <Route path="initiatives/projects" element={<Projects />} />
+
+              {/* activities */}
               <Route path="initiatives/activities" element={<Activities />} />
 
               <Route path="create-activity" element={<CreateActivityPage />} />
