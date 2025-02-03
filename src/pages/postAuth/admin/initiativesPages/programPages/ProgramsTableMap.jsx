@@ -1,56 +1,52 @@
 // src/pages/postAuth/admin/initiativesPages/ProgramsTableMap.jsx
 
-import { useState } from "react";
-import PropTypes from "prop-types";
-import api from "../../../../api";
-import { showToast } from "../../../../components/Toast";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import api from '../../../../../api';
+import { showToast } from '../../../../../components/Toast';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const ProgramsTableMap = ({ programs, loading, isApproved, setPrograms }) => {
   const [processingIds, setProcessingIds] = useState([]);
 
-  const handleApproveProgram = async (programId) => {
-    setProcessingIds((prev) => [...prev, programId]);
+  const handleApproveProgram = async programId => {
+    setProcessingIds(prev => [...prev, programId]);
 
     try {
       const response = await api.put(`/program/approve/${programId}`);
       if (response.status === 200) {
-        showToast("success", "Program approved successfully");
+        showToast('success', 'Program approved successfully');
         // Remove the approved program from the list
-        setPrograms((prevPrograms) =>
-          prevPrograms.filter((program) => program._id !== programId)
-        );
+        setPrograms(prevPrograms => prevPrograms.filter(program => program._id !== programId));
       } else {
-        throw new Error("Unexpected response from the server.");
+        throw new Error('Unexpected response from the server.');
       }
     } catch (error) {
-      console.error("Error approving program:", error);
-      showToast("error", "Failed to approve program");
+      console.error('Error approving program:', error);
+      showToast('error', 'Failed to approve program');
     } finally {
-      setProcessingIds((prev) => prev.filter((id) => id !== programId));
+      setProcessingIds(prev => prev.filter(id => id !== programId));
     }
   };
 
-  const handleRejectProgram = async (programId) => {
-    setProcessingIds((prev) => [...prev, programId]);
+  const handleRejectProgram = async programId => {
+    setProcessingIds(prev => [...prev, programId]);
 
     try {
       const response = await api.delete(`/program/${programId}`);
       if (response.status === 200) {
-        showToast("success", "Program rejected successfully");
+        showToast('success', 'Program rejected successfully');
         // Remove the rejected program from the list
-        setPrograms((prevPrograms) =>
-          prevPrograms.filter((program) => program._id !== programId)
-        );
+        setPrograms(prevPrograms => prevPrograms.filter(program => program._id !== programId));
       } else {
-        throw new Error("Unexpected response from the server.");
+        throw new Error('Unexpected response from the server.');
       }
     } catch (error) {
-      console.error("Error rejecting program:", error);
-      showToast("error", "Failed to reject program");
+      console.error('Error rejecting program:', error);
+      showToast('error', 'Failed to reject program');
     } finally {
-      setProcessingIds((prev) => prev.filter((id) => id !== programId));
+      setProcessingIds(prev => prev.filter(id => id !== programId));
     }
   };
 
@@ -95,7 +91,7 @@ const ProgramsTableMap = ({ programs, loading, isApproved, setPrograms }) => {
 
   return (
     <>
-      {programs.map((program) => {
+      {programs.map(program => {
         const isProcessing = processingIds.includes(program._id);
 
         return (
@@ -136,12 +132,12 @@ ProgramsTableMap.propTypes = {
       _id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       description: PropTypes.string,
-      createdBy: PropTypes.string,
+      createdBy: PropTypes.string
     })
   ).isRequired,
   loading: PropTypes.bool.isRequired,
   isApproved: PropTypes.bool.isRequired,
-  setPrograms: PropTypes.func.isRequired,
+  setPrograms: PropTypes.func.isRequired
 };
 
 export default ProgramsTableMap;

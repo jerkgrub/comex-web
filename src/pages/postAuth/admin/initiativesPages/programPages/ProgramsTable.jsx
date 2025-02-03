@@ -1,9 +1,9 @@
 // src/pages/postAuth/admin/initiativesPages/ProgramsTable.jsx
 
-import { useEffect, useState, useCallback } from "react";
-import api from "../../../../api";
-import ProgramsTableMap from "./ProgramsTableMap";
-import PropTypes from "prop-types";
+import { useEffect, useState, useCallback } from 'react';
+import api from '../../../../../api';
+import ProgramsTableMap from './ProgramsTableMap';
+import PropTypes from 'prop-types';
 
 const ProgramsTable = ({ searchInput, filters }) => {
   const [programs, setPrograms] = useState([]);
@@ -13,25 +13,21 @@ const ProgramsTable = ({ searchInput, filters }) => {
   const fetchPrograms = useCallback(async () => {
     setLoading(true);
     try {
-      const endpoint = filters.isApproved
-        ? "/program/approved/all"
-        : "/program/unapproved/all";
+      const endpoint = filters.isApproved ? '/program/approved/all' : '/program/unapproved/all';
       const response = await api.get(endpoint);
-      console.log("API response data:", response.data);
+      console.log('API response data:', response.data);
 
       // Ensure that response.data is an array
-      const programsData = Array.isArray(response.data)
-        ? response.data
-        : response.data.programs;
+      const programsData = Array.isArray(response.data) ? response.data : response.data.programs;
 
       if (!Array.isArray(programsData)) {
-        console.error("Expected an array of programs but got:", programsData);
+        console.error('Expected an array of programs but got:', programsData);
         setPrograms([]);
       } else {
         setPrograms(programsData);
       }
     } catch (error) {
-      console.error("Error fetching programs:", error);
+      console.error('Error fetching programs:', error);
       setPrograms([]);
     } finally {
       setLoading(false);
@@ -44,16 +40,14 @@ const ProgramsTable = ({ searchInput, filters }) => {
 
   useEffect(() => {
     if (!Array.isArray(programs)) {
-      console.error("Programs is not an array:", programs);
+      console.error('Programs is not an array:', programs);
       setFilteredPrograms([]);
       return;
     }
     // Filter programs based on search input
-    const filtered = programs.filter((program) => {
-      const title = program.title ? program.title.toLowerCase() : "";
-      const description = program.description
-        ? program.description.toLowerCase()
-        : "";
+    const filtered = programs.filter(program => {
+      const title = program.title ? program.title.toLowerCase() : '';
+      const description = program.description ? program.description.toLowerCase() : '';
       const search = searchInput.toLowerCase();
 
       return title.includes(search) || description.includes(search);
@@ -91,8 +85,8 @@ const ProgramsTable = ({ searchInput, filters }) => {
 ProgramsTable.propTypes = {
   searchInput: PropTypes.string.isRequired,
   filters: PropTypes.shape({
-    isApproved: PropTypes.bool.isRequired,
-  }).isRequired,
+    isApproved: PropTypes.bool.isRequired
+  }).isRequired
 };
 
 export default ProgramsTable;

@@ -1,38 +1,38 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../../../../api";
-import { ArrowLeft, Plus } from "lucide-react";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../../../../../api';
+import { ArrowLeft, Plus } from 'lucide-react';
 
 const CreateProgramPage = () => {
   const navigate = useNavigate();
   const [program, setProgram] = useState({
-    title: "",
-    description: "",
+    title: '',
+    description: ''
   });
   const [error, setError] = useState(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setProgram({ ...program, [name]: value });
   };
 
   const handleCreateProgram = () => {
     api
-      .post("/program/new", program, {
+      .post('/program/new', program, {
         headers: {
-          "Content-Type": "application/json",
-        },
+          'Content-Type': 'application/json'
+        }
       })
       .then(() => {
-        navigate("/admin/initiatives/programs"); // Adjust navigation path as needed
+        navigate('/admin/initiatives/programs'); // Adjust navigation path as needed
       })
       .catch(() => {
-        setError("Failed to create program");
+        setError('Failed to create program');
       });
   };
 
   return (
-    <div className="p-6 sm:p-8 bg-gray-50 min-h-screen">
+    <div className="card p-4 md:p-8 min-h-screen bg-base-100 shadow-lg">
       {/* Top Section */}
       <div className="flex justify-between items-center mb-6">
         <button
@@ -49,11 +49,9 @@ const CreateProgramPage = () => {
         </button>
       </div>
 
-      <h2 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-6">
-        Create New Program
-      </h2>
+      <h2 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-6">Create New Program</h2>
 
-      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+      <div>
         <div className="grid grid-cols-1 gap-6">
           <InputField
             label="Program Title"
@@ -61,7 +59,7 @@ const CreateProgramPage = () => {
             value={program.title}
             onChange={handleInputChange}
           />
-          
+
           <TextAreaField
             label="Description"
             name="description"
@@ -77,7 +75,7 @@ const CreateProgramPage = () => {
 };
 
 // Reusable Input Field Component
-const InputField = ({ label, name, value, onChange, type = "text" }) => {
+const InputField = ({ label, name, value, onChange, type = 'text' }) => {
   return (
     <div className="mb-4">
       <label className="text-sm font-semibold text-gray-700">{label}:</label>

@@ -1,16 +1,16 @@
 // src/pages/postAuth/admin/initiativesPages/Programs.jsx
 
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import ProgramsTable from "./ProgramsTable";
-import usePendingProgramsCount from "../../../../components/hooks/usePendingProgramsCount";
-import { Plus } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ProgramsTable from './ProgramsTable';
+import usePendingProgramsCount from '../../../../../components/hooks/usePendingProgramsCount';
+import { Plus } from 'lucide-react';
 
 const Programs = () => {
-  const [searchInput, setSearchInput] = useState("");
-  const [activeTab, setActiveTab] = useState("approved");
+  const [searchInput, setSearchInput] = useState('');
+  const [activeTab, setActiveTab] = useState('approved');
   const [filters, setFilters] = useState({
-    isApproved: true,
+    isApproved: true
   });
   const navigate = useNavigate();
 
@@ -18,12 +18,12 @@ const Programs = () => {
   const pendingCount = usePendingProgramsCount();
 
   const handleCreateProgramButton = () => {
-    navigate("/admin/initiatives/programs/new");
+    navigate('/admin/initiatives/programs/new');
   };
 
   useEffect(() => {
     setFilters({
-      isApproved: activeTab === "approved",
+      isApproved: activeTab === 'approved'
     });
   }, [activeTab]);
 
@@ -31,9 +31,7 @@ const Programs = () => {
     <div className="card p-4 md:p-8 min-h-screen bg-base-100 shadow-lg">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
-          Manage Programs 🎓
-        </h1>
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">Manage Programs 🎓</h1>
 
         <div className="flex flex-wrap items-center mt-4 md:mt-0 space-x-4">
           <button
@@ -51,21 +49,21 @@ const Programs = () => {
         <div className="flex space-x-2">
           <button
             className={`relative px-4 py-2 font-medium text-sm focus:outline-none transition-colors duration-200 ${
-              activeTab === "approved"
-                ? "text-blue-600 border-b-2 border-blue-600"
-                : "text-gray-600 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600"
+              activeTab === 'approved'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600'
             }`}
-            onClick={() => setActiveTab("approved")}
+            onClick={() => setActiveTab('approved')}
           >
             Approved Programs
           </button>
           <button
             className={`relative px-4 py-2 font-medium text-sm focus:outline-none transition-colors duration-200 ${
-              activeTab === "pending"
-                ? "text-blue-600 border-b-2 border-blue-600"
-                : "text-gray-600 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600"
+              activeTab === 'pending'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600'
             }`}
-            onClick={() => setActiveTab("pending")}
+            onClick={() => setActiveTab('pending')}
           >
             Pending Programs
             {pendingCount > 0 && (
@@ -84,12 +82,12 @@ const Programs = () => {
             type="text"
             placeholder="Search by program title..."
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={e => setSearchInput(e.target.value)}
             className="input input-bordered w-full pr-12"
           />
           {searchInput && (
             <button
-              onClick={() => setSearchInput("")}
+              onClick={() => setSearchInput('')}
               className="absolute inset-y-0 right-0 flex items-center px-2"
               aria-label="Clear Search"
             >
